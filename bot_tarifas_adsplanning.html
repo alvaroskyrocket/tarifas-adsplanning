@@ -4,908 +4,662 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ADSPLANNING · Tarifas Digitals</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0f0f11;
-    --surface: #18181c;
-    --surface2: #22222a;
-    --border: #2e2e38;
-    --accent: #6d5aff;
-    --accent2: #a78bfa;
-    --text: #f0eff6;
-    --muted: #888899;
-    --green: #34d399;
-    --amber: #fbbf24;
-    --red: #f87171;
-  }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* HEADER */
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 32px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .logo-mark {
-    width: 34px;
-    height: 34px;
-    background: var(--accent);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 14px;
-    color: white;
-    letter-spacing: -0.5px;
-  }
-
-  .logo-text {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-  }
-
-  .logo-sub {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 400;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 12px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  .badge span { color: var(--green); }
-
-  /* API KEY SETUP */
-  #setup-screen {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-  }
-
-  .setup-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 48px;
-    max-width: 480px;
-    width: 100%;
-    text-align: center;
-  }
-
-  .setup-icon {
-    width: 64px;
-    height: 64px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 16px;
-    margin: 0 auto 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-  }
-
-  .setup-card h2 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
-  }
-
-  .setup-card p {
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-
-  .input-group {
-    position: relative;
-    margin-bottom: 16px;
-  }
-
-  .input-group input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    font-size: 13px;
-    font-family: 'DM Mono', monospace;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .input-group input:focus { border-color: var(--accent); }
-  .input-group input::placeholder { color: var(--muted); }
-
-  .btn-primary {
-    width: 100%;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: opacity 0.2s, transform 0.1s;
-  }
-
-  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-  .btn-primary:active { transform: translateY(0); }
-
-  .setup-note {
-    margin-top: 16px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  /* MAIN APP */
-  #app-screen { display: none; flex: 1; flex-direction: column; }
-
-  /* SEARCH HERO */
-  .search-hero {
-    padding: 40px 32px 28px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .search-hero h1 {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -0.8px;
-    margin-bottom: 6px;
-  }
-
-  .search-hero h1 em {
-    font-style: normal;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .search-hero p {
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 24px;
-  }
-
-  .search-box {
-    display: flex;
-    gap: 10px;
-    max-width: 720px;
-  }
-
-  .search-input-wrap {
-    flex: 1;
-    position: relative;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    font-size: 16px;
-  }
-
-  #search-input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 14px 14px 42px;
-    font-size: 14px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  #search-input:focus { border-color: var(--accent); }
-  #search-input::placeholder { color: var(--muted); }
-
-  #search-btn {
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 24px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    white-space: nowrap;
-    transition: opacity 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  #search-btn:hover { opacity: 0.9; }
-  #search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  /* CHIPS */
-  .chips {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 14px;
-  }
-
-  .chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 12px;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .chip:hover {
-    border-color: var(--accent);
-    color: var(--accent2);
-  }
-
-  /* MAIN CONTENT */
-  .main {
-    flex: 1;
-    display: flex;
-    gap: 0;
-  }
-
-  /* SIDEBAR */
-  .sidebar {
-    width: 260px;
-    min-width: 260px;
-    border-right: 1px solid var(--border);
-    padding: 24px 20px;
-    overflow-y: auto;
-  }
-
-  .sidebar-section { margin-bottom: 28px; }
-
-  .sidebar-label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-
-  .stat-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-
-  .stat-row:last-child { border-bottom: none; }
-  .stat-val { font-family: 'DM Mono', monospace; color: var(--accent2); font-size: 12px; }
-
-  .filter-group { margin-bottom: 16px; }
-  .filter-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-
-  select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 12px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-    cursor: pointer;
-  }
-
-  /* RESULTS */
-  .results-area {
-    flex: 1;
-    padding: 24px 28px;
-    overflow-y: auto;
-  }
-
-  /* AI ANSWER */
-  #ai-answer {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    font-size: 14px;
-    line-height: 1.7;
-    display: none;
-  }
-
-  #ai-answer.visible { display: block; }
-
-  .ai-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .ai-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .ai-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--accent2); }
-
-  /* LOADING */
-  #loading {
-    display: none;
-    align-items: center;
-    gap: 12px;
-    padding: 20px 24px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  #loading.visible { display: flex; }
-
-  .spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* TABLE */
-  .results-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-
-  .results-count {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .results-count strong { color: var(--text); }
-
-  .table-wrap {
-    overflow-x: auto;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-
-  thead {
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-  }
-
-  th {
-    padding: 12px 16px;
-    text-align: left;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  th:hover { color: var(--text); }
-
-  td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-    line-height: 1.5;
-  }
-
-  tr:last-child td { border-bottom: none; }
-
-  tbody tr { transition: background 0.1s; }
-  tbody tr:hover { background: var(--surface2); }
-
-  .price-cell {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--green);
-    white-space: nowrap;
-    text-align: right;
-  }
-
-  .price-zero { color: var(--muted); }
-
-  .soporte-cell {
-    font-weight: 500;
-    max-width: 220px;
-  }
-
-  .formato-cell {
-    color: var(--muted);
-    max-width: 280px;
-    font-size: 12px;
-  }
-
-  .medidas-cell {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--accent2);
-    white-space: nowrap;
-  }
-
-  .imps-cell {
-    font-size: 12px;
-    color: var(--muted);
-    max-width: 160px;
-  }
-
-  /* EMPTY STATE */
-  #empty-state {
-    text-align: center;
-    padding: 80px 40px;
-    color: var(--muted);
-  }
-
-  #empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
-  #empty-state h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
-  #empty-state p { font-size: 14px; }
-
-  /* HIGHLIGHT */
-  mark {
-    background: rgba(109, 90, 255, 0.25);
-    color: var(--accent2);
-    border-radius: 3px;
-    padding: 0 2px;
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --red:#E8222A;
+  --red-dark:#c41920;
+  --red-light:#fef2f2;
+  --gray-50:#f9fafb;
+  --gray-100:#f3f4f6;
+  --gray-200:#e5e7eb;
+  --gray-300:#d1d5db;
+  --gray-400:#9ca3af;
+  --gray-500:#6b7280;
+  --gray-700:#374151;
+  --gray-900:#111827;
+  --white:#ffffff;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow:0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.14);
+  --radius:10px;
+}
+
+body{font-family:'Outfit',sans-serif;background:var(--gray-50);color:var(--gray-900);min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+
+/* ── SETUP ── */
+#setup-screen{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:var(--gray-50)}
+.setup-card{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:48px 40px;max-width:440px;width:100%;box-shadow:var(--shadow-lg)}
+.setup-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;justify-content:center}
+.setup-logo .mark{background:var(--red);color:white;font-weight:700;font-size:13px;padding:6px 10px;border-radius:6px;letter-spacing:.5px}
+.setup-logo .name{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.setup-card h2{font-size:20px;font-weight:700;margin-bottom:6px;text-align:center}
+.setup-card p{color:var(--gray-500);font-size:13.5px;line-height:1.6;margin-bottom:24px;text-align:center}
+.field label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--gray-500);margin-bottom:6px}
+.field input{width:100%;border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:12px 14px;font-size:13px;font-family:'JetBrains Mono',monospace;color:var(--gray-900);outline:none;transition:border-color .2s;background:var(--gray-50)}
+.field input:focus{border-color:var(--red);background:var(--white)}
+.field{margin-bottom:16px}
+.btn-red{width:100%;background:var(--red);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s,transform .1s;letter-spacing:.2px}
+.btn-red:hover{background:var(--red-dark)}
+.btn-red:active{transform:scale(.98)}
+.setup-note{margin-top:14px;font-size:12px;color:var(--gray-400);text-align:center;line-height:1.5}
+
+/* ── APP ── */
+#app-screen{display:none;flex-direction:column;flex:1}
+
+/* ── HEADER ── */
+header{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:200;box-shadow:var(--shadow-sm)}
+.hdr-logo{display:flex;align-items:center;gap:10px}
+.hdr-logo .mark{background:var(--red);color:white;font-weight:700;font-size:11px;padding:5px 8px;border-radius:5px;letter-spacing:.5px}
+.hdr-logo .name{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.hdr-logo .sep{color:var(--gray-300);margin:0 4px}
+.hdr-logo .sub{font-size:13px;color:var(--gray-500);font-weight:400}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.pill{background:var(--gray-100);border:1px solid var(--gray-200);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--gray-500)}
+.pill strong{color:var(--gray-900)}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--gray-200);background:var(--white);padding:0 32px}
+.tab{padding:14px 20px;font-size:13.5px;font-weight:500;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;user-select:none}
+.tab:hover{color:var(--gray-900)}
+.tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:600}
+
+/* ── PANELS ── */
+.panel{display:none;flex:1}
+.panel.active{display:flex;flex-direction:column}
+
+/* ── SEARCH HERO ── */
+.search-hero{background:var(--white);border-bottom:1px solid var(--gray-200);padding:28px 32px}
+.search-hero h1{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
+.search-hero h1 span{color:var(--red)}
+.search-hero p{color:var(--gray-500);font-size:13.5px;margin-bottom:20px}
+.search-row{display:flex;gap:10px;max-width:700px}
+.search-wrap{flex:1;position:relative}
+.search-wrap input{width:100%;border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:12px 14px 12px 40px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--gray-900);outline:none;transition:border-color .2s;background:var(--white)}
+.search-wrap input:focus{border-color:var(--red)}
+.search-wrap::before{content:'⌕';position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:17px;pointer-events:none}
+.btn-search{background:var(--red);color:white;border:none;border-radius:var(--radius);padding:12px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s;white-space:nowrap}
+.btn-search:hover{background:var(--red-dark)}
+.btn-search:disabled{opacity:.5;cursor:not-allowed}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{background:var(--white);border:1px solid var(--gray-200);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--gray-600);cursor:pointer;transition:all .15s;font-weight:500}
+.chip:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+
+/* ── LAYOUT ── */
+.content-layout{display:flex;flex:1;overflow:hidden}
+.sidebar{width:240px;min-width:240px;border-right:1px solid var(--gray-200);background:var(--white);padding:20px;overflow-y:auto}
+.results-area{flex:1;padding:24px 28px;overflow-y:auto;background:var(--gray-50)}
+
+/* ── SIDEBAR ── */
+.s-section{margin-bottom:24px}
+.s-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-400);margin-bottom:10px}
+.stat-item{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--gray-100);font-size:13px}
+.stat-item:last-child{border-bottom:none}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red);font-weight:500}
+.f-label{font-size:12px;color:var(--gray-600);margin-bottom:5px;font-weight:500}
+.f-group{margin-bottom:13px}
+select{width:100%;border:1.5px solid var(--gray-200);border-radius:8px;padding:8px 10px;font-size:12.5px;color:var(--gray-900);font-family:'Outfit',sans-serif;outline:none;background:var(--white);cursor:pointer;transition:border-color .15s}
+select:focus{border-color:var(--red)}
+.btn-ghost{width:100%;background:var(--white);border:1.5px solid var(--gray-200);border-radius:8px;padding:9px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--gray-600);transition:all .15s;margin-bottom:7px}
+.btn-ghost:hover{border-color:var(--gray-400);color:var(--gray-900)}
+
+/* ── AI ANSWER ── */
+#ai-answer{background:var(--white);border:1.5px solid var(--gray-200);border-left:3px solid var(--red);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;display:none}
+#ai-answer.visible{display:block}
+.ai-hdr{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.ai-dot{width:7px;height:7px;background:var(--red);border-radius:50%}
+.ai-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--red)}
+#ai-text{font-size:13.5px;line-height:1.65;color:var(--gray-700)}
+
+/* ── LOADING ── */
+#loading{display:none;align-items:center;gap:10px;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--gray-500)}
+#loading.visible{display:flex}
+.spinner{width:16px;height:16px;border:2px solid var(--gray-200);border-top-color:var(--red);border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── RESULTS META ── */
+.r-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.r-count{font-size:13px;color:var(--gray-500)}
+.r-count strong{color:var(--gray-900)}
+
+/* ── TABLE ── */
+.table-wrap{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
+th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--gray-500);white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{color:var(--gray-900)}
+td{padding:12px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.45;color:var(--gray-700)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--gray-50)}
+.td-soporte{font-weight:600;color:var(--gray-900);max-width:200px}
+.td-formato{color:var(--gray-500);font-size:12px;max-width:260px}
+.td-medidas{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);white-space:nowrap}
+.td-imps{font-size:12px;color:var(--gray-500);max-width:150px}
+.td-precio{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--gray-900);text-align:right;white-space:nowrap}
+.td-precio.zero{color:var(--gray-300)}
+
+/* ── EMPTY ── */
+#empty-state{text-align:center;padding:80px 40px;color:var(--gray-400)}
+#empty-state .ico{font-size:42px;margin-bottom:14px;opacity:.5}
+#empty-state h3{font-size:17px;font-weight:600;color:var(--gray-600);margin-bottom:6px}
+#empty-state p{font-size:13.5px}
+
+/* ── DB PANEL ── */
+.db-panel{flex:1;padding:28px 32px;background:var(--gray-50);overflow-y:auto}
+.db-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.db-top h2{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.btn-add{background:var(--red);color:white;border:none;border-radius:var(--radius);padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s}
+.btn-add:hover{background:var(--red-dark)}
+
+/* FORM */
+.add-form{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:24px;margin-bottom:20px;display:none;box-shadow:var(--shadow-sm)}
+.add-form.open{display:block}
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.form-field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gray-500);margin-bottom:5px}
+.form-field input,.form-field textarea{width:100%;border:1.5px solid var(--gray-200);border-radius:8px;padding:10px 12px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--gray-900);outline:none;transition:border-color .2s}
+.form-field input:focus,.form-field textarea:focus{border-color:var(--red)}
+.form-field textarea{resize:vertical;min-height:60px}
+.form-actions{display:flex;gap:10px;justify-content:flex-end}
+.btn-save{background:var(--red);color:white;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif}
+.btn-cancel{background:var(--white);border:1.5px solid var(--gray-200);color:var(--gray-600);border-radius:8px;padding:10px 18px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif}
+
+/* DB TABLE */
+.db-table-wrap{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+.db-table-wrap table th:last-child,.db-table-wrap table td:last-child{text-align:center}
+.btn-del{background:none;border:none;color:var(--gray-300);cursor:pointer;font-size:15px;padding:4px 8px;border-radius:5px;transition:all .15s}
+.btn-del:hover{color:var(--red);background:var(--red-light)}
+.db-info{font-size:12.5px;color:var(--gray-500);margin-bottom:14px}
+.db-info strong{color:var(--gray-900)}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-mark">AP</div>
-    <div>
-      <div class="logo-text">ADSPLANNING</div>
-      <div class="logo-sub">Tarifas Concursos Públicos</div>
-    </div>
-  </div>
-  <div class="header-right">
-    <div class="badge">Client: <span>Diputació de Barcelona</span></div>
-    <div class="badge" id="record-count"><span>152</span> registros</div>
-  </div>
-</header>
-
-<!-- SETUP SCREEN -->
+<!-- SETUP -->
 <div id="setup-screen">
   <div class="setup-card">
-    <div class="setup-icon">🔑</div>
-    <h2>Configura el asistente</h2>
-    <p>Introduce tu clave de API de Anthropic para activar el buscador inteligente. La clave se guarda solo en tu navegador y nunca sale de tu dispositivo.</p>
-    <div class="input-group">
-      <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off" />
+    <div class="setup-logo">
+      <div class="mark">AP</div>
+      <div class="name">ADSPLANNING</div>
     </div>
-    <button class="btn-primary" onclick="activateApp()">Activar asistente →</button>
-    <p class="setup-note">🔒 Tu clave se almacena localmente. Nunca se envía a ningún servidor externo excepto a api.anthropic.com.</p>
+    <h2>Buscador de Tarifas</h2>
+    <p>Introduce tu clave de API de Anthropic para activar el asistente inteligente. Se guarda solo en tu navegador.</p>
+    <div class="field">
+      <label>Clave de API</label>
+      <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off"/>
+    </div>
+    <button class="btn-red" onclick="activateApp()">Acceder al buscador →</button>
+    <p class="setup-note">🔒 Tu clave nunca sale de tu dispositivo excepto para llamar a api.anthropic.com</p>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="app-screen">
-  <div class="search-hero">
-    <h1>Busca tarifas <em>con IA</em></h1>
-    <p>Pregunta en lenguaje natural o usa los filtros. Datos de Diputació de Barcelona.</p>
-    <div class="search-box">
-      <div class="search-input-wrap">
-        <span class="search-icon">⌕</span>
-        <input type="text" id="search-input" placeholder="¿Cuánto cuesta un banner en elnacional.cat? ¿Qué formatos hay de 300x600?" />
-      </div>
-      <button id="search-btn" onclick="doSearch()">
-        <span id="btn-text">Buscar</span>
-      </button>
+  <header>
+    <div class="hdr-logo">
+      <div class="mark">AP</div>
+      <span class="name">ADSPLANNING</span>
+      <span class="sep">|</span>
+      <span class="sub">Tarifas Concursos Públicos</span>
     </div>
-    <div class="chips">
-      <div class="chip" onclick="quickSearch('elnacional.cat')">elnacional.cat</div>
-      <div class="chip" onclick="quickSearch('lavanguardia.com')">lavanguardia.com</div>
-      <div class="chip" onclick="quickSearch('300x600')">300x600 px</div>
-      <div class="chip" onclick="quickSearch('branded content')">Branded Content</div>
-      <div class="chip" onclick="quickSearch('video inbaner')">Vídeo inbaner</div>
-      <div class="chip" onclick="quickSearch('redes sociales reels')">Reels RRSS</div>
-      <div class="chip" onclick="quickSearch('precio mayor 5000')">Precio > 5.000€</div>
+    <div class="hdr-right">
+      <div class="pill">Cliente: <strong>Diputació de Barcelona</strong></div>
+      <div class="pill" id="rec-count"><strong>—</strong> registros</div>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('search',this)">🔍 Buscador</div>
+    <div class="tab" onclick="switchTab('db',this)">📋 Base de datos</div>
+  </div>
+
+  <!-- SEARCH PANEL -->
+  <div class="panel active" id="panel-search">
+    <div class="search-hero">
+      <h1>Busca tarifas <span>con IA</span></h1>
+      <p>Pregunta en lenguaje natural o usa los filtros del panel lateral.</p>
+      <div class="search-row">
+        <div class="search-wrap">
+          <input type="text" id="search-input" placeholder="¿Cuánto cuesta elnacional.cat? ¿Qué formatos hay de 300x600?"/>
+        </div>
+        <button class="btn-search" id="search-btn" onclick="doSearch()">Buscar</button>
+      </div>
+      <div class="chips">
+        <div class="chip" onclick="qsearch('elnacional.cat')">elnacional.cat</div>
+        <div class="chip" onclick="qsearch('lavanguardia.com')">lavanguardia.com</div>
+        <div class="chip" onclick="qsearch('banner 300x600')">Banner 300x600</div>
+        <div class="chip" onclick="qsearch('branded content')">Branded Content</div>
+        <div class="chip" onclick="qsearch('video inbaner')">Vídeo inbaner</div>
+        <div class="chip" onclick="qsearch('reels instagram')">Reels Instagram</div>
+        <div class="chip" onclick="qsearch('precio mayor 5000 euros')">Precio &gt; 5.000€</div>
+      </div>
+    </div>
+    <div class="content-layout">
+      <div class="sidebar">
+        <div class="s-section">
+          <div class="s-title">Resumen</div>
+          <div class="stat-item"><span>Total</span><span class="stat-val" id="stat-total">—</span></div>
+          <div class="stat-item"><span>Precio medio</span><span class="stat-val" id="stat-avg">—</span></div>
+          <div class="stat-item"><span>Máximo</span><span class="stat-val" id="stat-max">—</span></div>
+          <div class="stat-item"><span>Mínimo</span><span class="stat-val" id="stat-min">—</span></div>
+        </div>
+        <div class="s-section">
+          <div class="s-title">Filtros</div>
+          <div class="f-group">
+            <div class="f-label">Tipo de formato</div>
+            <select id="f-formato" onchange="applyFilters()">
+              <option value="">Todos</option>
+              <option value="banner">Banner display</option>
+              <option value="video">Vídeo / inbaner</option>
+              <option value="redaccional">Redaccional</option>
+              <option value="reels">Reels / RRSS</option>
+              <option value="newsletter">Newsletter</option>
+              <option value="branded">Branded Content</option>
+            </select>
+          </div>
+          <div class="f-group">
+            <div class="f-label">Precio neto</div>
+            <select id="f-precio" onchange="applyFilters()">
+              <option value="">Todos</option>
+              <option value="0-500">Hasta 500€</option>
+              <option value="500-2000">500€ – 2.000€</option>
+              <option value="2000-10000">2.000€ – 10.000€</option>
+              <option value="10000+">Más de 10.000€</option>
+            </select>
+          </div>
+          <div class="f-group">
+            <div class="f-label">Medidas</div>
+            <select id="f-medidas" onchange="applyFilters()">
+              <option value="">Todas</option>
+              <option value="300x600">300x600</option>
+              <option value="300x250">300x250</option>
+              <option value="1920x1080">1920x1080 (vídeo)</option>
+              <option value="728x90">728x90</option>
+            </select>
+          </div>
+        </div>
+        <div class="s-section">
+          <button class="btn-ghost" onclick="resetAll()">↺ Resetear todo</button>
+          <button class="btn-ghost" onclick="changeKey()">🔑 Cambiar API key</button>
+        </div>
+      </div>
+      <div class="results-area">
+        <div id="loading"><div class="spinner"></div><span>El asistente está analizando tu consulta…</span></div>
+        <div id="ai-answer"><div class="ai-hdr"><div class="ai-dot"></div><div class="ai-lbl">Análisis IA</div></div><div id="ai-text"></div></div>
+        <div id="empty-state"><div class="ico">🔍</div><h3>Empieza a buscar</h3><p>Escribe una pregunta o selecciona un filtro para explorar las tarifas.</p></div>
+        <div id="results-container" style="display:none">
+          <div class="r-meta"><div class="r-count">Mostrando <strong id="r-shown">0</strong> de <strong id="r-total">0</strong> resultados</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th onclick="sortT('soporte')">Soporte ↕</th>
+                <th onclick="sortT('impresiones')">Impresiones ↕</th>
+                <th onclick="sortT('formato')">Formato ↕</th>
+                <th onclick="sortT('medidas')">Medidas ↕</th>
+                <th onclick="sortT('precio')">Precio NET ↕</th>
+              </tr></thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="main">
-    <div class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-label">Resumen</div>
-        <div class="stat-row"><span>Total soportes</span><span class="stat-val" id="stat-total">152</span></div>
-        <div class="stat-row"><span>Precio medio</span><span class="stat-val" id="stat-avg">—</span></div>
-        <div class="stat-row"><span>Precio máx.</span><span class="stat-val" id="stat-max">—</span></div>
-        <div class="stat-row"><span>Precio mín.</span><span class="stat-val" id="stat-min">—</span></div>
+  <!-- DB PANEL -->
+  <div class="panel" id="panel-db">
+    <div class="db-panel">
+      <div class="db-top">
+        <h2>Base de datos de tarifas</h2>
+        <button class="btn-add" onclick="toggleForm()">+ Añadir registro</button>
       </div>
+      <div class="db-info">Mostrando <strong id="db-count">0</strong> registros · Cliente: <strong>Diputació de Barcelona</strong></div>
 
-      <div class="sidebar-section">
-        <div class="sidebar-label">Filtros</div>
-        <div class="filter-group">
-          <div class="filter-label">Tipo de formato</div>
-          <select id="filter-formato" onchange="applyFilters()">
-            <option value="">Todos</option>
-            <option value="banner">Banner display</option>
-            <option value="video">Vídeo / inbaner</option>
-            <option value="redaccional">Redaccional</option>
-            <option value="reels">Reels / RRSS</option>
-            <option value="newsletter">Newsletter</option>
-            <option value="branded">Branded Content</option>
-          </select>
+      <!-- ADD FORM -->
+      <div class="add-form" id="add-form">
+        <div class="form-grid">
+          <div class="form-field"><label>Soporte *</label><input id="f-soporte" placeholder="elnacional.cat"/></div>
+          <div class="form-field"><label>Cliente *</label><input id="f-cliente" value="Diputació de Barcelona"/></div>
+          <div class="form-field"><label>Precio Neto (€) *</label><input id="f-preu" type="number" placeholder="0"/></div>
+          <div class="form-field" style="grid-column:1/3"><label>Formato</label><textarea id="f-format" placeholder="Bàner robapàgines doble GIF animat..."></textarea></div>
+          <div class="form-field"><label>Medidas</label><input id="f-mides" placeholder="300 x 600 píxels"/></div>
+          <div class="form-field" style="grid-column:1/3"><label>Núm. Impresiones / Peces</label><input id="f-imps" placeholder="100.000 impressions, ROS"/></div>
         </div>
-        <div class="filter-group">
-          <div class="filter-label">Precio neto</div>
-          <select id="filter-precio" onchange="applyFilters()">
-            <option value="">Todos</option>
-            <option value="0-500">Hasta 500€</option>
-            <option value="500-2000">500€ – 2.000€</option>
-            <option value="2000-10000">2.000€ – 10.000€</option>
-            <option value="10000+">Más de 10.000€</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <div class="filter-label">Medidas</div>
-          <select id="filter-medidas" onchange="applyFilters()">
-            <option value="">Todas</option>
-            <option value="300x600">300x600</option>
-            <option value="300x250">300x250</option>
-            <option value="1920x1080">1920x1080 (vídeo)</option>
-            <option value="728x90">728x90</option>
-          </select>
+        <div class="form-actions">
+          <button class="btn-cancel" onclick="toggleForm()">Cancelar</button>
+          <button class="btn-save" onclick="addRecord()">Guardar registro</button>
         </div>
       </div>
 
-      <div class="sidebar-section">
-        <div class="sidebar-label">Acciones</div>
-        <div class="chip" style="display:block;text-align:center;margin-bottom:8px;cursor:pointer" onclick="resetAll()">↺ Resetear filtros</div>
-        <div class="chip" style="display:block;text-align:center;cursor:pointer" onclick="changeKey()">🔑 Cambiar API key</div>
-      </div>
-    </div>
-
-    <div class="results-area">
-      <div id="loading"><div class="spinner"></div><span>El asistente está analizando tu consulta…</span></div>
-      <div id="ai-answer">
-        <div class="ai-header"><div class="ai-dot"></div><div class="ai-label">Análisis IA</div></div>
-        <div id="ai-text"></div>
-      </div>
-      <div id="empty-state">
-        <div class="empty-icon">🔍</div>
-        <h3>Empieza a buscar</h3>
-        <p>Escribe una pregunta o usa los filtros del panel lateral para explorar las tarifas.</p>
-      </div>
-      <div id="results-container" style="display:none">
-        <div class="results-meta">
-          <div class="results-count">Mostrando <strong id="results-shown">0</strong> de <strong id="results-total">0</strong> resultados</div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th onclick="sortTable('soporte')">Soporte ↕</th>
-                <th onclick="sortTable('impresiones')">Impresiones ↕</th>
-                <th onclick="sortTable('formato')">Formato ↕</th>
-                <th onclick="sortTable('medidas')">Medidas ↕</th>
-                <th onclick="sortTable('precio')">Precio NET ↕</th>
-              </tr>
-            </thead>
-            <tbody id="table-body"></tbody>
-          </table>
-        </div>
+      <div class="db-table-wrap">
+        <table>
+          <thead><tr>
+            <th>Soporte</th><th>Cliente</th><th>Impresiones</th><th>Formato</th><th>Medidas</th><th>Precio NET</th><th>—</th>
+          </tr></thead>
+          <tbody id="db-tbody"></tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-const TARIFAS = [{"soporte":"20minutos.es (IP Barcelona província)","cliente":"Diputació de Barcelona","impresiones":"275.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":412.5},{"soporte":"Ara.cat","cliente":"Diputació de Barcelona","impresiones":"125.000 impressions, ROS","formato":"Bàner robapàgines GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":603.75},{"soporte":"Catalunyaplural.cat","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1100},{"soporte":"Catalunyapress.cat","cliente":"Diputació de Barcelona","impresiones":"150.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":994.64},{"soporte":"Cronicaglobal.com (IP Catalunya)","cliente":"Diputació de Barcelona","impresiones":"200.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1980},{"soporte":"Diaridesabadell.com","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":875},{"soporte":"Diarideterrassa.com","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":875},{"soporte":"Diarieducacio.cat","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1100},{"soporte":"El9nou.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":704},{"soporte":"Elcritic.cat","cliente":"Diputació de Barcelona","impresiones":"80.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":775.2},{"soporte":"Eldiario.es (IP Catalunya)","cliente":"Diputació de Barcelona","impresiones":"150.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1650},{"soporte":"Elmon.cat","cliente":"Diputació de Barcelona","impresiones":"200.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 kb)","medidas":"300 x 600 píxels o similar","precio":1530},{"soporte":"Elnacional.cat","cliente":"Diputació de Barcelona","impresiones":"500.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":3865},{"soporte":"El Pais.com (IP Catalunya)","cliente":"Diputació de Barcelona","impresiones":"350.000 impressions, ROS","formato":"Bàner robapàgines GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":525},{"soporte":"Elpuntavui.cat","cliente":"Diputació de Barcelona","impresiones":"200.000 impressions, ROS","formato":"Bàner robapàgines GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1800},{"soporte":"Eltemps.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 4 setmanes, home","formato":"Bàner robapàgines vertical GIF animat (de fins a 300 kb)","medidas":"300 x 600 píxels o similar","precio":970},{"soporte":"Eltriangle.eu","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, home","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1399},{"soporte":"iSabadell.cat","cliente":"Diputació de Barcelona","impresiones":"110.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 kb)","medidas":"300 x 600 píxels o similar","precio":841.5},{"soporte":"Laciutat.cat","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1700},{"soporte":"Larepublica.cat","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":840},{"soporte":"Lavanguardia.com","cliente":"Diputació de Barcelona","impresiones":"790.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":7110},{"soporte":"Liniaxarxa.cat + Comunicacio21.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 3 setmanes, home + ROS","formato":"Bàner robapàgines doble, GIF animat (de fins a 300 kb)","medidas":"300 x 600 píxels o similar","precio":3900},{"soporte":"Metropoliabierta.com","cliente":"Diputació de Barcelona","impresiones":"150.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1320},{"soporte":"Monterrassa.cat","cliente":"Diputació de Barcelona","impresiones":"110.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 kb)","medidas":"300 x 600 píxels o similar","precio":841.5},{"soporte":"Naciodigital.cat (edició nacional)","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, home i ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":875},{"soporte":"Naciobergueda.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, home i ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":420},{"soporte":"Naciogranollers.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, home i ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":420},{"soporte":"Naciomanresa.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, home i ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":420},{"soporte":"Naciosabadell.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, home i ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":420},{"soporte":"Nuvol.com","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, ROS","formato":"Bàner robapàgines doble GIF animat (fins a 4 creativitats)","medidas":"300 x 600 píxels o similar","precio":765},{"soporte":"Osona.com","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, home i ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":420},{"soporte":"Publico.es","cliente":"Diputació de Barcelona","impresiones":"125.000 impressions, home i ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":875},{"soporte":"Racocatala.cat","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1000},{"soporte":"Regio7.cat","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1105},{"soporte":"Social.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 2 setmanes, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":700},{"soporte":"Thenewbarcelonapost.com","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, home i ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":1175},{"soporte":"Totbarcelona.cat","cliente":"Diputació de Barcelona","impresiones":"110.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 kb)","medidas":"300 x 600 píxels o similar","precio":841.5},{"soporte":"Totcerdanyola.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":690},{"soporte":"Totrubi.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":690},{"soporte":"Totsantcugat.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 setmana, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":690},{"soporte":"Vallesos.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 mes","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":475},{"soporte":"Vilapress.cat","cliente":"Diputació de Barcelona","impresiones":"100.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":380.37},{"soporte":"Vilaweb","cliente":"Diputació de Barcelona","impresiones":"125.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (de fins a 300 k)","medidas":"300 x 600 píxels o similar","precio":200},{"soporte":"Elnacional.cat","cliente":"Diputació de Barcelona","impresiones":"1.500.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (fins a 3 creativitats)","medidas":"300 x 600 píxels o similar","precio":11595},{"soporte":"Racocatala.cat","cliente":"Diputació de Barcelona","impresiones":"600.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (fins a 3 creativitats)","medidas":"300 x 600 píxels o similar","precio":600},{"soporte":"Vilaweb","cliente":"Diputació de Barcelona","impresiones":"1.200.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (fins a 3 creativitats)","medidas":"300 x 600 píxels o similar","precio":8400},{"soporte":"20minutos.es (IP Catalunya)","cliente":"Diputació de Barcelona","impresiones":"750.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels (desktop) i 300x250 (mobile)","precio":4365},{"soporte":"Ara.cat","cliente":"Diputació de Barcelona","impresiones":"300.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":3036},{"soporte":"Cronicaglobal.com (IP Catalunya)","cliente":"Diputació de Barcelona","impresiones":"410.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":4059},{"soporte":"Diaridesabadell.com","cliente":"Diputació de Barcelona","impresiones":"225.000 impressions, ROS","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":2430},{"soporte":"Diarideterrassa.com","cliente":"Diputació de Barcelona","impresiones":"225.000 impressions, ROS","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":2430},{"soporte":"Elnacional.cat","cliente":"Diputació de Barcelona","impresiones":"1.600.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":13648},{"soporte":"Elperiodico.com i .cat","cliente":"Diputació de Barcelona","impresiones":"940.000 impressions, ROS","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":6862},{"soporte":"Esportiumaresme.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 1 mes, ROS","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":400},{"soporte":"Metropoliabierta.com","cliente":"Diputació de Barcelona","impresiones":"470.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":4136},{"soporte":"Mundodeportivo.com","cliente":"Diputació de Barcelona","impresiones":"500.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300x600 píxels o similar","precio":4500},{"soporte":"Naciodigital.cat (edicio nacional)","cliente":"Diputació de Barcelona","impresiones":"225.000 impressions, ROS","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)","medidas":"300 x 600 píxels o similar","precio":5906.25},{"soporte":"Sport.es","cliente":"Diputació de Barcelona","impresiones":"940.000 impressions, ROS","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 20s)","medidas":"300 x 600 píxels o similar","precio":6862},{"soporte":"20minutos.es","cliente":"Diputació de Barcelona","impresiones":"4","formato":"Branded Content digital (HUB digital o microsite)","medidas":"","precio":18000},{"soporte":"20minutos.es","cliente":"Diputació de Barcelona","impresiones":"4","formato":"Reels a Instagram i Tik Tok","medidas":"","precio":14000},{"soporte":"20minutos.es","cliente":"Diputació de Barcelona","impresiones":"4","formato":"Reels a Instagram i Tik Tok (paid)","medidas":"","precio":2000},{"soporte":"Atresplayer.com + Atresmedia sites","cliente":"Diputació de Barcelona","impresiones":"296.429 impressions, ROS","formato":"Bàner Preroll/Midroll espot 20/25s - Multidispositiu - vídeo Instream","medidas":"1920x1080 píxels o similar","precio":4150},{"soporte":"Atresplayer.com (IP Barcelona)","cliente":"Diputació de Barcelona","impresiones":"188.636 impressions, ROS","formato":"Bàner Preroll/Midroll espot 20/25s - Smart TV - vídeo Instream","medidas":"1920x1080 píxels o similar","precio":4149.99},{"soporte":"Coolt.com","cliente":"Diputació de Barcelona","impresiones":"1","formato":"Redaccional digital","medidas":"","precio":1000},{"soporte":"Elnacional.cat","cliente":"Diputació de Barcelona","impresiones":"1.050.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)","medidas":"300 x 600 píxels o similar","precio":8956.5},{"soporte":"Elnacional.cat","cliente":"Diputació de Barcelona","impresiones":"1","formato":"Redaccional digital","medidas":"","precio":4635},{"soporte":"Elnacional.cat (Difusió a xarxes socials)","cliente":"Diputació de Barcelona","impresiones":"3","formato":"Video Content (Instagram/Tik Tok) - Mínim 30.000 visualitzacions","medidas":"","precio":18540},{"soporte":"El Pais.com (IP Catalunya)","cliente":"Diputació de Barcelona","impresiones":"2.300.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)","medidas":"300 x 600 píxels o similar","precio":16100},{"soporte":"Flaixfm.cat (Difusió a xarxes socials)","cliente":"Diputació de Barcelona","impresiones":"4","formato":"Video Reels Experiència (àmbit província Barcelona)","medidas":"","precio":4950},{"soporte":"Lavanguardia.com","cliente":"Diputació de Barcelona","impresiones":"900.000 impressions","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)","medidas":"300x600 píxels o similar","precio":8100},{"soporte":"Ràdioestel.cat","cliente":"Diputació de Barcelona","impresiones":"Cost fix, 2 mesos, ROS","formato":"Baner lateral GIF animat","medidas":"400x600 píxels o similar","precio":169},{"soporte":"Thenewbarcelonapost.com","cliente":"Diputació de Barcelona","impresiones":"4","formato":"Redaccionals digitals (destacat a home + secció pròpia)","medidas":"","precio":9500},{"soporte":"3cat.cat/3cat (web + APP)","cliente":"Diputació de Barcelona","impresiones":"200.000 impressions (sense segmentació)","formato":"Video pre-roll. Video-Linear/Àudio Linear","medidas":"1.920x1.080 píxels o similar","precio":3105},{"soporte":"3cat.cat/3cat (Smart TV + HbbtV)","cliente":"Diputació de Barcelona","impresiones":"90.000 impressions (sense segmentació)","formato":"Video pre-roll (Video Linear TV)","medidas":"1.920x1.080 píxels o similar","precio":2174},{"soporte":"3cat.cat","cliente":"Diputació de Barcelona","impresiones":"6","formato":"Post/Reels Instagram","medidas":"","precio":82593},{"soporte":"Timeout.cat","cliente":"Diputació de Barcelona","impresiones":"360.000 impressions, ROS","formato":"Bàner robapàgines doble GIF animat (fins a 3 creativitats)","medidas":"300 x 600 píxels o similar","precio":3484.8},{"soporte":"Timeout.cat","cliente":"Diputació de Barcelona","impresiones":"3 enviaments","formato":"Baner newsletter setmanal","medidas":"750 x 400 píxels","precio":1920},{"soporte":"Timeout.cat (Difusió a xarxes socials)","cliente":"Diputació de Barcelona","impresiones":"4 vídeos, 800.000 visualitzacions","formato":"Reels Instagram (inclou producció)","medidas":"","precio":12800},{"soporte":"Escapadarural.com","cliente":"Diputació de Barcelona","impresiones":"1","formato":"Landing page (continguts + allotjaments)","medidas":"","precio":2055},{"soporte":"Escapadarural.com (home)","cliente":"Diputació de Barcelona","impresiones":"1 mes","formato":"Destacat d'accés als continguts","medidas":"","precio":2055},{"soporte":"Escapadarural.com","cliente":"Diputació de Barcelona","impresiones":"1 mes, ROS","formato":"Baner al magazine","medidas":"","precio":2055},{"soporte":"Escapadarural.com (RRSS)","cliente":"Diputació de Barcelona","impresiones":"2 posts Facebook + 2 Instagram","formato":"Difusió a xarxes socials","medidas":"","precio":2055},{"soporte":"Komoot.com","cliente":"Diputació de Barcelona","impresiones":"4 col·leccions (fins a 12 rutes)","formato":"Contingut editorial en 5 idiomes (segmentació activitat i geogràfica)","medidas":"","precio":14900},{"soporte":"Femturisme.cat","cliente":"Diputació de Barcelona","impresiones":"6 enviaments","formato":"Newsletter","medidas":"","precio":840},{"soporte":"Femturisme.cat","cliente":"Diputació de Barcelona","impresiones":"6 baners, cost fix","formato":"Megabaner GIF animat","medidas":"1.200 x 600 píxels","precio":990},{"soporte":"Social.cat","cliente":"Diputació de Barcelona","impresiones":"1","formato":"Redaccional digital","medidas":"","precio":900},{"soporte":"Núvol.com","cliente":"Diputació de Barcelona","impresiones":"1","formato":"Redaccional digital","medidas":"","precio":630},{"soporte":"Catorze.cat","cliente":"Diputació de Barcelona","impresiones":"1","formato":"Redaccional digital","medidas":"","precio":696},{"soporte":"Elnacional.cat","cliente":"Diputació de Barcelona","impresiones":"950.000 impressions (posició branday HOME)","formato":"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)","medidas":"300 x 600 píxels","precio":8103.5},{"soporte":"Viajar.elperiodico.com (22 diaris Premsa Ibérica)","cliente":"Diputació de Barcelona","impresiones":"250.000 impressions","formato":"Carrusel Instagram, Facebook i Tik Tok","medidas":"","precio":3000}];
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const INITIAL = [
+  {soporte:"20minutos.es (IP Barcelona província)",cliente:"Diputació de Barcelona",impresiones:"275.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:412.5},
+  {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:603.75},
+  {soporte:"Catalunyaplural.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1100},
+  {soporte:"Catalunyapress.cat",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:994.64},
+  {soporte:"Cronicaglobal.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1980},
+  {soporte:"Diaridesabadell.com",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
+  {soporte:"Diarideterrassa.com",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
+  {soporte:"Diarieducacio.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1100},
+  {soporte:"El9nou.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:704},
+  {soporte:"Elcritic.cat",cliente:"Diputació de Barcelona",impresiones:"80.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:775.2},
+  {soporte:"Eldiario.es (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1650},
+  {soporte:"Elmon.cat",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:1530},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"500.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:3865},
+  {soporte:"El Pais.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"350.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:525},
+  {soporte:"Elpuntavui.cat",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1800},
+  {soporte:"Eltemps.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 4 setmanes, home",formato:"Bàner robapàgines vertical GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:970},
+  {soporte:"Eltriangle.eu",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1399},
+  {soporte:"iSabadell.cat",cliente:"Diputació de Barcelona",impresiones:"110.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:841.5},
+  {soporte:"Laciutat.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1700},
+  {soporte:"Larepublica.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:840},
+  {soporte:"Lavanguardia.com",cliente:"Diputació de Barcelona",impresiones:"790.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:7110},
+  {soporte:"Liniaxarxa.cat + Comunicacio21.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 3 setmanes, home + ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:3900},
+  {soporte:"Metropoliabierta.com",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1320},
+  {soporte:"Monterrassa.cat",cliente:"Diputació de Barcelona",impresiones:"110.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:841.5},
+  {soporte:"Naciodigital.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
+  {soporte:"Naciobergueda.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
+  {soporte:"Naciogranollers.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
+  {soporte:"Naciomanresa.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
+  {soporte:"Naciosabadell.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
+  {soporte:"Nuvol.com",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 4 creativitats)",medidas:"300 x 600 píxels o similar",precio:765},
+  {soporte:"Osona.com",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
+  {soporte:"Publico.es",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
+  {soporte:"Racocatala.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1000},
+  {soporte:"Regio7.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1105},
+  {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 2 setmanes, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:700},
+  {soporte:"Thenewbarcelonapost.com",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1175},
+  {soporte:"Totbarcelona.cat",cliente:"Diputació de Barcelona",impresiones:"110.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:841.5},
+  {soporte:"Totcerdanyola.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:690},
+  {soporte:"Totrubi.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:690},
+  {soporte:"Totsantcugat.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:690},
+  {soporte:"Vallesos.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 mes",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:475},
+  {soporte:"Vilapress.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:380.37},
+  {soporte:"Vilaweb",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:200},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.500.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:11595},
+  {soporte:"Racocatala.cat",cliente:"Diputació de Barcelona",impresiones:"600.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:600},
+  {soporte:"Vilaweb",cliente:"Diputació de Barcelona",impresiones:"1.200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:8400},
+  {soporte:"20minutos.es (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"750.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels (desktop) i 300x250 (mobile)",precio:4365},
+  {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"300.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:3036},
+  {soporte:"Cronicaglobal.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"410.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:4059},
+  {soporte:"Diaridesabadell.com",cliente:"Diputació de Barcelona",impresiones:"225.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:2430},
+  {soporte:"Diarideterrassa.com",cliente:"Diputació de Barcelona",impresiones:"225.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:2430},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.600.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:13648},
+  {soporte:"Elperiodico.com i .cat",cliente:"Diputació de Barcelona",impresiones:"940.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:6862},
+  {soporte:"Esportiumaresme.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 mes, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:400},
+  {soporte:"Metropoliabierta.com",cliente:"Diputació de Barcelona",impresiones:"470.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:4136},
+  {soporte:"Mundodeportivo.com",cliente:"Diputació de Barcelona",impresiones:"500.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300x600 píxels o similar",precio:4500},
+  {soporte:"Naciodigital.cat",cliente:"Diputació de Barcelona",impresiones:"225.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:5906.25},
+  {soporte:"Sport.es",cliente:"Diputació de Barcelona",impresiones:"940.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 20s)",medidas:"300 x 600 píxels o similar",precio:6862},
+  {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Branded Content digital (HUB digital o microsite)",medidas:"",precio:18000},
+  {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Reels a Instagram i Tik Tok",medidas:"",precio:14000},
+  {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Reels a Instagram i Tik Tok (paid)",medidas:"",precio:2000},
+  {soporte:"Atresplayer.com + Atresmedia sites",cliente:"Diputació de Barcelona",impresiones:"296.429 impressions, ROS",formato:"Bàner Preroll/Midroll espot 20/25s - Multidispositiu - vídeo Instream",medidas:"1920x1080 píxels o similar",precio:4150},
+  {soporte:"Atresplayer.com (IP Barcelona)",cliente:"Diputació de Barcelona",impresiones:"188.636 impressions, ROS",formato:"Bàner Preroll/Midroll espot 20/25s - Smart TV - vídeo Instream",medidas:"1920x1080 píxels o similar",precio:4149.99},
+  {soporte:"Coolt.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:1000},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.050.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels o similar",precio:8956.5},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:4635},
+  {soporte:"Elnacional.cat (Difusió a xarxes socials)",cliente:"Diputació de Barcelona",impresiones:"3",formato:"Video Content (Instagram/Tik Tok) - Mínim 30.000 visualitzacions",medidas:"",precio:18540},
+  {soporte:"El Pais.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"2.300.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels o similar",precio:16100},
+  {soporte:"Flaixfm.cat (Difusió a xarxes socials)",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Video Reels Experiència (àmbit província Barcelona)",medidas:"",precio:4950},
+  {soporte:"Lavanguardia.com",cliente:"Diputació de Barcelona",impresiones:"900.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300x600 píxels o similar",precio:8100},
+  {soporte:"Ràdioestel.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 2 mesos, ROS",formato:"Baner lateral GIF animat",medidas:"400x600 píxels o similar",precio:169},
+  {soporte:"Thenewbarcelonapost.com",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Redaccionals digitals (destacat a home + secció pròpia)",medidas:"",precio:9500},
+  {soporte:"3cat.cat/3cat (web + APP)",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions",formato:"Video pre-roll. Video-Linear/Àudio Linear",medidas:"1.920x1.080 píxels o similar",precio:3105},
+  {soporte:"3cat.cat/3cat (Smart TV + HbbtV)",cliente:"Diputació de Barcelona",impresiones:"90.000 impressions",formato:"Video pre-roll (Video Linear TV)",medidas:"1.920x1.080 píxels o similar",precio:2174},
+  {soporte:"3cat.cat",cliente:"Diputació de Barcelona",impresiones:"6",formato:"Post/Reels Instagram",medidas:"",precio:82593},
+  {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"360.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:3484.8},
+  {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"3 enviaments",formato:"Baner newsletter setmanal",medidas:"750 x 400 píxels",precio:1920},
+  {soporte:"Timeout.cat (Difusió a xarxes socials)",cliente:"Diputació de Barcelona",impresiones:"4 vídeos, 800.000 visualitzacions",formato:"Reels Instagram (inclou producció)",medidas:"",precio:12800},
+  {soporte:"Escapadarural.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Landing page (continguts + allotjaments)",medidas:"",precio:2055},
+  {soporte:"Komoot.com",cliente:"Diputació de Barcelona",impresiones:"4 col·leccions (fins a 12 rutes)",formato:"Contingut editorial en 5 idiomes (segmentació activitat i geogràfica)",medidas:"",precio:14900},
+  {soporte:"Femturisme.cat",cliente:"Diputació de Barcelona",impresiones:"6 enviaments",formato:"Newsletter",medidas:"",precio:840},
+  {soporte:"Femturisme.cat",cliente:"Diputació de Barcelona",impresiones:"6 baners, cost fix",formato:"Megabaner GIF animat",medidas:"1.200 x 600 píxels",precio:990},
+  {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:900},
+  {soporte:"Núvol.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:630},
+  {soporte:"Catorze.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:696},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"950.000 impressions (posició branday HOME)",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels",precio:8103.5},
+  {soporte:"Viajar.elperiodico.com (22 diaris Premsa Ibérica)",cliente:"Diputació de Barcelona",impresiones:"250.000 impressions",formato:"Carrusel Instagram, Facebook i Tik Tok",medidas:"",precio:3000}
+];
 
+// ─── STATE ──────────────────────────────────────────────────────────────────
 let API_KEY = '';
-let currentData = [...TARIFAS];
+let DB = [];
+let currentData = [];
 let sortCol = '';
 let sortDir = 1;
 
-// Compute stats
-function computeStats(data) {
-  const prices = data.filter(r => r.precio > 0).map(r => r.precio);
-  if (!prices.length) return;
-  const avg = prices.reduce((a,b) => a+b, 0) / prices.length;
-  const max = Math.max(...prices);
-  const min = Math.min(...prices);
-  document.getElementById('stat-total').textContent = data.length;
-  document.getElementById('stat-avg').textContent = fmt(avg);
-  document.getElementById('stat-max').textContent = fmt(max);
-  document.getElementById('stat-min').textContent = fmt(min);
+function loadDB(){
+  try{const s=localStorage.getItem('ap_db');if(s)DB=JSON.parse(s);}catch(e){}
+  if(!DB.length)DB=[...INITIAL];
 }
+function saveDB(){localStorage.setItem('ap_db',JSON.stringify(DB));}
 
-function fmt(n) { return n.toLocaleString('es-ES', {minimumFractionDigits:0, maximumFractionDigits:0}) + '€'; }
-
-function activateApp() {
-  const key = document.getElementById('api-key-input').value.trim();
-  if (!key.startsWith('sk-ant-')) { alert('La clave debe empezar por sk-ant-'); return; }
-  API_KEY = key;
-  localStorage.setItem('ap_api_key', key);
-  document.getElementById('setup-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'flex';
-  renderTable(TARIFAS);
-  computeStats(TARIFAS);
+// ─── SETUP ──────────────────────────────────────────────────────────────────
+function activateApp(){
+  const key=document.getElementById('api-key-input').value.trim();
+  if(!key.startsWith('sk-ant-')){alert('La clave debe empezar por sk-ant-');return;}
+  API_KEY=key;
+  localStorage.setItem('ap_key',key);
+  document.getElementById('setup-screen').style.display='none';
+  document.getElementById('app-screen').style.display='flex';
+  loadDB();
+  updateRecCount();
+  renderTable(DB);
+  computeStats(DB);
+  renderDBTable();
 }
+function changeKey(){localStorage.removeItem('ap_key');location.reload();}
 
-function changeKey() {
-  localStorage.removeItem('ap_api_key');
-  API_KEY = '';
-  document.getElementById('setup-screen').style.display = 'flex';
-  document.getElementById('app-screen').style.display = 'none';
-}
-
-// Check saved key
-window.addEventListener('load', () => {
-  const saved = localStorage.getItem('ap_api_key');
-  if (saved && saved.startsWith('sk-ant-')) {
-    API_KEY = saved;
-    document.getElementById('api-key-input').value = saved;
-    activateApp();
-  }
+window.addEventListener('load',()=>{
+  const k=localStorage.getItem('ap_key');
+  if(k&&k.startsWith('sk-ant-')){document.getElementById('api-key-input').value=k;activateApp();}
 });
 
-function quickSearch(q) {
-  document.getElementById('search-input').value = q;
-  doSearch();
+// ─── TABS ────────────────────────────────────────────────────────────────────
+function switchTab(name,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
 }
 
-async function doSearch() {
-  const query = document.getElementById('search-input').value.trim();
-  if (!query) { renderTable(TARIFAS); computeStats(TARIFAS); return; }
+// ─── STATS ───────────────────────────────────────────────────────────────────
+function fmt(n){return n.toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0})+'€';}
+function computeStats(data){
+  const pp=data.filter(r=>r.precio>0).map(r=>r.precio);
+  document.getElementById('stat-total').textContent=data.length;
+  if(!pp.length){['avg','max','min'].forEach(k=>document.getElementById('stat-'+k).textContent='—');return;}
+  document.getElementById('stat-avg').textContent=fmt(pp.reduce((a,b)=>a+b,0)/pp.length);
+  document.getElementById('stat-max').textContent=fmt(Math.max(...pp));
+  document.getElementById('stat-min').textContent=fmt(Math.min(...pp));
+}
+function updateRecCount(){
+  document.getElementById('rec-count').innerHTML='<strong>'+DB.length+'</strong> registros';
+  document.getElementById('db-count').textContent=DB.length;
+}
 
-  const btn = document.getElementById('search-btn');
-  const loading = document.getElementById('loading');
-  const aiAnswer = document.getElementById('ai-answer');
+// ─── SEARCH ──────────────────────────────────────────────────────────────────
+function qsearch(q){document.getElementById('search-input').value=q;doSearch();}
 
-  btn.disabled = true;
-  document.getElementById('btn-text').textContent = 'Buscando…';
-  loading.classList.add('visible');
-  aiAnswer.classList.remove('visible');
+async function doSearch(){
+  const query=document.getElementById('search-input').value.trim();
+  if(!query){renderTable(DB);computeStats(DB);return;}
+  const btn=document.getElementById('search-btn');
+  const loading=document.getElementById('loading');
+  const aiEl=document.getElementById('ai-answer');
+  btn.disabled=true;btn.textContent='Buscando…';
+  loading.classList.add('visible');aiEl.classList.remove('visible');
 
-  const dataStr = JSON.stringify(TARIFAS.map(r => ({
-    soporte: r.soporte, formato: r.formato, medidas: r.medidas,
-    impresiones: r.impresiones, precio: r.precio
-  })));
+  // Build compact data for AI
+  const compact=DB.map((r,i)=>i+'|'+r.soporte+'|'+r.formato+'|'+r.medidas+'|'+r.impresiones+'|'+r.precio).join('\n');
 
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1024,
-        system: `Eres un asistente de la agencia ADSPLANNING especializado en tarifas publicitarias de concursos públicos de la Diputació de Barcelona. Tienes acceso a una base de datos de medios digitales con los campos: soporte, formato, medidas, impresiones, precio (en euros).
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:600,
+        system:`Eres un asistente de la agencia ADSPLANNING. Tienes una base de datos de tarifas publicitarias digitales de la Diputació de Barcelona. Formato de cada fila: índice|soporte|formato|medidas|impresiones|precio_euros
+
+DATOS:
+${compact}
 
 Cuando el usuario haga una pregunta:
-1. Responde con un análisis breve y útil en 2-3 frases máximo.
-2. Después devuelve un JSON con los índices de los registros relevantes en este formato exacto: INDICES:[0,1,2,3]
-Si no hay resultados, devuelve INDICES:[]
-
-BASE DE DATOS: ${dataStr}`,
-        messages: [{ role: 'user', content: query }]
+1. Responde con 1-2 frases útiles de análisis.
+2. Lista los índices relevantes en este formato exacto al final: INDICES:[0,1,2]
+Si no hay resultados escribe INDICES:[]`,
+        messages:[{role:'user',content:query}]
       })
     });
-
-    const data = await resp.json();
-    const text = data.content?.[0]?.text || '';
-
-    // Extract AI commentary
-    const commentary = text.replace(/INDICES:\[.*?\]/s, '').trim();
-
-    // Extract indices
-    const match = text.match(/INDICES:\[([\d,\s]*)\]/);
-    let indices = [];
-    if (match && match[1].trim()) {
-      indices = match[1].split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
-    }
-
-    document.getElementById('ai-text').textContent = commentary || 'Aquí tienes los resultados encontrados.';
-    aiAnswer.classList.add('visible');
-
-    const filtered = indices.length > 0 ? indices.map(i => TARIFAS[i]).filter(Boolean) : [];
-    currentData = filtered;
+    const data=await resp.json();
+    if(data.error){throw new Error(data.error.message);}
+    const text=data.content?.[0]?.text||'';
+    const commentary=text.replace(/INDICES:\[[\d,\s]*\]/,'').trim();
+    const match=text.match(/INDICES:\[([\d,\s]*)\]/);
+    let indices=[];
+    if(match&&match[1].trim())indices=match[1].split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)&&n<DB.length);
+    document.getElementById('ai-text').textContent=commentary||'Resultados encontrados:';
+    aiEl.classList.add('visible');
+    const filtered=indices.length>0?indices.map(i=>DB[i]).filter(Boolean):[];
+    currentData=filtered;
     renderTable(filtered);
     computeStats(filtered);
-
-  } catch(e) {
-    document.getElementById('ai-text').textContent = 'Error al conectar con la IA. Mostrando búsqueda de texto simple.';
-    aiAnswer.classList.add('visible');
-    const q = query.toLowerCase();
-    const filtered = TARIFAS.filter(r =>
-      r.soporte.toLowerCase().includes(q) ||
-      r.formato.toLowerCase().includes(q) ||
-      r.medidas.toLowerCase().includes(q)
+  }catch(e){
+    // fallback text search
+    const q=query.toLowerCase();
+    const filtered=DB.filter(r=>
+      r.soporte.toLowerCase().includes(q)||
+      r.formato.toLowerCase().includes(q)||
+      r.medidas.toLowerCase().includes(q)||
+      r.impresiones.toLowerCase().includes(q)
     );
-    currentData = filtered;
+    document.getElementById('ai-text').textContent='Búsqueda de texto: '+filtered.length+' resultados para "'+query+'"';
+    aiEl.classList.add('visible');
+    currentData=filtered;
     renderTable(filtered);
     computeStats(filtered);
-  } finally {
+  }finally{
     loading.classList.remove('visible');
-    btn.disabled = false;
-    document.getElementById('btn-text').textContent = 'Buscar';
+    btn.disabled=false;btn.textContent='Buscar';
   }
 }
 
-function applyFilters() {
-  const formato = document.getElementById('filter-formato').value;
-  const precio = document.getElementById('filter-precio').value;
-  const medidas = document.getElementById('filter-medidas').value;
-
-  let data = [...TARIFAS];
-
-  if (formato) {
-    const map = {
-      'banner': ['bàner','banner','gif'],
-      'video': ['video','vídeo','inbaner','preroll','pre-roll'],
-      'redaccional': ['redaccional'],
-      'reels': ['reels','reel','instagram','tik tok'],
-      'newsletter': ['newsletter'],
-      'branded': ['branded content']
-    };
-    const terms = map[formato] || [formato];
-    data = data.filter(r => terms.some(t => r.formato.toLowerCase().includes(t)));
+// ─── FILTERS ─────────────────────────────────────────────────────────────────
+function applyFilters(){
+  const fmt=document.getElementById('f-formato').value;
+  const prc=document.getElementById('f-precio').value;
+  const med=document.getElementById('f-medidas').value;
+  let data=[...DB];
+  if(fmt){
+    const map={banner:['bàner','banner','gif'],video:['video','vídeo','inbaner','preroll'],redaccional:['redaccional'],reels:['reels','reel','instagram','tik tok'],newsletter:['newsletter'],branded:['branded content']};
+    const terms=map[fmt]||[fmt];
+    data=data.filter(r=>terms.some(t=>r.formato.toLowerCase().includes(t)));
   }
-
-  if (precio) {
-    const [min, max] = precio === '10000+' ? [10000, Infinity] : precio.split('-').map(Number);
-    data = data.filter(r => r.precio >= min && r.precio <= (max || Infinity));
+  if(prc){
+    const [mn,mx]=prc==='10000+'?[10000,Infinity]:prc.split('-').map(Number);
+    data=data.filter(r=>r.precio>=mn&&r.precio<=(mx||Infinity));
   }
-
-  if (medidas) {
-    data = data.filter(r => r.medidas.toLowerCase().includes(medidas.toLowerCase()));
-  }
-
-  currentData = data;
-  renderTable(data);
-  computeStats(data);
+  if(med)data=data.filter(r=>r.medidas.toLowerCase().includes(med.toLowerCase()));
+  currentData=data;renderTable(data);computeStats(data);
 }
 
-function resetAll() {
-  document.getElementById('filter-formato').value = '';
-  document.getElementById('filter-precio').value = '';
-  document.getElementById('filter-medidas').value = '';
-  document.getElementById('search-input').value = '';
+function resetAll(){
+  ['f-formato','f-precio','f-medidas'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('search-input').value='';
   document.getElementById('ai-answer').classList.remove('visible');
-  currentData = [...TARIFAS];
-  renderTable(TARIFAS);
-  computeStats(TARIFAS);
+  currentData=[...DB];renderTable(DB);computeStats(DB);
 }
 
-function sortTable(col) {
-  if (sortCol === col) sortDir *= -1;
-  else { sortCol = col; sortDir = 1; }
-  const sorted = [...currentData].sort((a, b) => {
-    const av = a[col] ?? ''; const bv = b[col] ?? '';
-    if (typeof av === 'number') return (av - bv) * sortDir;
-    return av.toString().localeCompare(bv.toString()) * sortDir;
+// ─── SORT ────────────────────────────────────────────────────────────────────
+function sortT(col){
+  if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=1;}
+  const sorted=[...currentData].sort((a,b)=>{
+    const av=a[col]??'';const bv=b[col]??'';
+    return(typeof av==='number'?(av-bv):av.toString().localeCompare(bv.toString()))*sortDir;
   });
-  currentData = sorted;
-  renderTable(sorted);
+  currentData=sorted;renderTable(sorted);
 }
 
-function highlight(text, query) {
-  if (!query) return text;
-  const q = document.getElementById('search-input').value.trim();
-  if (!q) return text;
-  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-  return text.replace(re, '<mark>$1</mark>');
-}
-
-function renderTable(data) {
-  const empty = document.getElementById('empty-state');
-  const container = document.getElementById('results-container');
-  const tbody = document.getElementById('table-body');
-
-  if (!data || data.length === 0) {
-    empty.style.display = 'block';
-    container.style.display = 'none';
-    return;
-  }
-
-  empty.style.display = 'none';
-  container.style.display = 'block';
-  document.getElementById('results-shown').textContent = data.length;
-  document.getElementById('results-total').textContent = TARIFAS.length;
-
-  const q = document.getElementById('search-input').value.trim().toLowerCase();
-
-  tbody.innerHTML = data.map(r => `
+// ─── RENDER TABLE ─────────────────────────────────────────────────────────────
+function renderTable(data){
+  const empty=document.getElementById('empty-state');
+  const cont=document.getElementById('results-container');
+  if(!data||!data.length){empty.style.display='block';cont.style.display='none';return;}
+  empty.style.display='none';cont.style.display='block';
+  document.getElementById('r-shown').textContent=data.length;
+  document.getElementById('r-total').textContent=DB.length;
+  document.getElementById('tbody').innerHTML=data.map(r=>`
     <tr>
-      <td class="soporte-cell">${r.soporte}</td>
-      <td class="imps-cell">${r.impresiones || '—'}</td>
-      <td class="formato-cell">${r.formato || '—'}</td>
-      <td class="medidas-cell">${r.medidas || '—'}</td>
-      <td class="price-cell ${r.precio === 0 ? 'price-zero' : ''}">${r.precio > 0 ? r.precio.toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €' : '—'}</td>
-    </tr>
-  `).join('');
+      <td class="td-soporte">${r.soporte}</td>
+      <td class="td-imps">${r.impresiones||'—'}</td>
+      <td class="td-formato">${r.formato||'—'}</td>
+      <td class="td-medidas">${r.medidas||'—'}</td>
+      <td class="td-precio ${r.precio===0?'zero':''}">${r.precio>0?r.precio.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €':'—'}</td>
+    </tr>`).join('');
+}
+
+// ─── DB PANEL ────────────────────────────────────────────────────────────────
+function renderDBTable(){
+  document.getElementById('db-count').textContent=DB.length;
+  document.getElementById('db-tbody').innerHTML=DB.map((r,i)=>`
+    <tr>
+      <td style="font-weight:600">${r.soporte}</td>
+      <td style="font-size:12px;color:var(--gray-500)">${r.cliente}</td>
+      <td style="font-size:12px;color:var(--gray-500)">${r.impresiones||'—'}</td>
+      <td style="font-size:12px;color:var(--gray-500);max-width:200px">${r.formato||'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red)">${r.medidas||'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right">${r.precio>0?r.precio.toLocaleString('es-ES',{minimumFractionDigits:2})+' €':'—'}</td>
+      <td><button class="btn-del" onclick="deleteRecord(${i})" title="Eliminar">✕</button></td>
+    </tr>`).join('');
+}
+
+function toggleForm(){
+  const f=document.getElementById('add-form');
+  f.classList.toggle('open');
+  if(f.classList.contains('open')){['f-soporte','f-format','f-mides','f-imps','f-preu'].forEach(id=>{const el=document.getElementById(id);if(id!=='f-cliente')el.value='';});}
+}
+
+function addRecord(){
+  const soporte=document.getElementById('f-soporte').value.trim();
+  const cliente=document.getElementById('f-cliente').value.trim();
+  const formato=document.getElementById('f-format').value.trim();
+  const medidas=document.getElementById('f-mides').value.trim();
+  const impresiones=document.getElementById('f-imps').value.trim();
+  const precio=parseFloat(document.getElementById('f-preu').value)||0;
+  if(!soporte){alert('El soporte es obligatorio');return;}
+  DB.push({soporte,cliente,impresiones,formato,medidas,precio});
+  saveDB();updateRecCount();renderDBTable();renderTable(DB);computeStats(DB);
+  toggleForm();
+}
+
+function deleteRecord(i){
+  if(!confirm('¿Eliminar este registro?'))return;
+  DB.splice(i,1);
+  saveDB();updateRecCount();renderDBTable();renderTable(DB);computeStats(DB);
 }
 
 // Enter key
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.activeElement.id === 'search-input') doSearch();
-  if (e.key === 'Enter' && document.activeElement.id === 'api-key-input') activateApp();
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    if(document.activeElement.id==='search-input')doSearch();
+    if(document.activeElement.id==='api-key-input')activateApp();
+  }
 });
 </script>
 </body>
