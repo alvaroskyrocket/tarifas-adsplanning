@@ -16,7 +16,7 @@
 body{font-family:'Outfit',sans-serif;background:var(--g50);color:var(--g900);min-height:100vh;display:flex;flex-direction:column;font-size:15px}
 
 /* HEADER */
-header{background:var(--white);border-bottom:1px solid var(--g200);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+header{background:var(--white);border-bottom:1px solid var(--g200);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .hlogo{display:flex;align-items:center;gap:10px}
 .hmark{background:var(--red);color:#fff;font-weight:700;font-size:11px;padding:5px 8px;border-radius:5px;letter-spacing:.5px}
 .hname{font-size:15px;font-weight:700;letter-spacing:-.2px}
@@ -26,9 +26,14 @@ header{background:var(--white);border-bottom:1px solid var(--g200);padding:0 28p
 .pill{background:var(--g100);border:1px solid var(--g200);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--g500)}
 .pill strong{color:var(--g900)}
 
+/* CLIENT SWITCHER */
+.client-switcher{display:flex;align-items:center;gap:6px;background:var(--white);border:1.5px solid var(--g200);border-radius:8px;padding:4px 6px}
+.client-switcher label{font-size:11px;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.client-switcher select{border:none;background:transparent;font-size:13px;font-weight:600;color:var(--g900);font-family:'Outfit',sans-serif;cursor:pointer;outline:none;padding-right:4px}
+
 /* TABS */
-.tabs{background:var(--white);border-bottom:1px solid var(--g200);padding:0 28px;display:flex;gap:0}
-.tab{padding:13px 18px;font-size:13.5px;font-weight:500;color:var(--g500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;user-select:none;display:flex;align-items:center;gap:6px}
+.tabs{background:var(--white);border-bottom:1px solid var(--g200);padding:0 24px;display:flex;gap:0;overflow-x:auto}
+.tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--g500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;user-select:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
 .tab:hover{color:var(--g900)}
 .tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:600}
 .tab .soon{font-size:10px;background:var(--g200);color:var(--g500);border-radius:10px;padding:2px 7px;font-weight:500}
@@ -37,48 +42,46 @@ header{background:var(--white);border-bottom:1px solid var(--g200);padding:0 28p
 .panel{display:none;flex:1;flex-direction:column}
 .panel.active{display:flex}
 
-/* ── SEARCH PANEL ── */
-.s-hero{background:var(--white);border-bottom:1px solid var(--g200);padding:24px 28px}
-.s-hero h1{font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:4px}
+/* SEARCH HERO */
+.s-hero{background:var(--white);border-bottom:1px solid var(--g200);padding:20px 24px}
+.s-hero h1{font-size:20px;font-weight:700;letter-spacing:-.4px;margin-bottom:3px}
 .s-hero h1 span{color:var(--red)}
-.s-hero p{color:var(--g500);font-size:13px;margin-bottom:18px}
+.s-hero p{color:var(--g500);font-size:13px;margin-bottom:16px}
 .srow{display:flex;gap:10px;max-width:680px}
 .swrap{flex:1;position:relative}
 .swrap::before{content:'⌕';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:17px;pointer-events:none}
-.swrap input{width:100%;border:1.5px solid var(--g200);border-radius:10px;padding:11px 12px 11px 38px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
+.swrap input{width:100%;border:1.5px solid var(--g200);border-radius:10px;padding:10px 12px 10px 36px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
 .swrap input:focus{border-color:var(--red)}
-.sbtn{background:var(--red);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;transition:background .15s}
-.sbtn:hover{background:var(--red-d)}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
-.chip{background:var(--white);border:1px solid var(--g200);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--g600);cursor:pointer;transition:all .15s;font-weight:500}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.chip{background:var(--white);border:1px solid var(--g200);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--g600);cursor:pointer;transition:all .15s;font-weight:500}
 .chip:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
 
 .slayout{display:flex;flex:1;overflow:hidden}
-.sidebar{width:230px;min-width:230px;border-right:1px solid var(--g200);background:var(--white);padding:18px;overflow-y:auto}
-.rarea{flex:1;padding:22px 26px;overflow-y:auto;background:var(--g50)}
+.sidebar{width:220px;min-width:220px;border-right:1px solid var(--g200);background:var(--white);padding:16px;overflow-y:auto}
+.rarea{flex:1;padding:20px 24px;overflow-y:auto;background:var(--g50)}
 
-.ss{margin-bottom:22px}
+.ss{margin-bottom:20px}
 .stitle{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--g400);margin-bottom:9px}
 .si{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--g100);font-size:13px}
 .si:last-child{border-bottom:none}
 .sv{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red);font-weight:500}
 .fl{font-size:12px;color:var(--g600);margin-bottom:5px;font-weight:500}
-.fg{margin-bottom:12px}
-select{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:8px 10px;font-size:12.5px;color:var(--g900);font-family:'Outfit',sans-serif;outline:none;background:var(--white);cursor:pointer;transition:border-color .15s}
+.fg{margin-bottom:11px}
+select{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:7px 10px;font-size:12.5px;color:var(--g900);font-family:'Outfit',sans-serif;outline:none;background:var(--white);cursor:pointer;transition:border-color .15s}
 select:focus{border-color:var(--red)}
-.bghost{width:100%;background:var(--white);border:1.5px solid var(--g200);border-radius:8px;padding:9px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--g600);transition:all .15s;margin-bottom:7px}
+.bghost{width:100%;background:var(--white);border:1.5px solid var(--g200);border-radius:8px;padding:8px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--g600);transition:all .15s;margin-bottom:7px}
 .bghost:hover{border-color:var(--g400);color:var(--g900)}
 
 /* TABLE */
-.rmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.rmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .rcount{font-size:13px;color:var(--g500)}
 .rcount strong{color:var(--g900)}
 .tw{background:var(--white);border:1px solid var(--g200);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead{background:var(--g50);border-bottom:1px solid var(--g200)}
-th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--g500);white-space:nowrap;cursor:pointer;user-select:none}
+th{padding:10px 13px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--g500);white-space:nowrap;cursor:pointer;user-select:none}
 th:hover{color:var(--g900)}
-td{padding:11px 14px;border-bottom:1px solid var(--g100);vertical-align:top;line-height:1.4;color:var(--g700)}
+td{padding:10px 13px;border-bottom:1px solid var(--g100);vertical-align:top;line-height:1.4;color:var(--g700)}
 tr:last-child td{border-bottom:none}
 tbody tr:hover{background:var(--g50)}
 .tds{font-weight:600;color:var(--g900);max-width:190px}
@@ -93,100 +96,122 @@ tbody tr:hover{background:var(--g50)}
 #empty h3{font-size:16px;font-weight:600;color:var(--g600);margin-bottom:5px}
 #empty p{font-size:13px}
 
-/* ── DB PANEL ── */
-.dbwrap{flex:1;padding:24px 28px;background:var(--g50);overflow-y:auto}
-.dbtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+/* DB PANEL */
+.dbwrap{flex:1;padding:24px;background:var(--g50);overflow-y:auto}
+.dbtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
 .dbtop h2{font-size:17px;font-weight:700;letter-spacing:-.3px}
-.btn-red{background:var(--red);color:#fff;border:none;border-radius:9px;padding:9px 17px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s}
+.dbtop-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-red{background:var(--red);color:#fff;border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s}
 .btn-red:hover{background:var(--red-d)}
+.btn-outline{background:var(--white);color:var(--g700);border:1.5px solid var(--g300);border-radius:9px;padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
+.btn-outline:hover{border-color:var(--g600);color:var(--g900)}
 .dbinfo{font-size:12.5px;color:var(--g500);margin-bottom:12px}
 .dbinfo strong{color:var(--g900)}
 
-.addform{background:var(--white);border:1.5px solid var(--g200);border-radius:10px;padding:22px;margin-bottom:18px;display:none;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+/* BULK UPLOAD BOX */
+.bulk-box{background:var(--white);border:1.5px dashed var(--g300);border-radius:10px;padding:20px;margin-bottom:16px;display:none;text-align:center}
+.bulk-box.open{display:block}
+.bulk-box p{font-size:13px;color:var(--g500);margin-bottom:12px;line-height:1.6}
+.bulk-box p strong{color:var(--g900)}
+.bulk-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.bulk-note{font-size:11.5px;color:var(--g400);margin-top:10px}
+
+.addform{background:var(--white);border:1.5px solid var(--g200);border-radius:10px;padding:20px;margin-bottom:16px;display:none;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .addform.open{display:block}
-.fgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
-.ff label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--g500);margin-bottom:5px}
-.ff input,.ff textarea{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:9px 11px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
+.fgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:13px}
+@media(max-width:700px){.fgrid{grid-template-columns:1fr 1fr}}
+.ff label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--g500);margin-bottom:4px}
+.ff input,.ff textarea{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:8px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
 .ff input:focus,.ff textarea:focus{border-color:var(--red)}
-.ff textarea{resize:vertical;min-height:56px}
+.ff textarea{resize:vertical;min-height:54px}
 .factions{display:flex;gap:10px;justify-content:flex-end}
 .bsave{background:var(--red);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif}
 .bcancel{background:var(--white);border:1.5px solid var(--g200);color:var(--g600);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif}
 .bdel{background:none;border:none;color:var(--g300);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:5px;transition:all .15s}
 .bdel:hover{color:var(--red);background:var(--red-l)}
 
-/* ── OC PANEL ── */
-.ocwrap{flex:1;display:flex;gap:0;overflow:hidden}
-.ocform-side{width:400px;min-width:400px;border-right:1px solid var(--g200);background:var(--white);padding:22px;overflow-y:auto}
-.ocform-side h2{font-size:16px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px}
-.ocform-side p{font-size:12.5px;color:var(--g500);margin-bottom:18px}
-.oc-preview-side{flex:1;padding:24px;background:var(--g50);overflow-y:auto}
-.oc-preview-side h3{font-size:13px;font-weight:600;color:var(--g500);margin-bottom:14px;text-transform:uppercase;letter-spacing:.6px}
+/* OC PANEL - new layout */
+.oc-outer{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.oc-top{display:grid;grid-template-columns:380px 1fr;flex:1;overflow:hidden}
+@media(max-width:900px){.oc-top{grid-template-columns:1fr;overflow:visible}}
+.oc-form-col{border-right:1px solid var(--g200);background:var(--white);padding:20px;overflow-y:auto}
+.oc-preview-col{background:var(--g50);padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.oc-preview-col h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g400)}
+.oc-bottom{border-top:1px solid var(--g200);background:var(--white);padding:16px 24px}
+.oc-bottom h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g500);margin-bottom:10px}
 
-.fsec{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--g100)}
+.fsec{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--g100)}
 .fsec:last-of-type{border-bottom:none}
-.fsec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g400);margin-bottom:10px}
-.frow{display:grid;gap:10px;margin-bottom:10px}
+.fsec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g400);margin-bottom:9px}
+.frow{display:grid;gap:9px;margin-bottom:9px}
 .frow.col2{grid-template-columns:1fr 1fr}
 .frow.col3{grid-template-columns:1fr 1fr 1fr}
 .frow.col1{grid-template-columns:1fr}
 .fl2{display:block;font-size:11px;font-weight:600;color:var(--g600);margin-bottom:4px}
 .fi{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:9px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
 .fi:focus{border-color:var(--red)}
-
-/* LINES */
-.lines-box{border:1.5px solid var(--g200);border-radius:8px;overflow:hidden;margin-bottom:10px}
-.line-hdr{display:grid;grid-template-columns:2fr 1.5fr 80px 80px 80px 30px;gap:6px;padding:7px 10px;background:var(--g50);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500)}
-.line-row{display:grid;grid-template-columns:2fr 1.5fr 80px 80px 80px 30px;gap:6px;padding:6px 10px;border-top:1px solid var(--g100);align-items:center}
-.line-row input{border:1px solid var(--g200);border-radius:6px;padding:5px 7px;font-size:12px;font-family:'Outfit',sans-serif;width:100%;outline:none;background:var(--white)}
-.line-row input:focus{border-color:var(--red)}
-.badd-line{background:var(--g50);border:1.5px dashed var(--g300);border-radius:8px;width:100%;padding:8px;font-size:12.5px;color:var(--g500);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s;margin-bottom:14px}
-.badd-line:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
-.bgen{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s}
+.bgen{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s;margin-top:4px}
 .bgen:hover{background:var(--red-d)}
 
-/* ── OC PDF PREVIEW ── */
-.oc-doc{background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:40px;font-family:'Outfit',sans-serif;font-size:12px;line-height:1.5;max-width:700px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.oc-hdr-block{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--g900)}
-.oc-company{font-size:9px;color:var(--g500);line-height:1.6}
-.oc-company strong{font-size:11px;color:var(--g900);display:block;margin-bottom:2px}
-.oc-meta-right{text-align:right;font-size:9px;color:var(--g500)}
-.oc-num{font-size:13px;font-weight:700;color:var(--g900)}
-.oc-mid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px;padding:12px;background:var(--g50);border-radius:7px}
-.oc-mid-item label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:3px}
-.oc-mid-item span{font-size:11px;font-weight:600;color:var(--g900)}
-.oc-table{width:100%;border-collapse:collapse;margin-bottom:18px}
-.oc-table th{padding:8px 10px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--g900);color:var(--white)}
-.oc-table th:last-child,.oc-table td:last-child{text-align:right}
-.oc-table td{padding:8px 10px;border-bottom:1px solid var(--g100);font-size:10.5px;vertical-align:top}
-.oc-table tr:last-child td{border-bottom:none}
-.oc-totals{display:flex;justify-content:flex-end;margin-bottom:24px}
-.oc-totals-box{border:1px solid var(--g200);border-radius:7px;overflow:hidden;min-width:200px}
-.oc-tot-row{display:flex;justify-content:space-between;padding:7px 12px;font-size:11px;border-bottom:1px solid var(--g100)}
-.oc-tot-row:last-child{border-bottom:none;background:var(--g900);color:var(--white);font-weight:700;font-size:12px}
-.oc-foot{display:flex;justify-content:space-between;align-items:flex-end;padding-top:14px;border-top:1px solid var(--g200)}
-.oc-cond{font-size:9px;color:var(--g500);line-height:1.6}
-.oc-sign{text-align:right;font-size:9px;color:var(--g500)}
-.oc-sign-line{width:120px;border-top:1px solid var(--g400);margin-left:auto;margin-bottom:4px;margin-top:24px}
+/* OC LINES - horizontal table in bottom bar */
+.lines-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.lines-table th{padding:7px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500);background:var(--g50);border-bottom:1px solid var(--g200)}
+.lines-table td{padding:5px 6px;border-bottom:1px solid var(--g100)}
+.lines-table tr:last-child td{border-bottom:none}
+.li{width:100%;border:1px solid var(--g200);border-radius:6px;padding:6px 8px;font-size:12px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;background:var(--white)}
+.li:focus{border-color:var(--red)}
+.li.wide{min-width:180px}
+.li.med{min-width:120px}
+.li.narrow{width:100px}
+.li.price{width:90px;text-align:right}
+.badd-line{margin-top:10px;background:var(--g50);border:1.5px dashed var(--g300);border-radius:8px;padding:7px 16px;font-size:12.5px;color:var(--g500);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
+.badd-line:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
 
-/* MOCKUP PANELS */
-.mock-panel{flex:1;display:flex;align-items:center;justify-content:center;background:var(--g50);flex-direction:column;gap:16px;padding:60px}
-.mock-card{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:48px 40px;max-width:480px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.mock-ico{font-size:48px;margin-bottom:16px}
-.mock-card h2{font-size:19px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px}
-.mock-card p{color:var(--g500);font-size:13.5px;line-height:1.65;margin-bottom:20px}
-.mock-tag{display:inline-block;background:var(--red-l);color:var(--red);border:1px solid #fecaca;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600}
-.mock-features{text-align:left;margin-top:16px;display:flex;flex-direction:column;gap:8px}
+/* OC DOC PREVIEW */
+.oc-doc{background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:32px;font-size:11px;line-height:1.5;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.oc-hdr-block{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--g900)}
+.oc-company{font-size:9px;color:var(--g500);line-height:1.7}
+.oc-company strong{font-size:10px;color:var(--g900);display:block;margin-bottom:2px}
+.oc-meta-right{text-align:right;font-size:9px;color:var(--g500)}
+.oc-num{font-size:12px;font-weight:700;color:var(--g900)}
+.oc-mid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;padding:10px;background:var(--g50);border-radius:7px}
+.oc-mid-item label{display:block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:2px}
+.oc-mid-item span{font-size:10px;font-weight:600;color:var(--g900)}
+.oc-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:10px}
+.oc-table th{padding:7px 8px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--g900);color:var(--white)}
+.oc-table th:last-child,.oc-table td:last-child{text-align:right}
+.oc-table td{padding:7px 8px;border-bottom:1px solid var(--g100);vertical-align:top}
+.oc-totals{display:flex;justify-content:flex-end;margin-bottom:20px}
+.oc-totals-box{border:1px solid var(--g200);border-radius:7px;overflow:hidden;min-width:180px}
+.oc-tot-row{display:flex;justify-content:space-between;padding:6px 10px;font-size:10px;border-bottom:1px solid var(--g100)}
+.oc-tot-row:last-child{border-bottom:none;background:var(--g900);color:var(--white);font-weight:700;font-size:11px}
+.oc-foot{display:flex;justify-content:space-between;align-items:flex-end;padding-top:12px;border-top:1px solid var(--g200)}
+.oc-cond{font-size:8px;color:var(--g500);line-height:1.7}
+.oc-sign{text-align:right;font-size:8px;color:var(--g500)}
+.oc-sign-line{width:100px;border-top:1px solid var(--g400);margin-left:auto;margin-bottom:3px;margin-top:20px}
+
+/* MOCK */
+.mock-panel{flex:1;display:flex;align-items:center;justify-content:center;background:var(--g50);padding:40px}
+.mock-card{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:40px;max-width:460px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.mock-ico{font-size:44px;margin-bottom:14px}
+.mock-card h2{font-size:18px;font-weight:700;margin-bottom:7px;letter-spacing:-.3px}
+.mock-card p{color:var(--g500);font-size:13px;line-height:1.65;margin-bottom:18px}
+.mock-tag{display:inline-block;background:var(--red-l);color:var(--red);border:1px solid #fecaca;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600}
+.mock-features{text-align:left;margin-top:14px;display:flex;flex-direction:column;gap:7px}
 .mock-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--g600)}
 .mock-feat::before{content:'→';color:var(--red);font-weight:700}
 
-/* PDF PRINT */
+/* PRINT */
 @media print{
   body *{visibility:hidden}
   #oc-printable,#oc-printable *{visibility:visible}
   #oc-printable{position:fixed;top:0;left:0;width:100%;padding:30px;background:white}
-  .oc-doc{box-shadow:none;border:none;max-width:100%}
+  .oc-doc{box-shadow:none;border:none}
 }
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--g900);color:#fff;border-radius:10px;padding:12px 18px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -199,13 +224,19 @@ tbody tr:hover{background:var(--g50)}
     <span class="hsub">Gestión de Campañas</span>
   </div>
   <div class="hright">
-    <div class="pill">Cliente activo: <strong id="hclient">—</strong></div>
+    <div class="client-switcher">
+      <label>Cliente</label>
+      <select id="client-select" onchange="switchClient()">
+        <option value="Diputació de Barcelona">Diputació de Barcelona</option>
+        <option value="AMB">AMB</option>
+      </select>
+    </div>
     <div class="pill"><strong id="hrecs">—</strong> tarifas</div>
   </div>
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="sw('search',this)">🔍 Buscador de tarifas</div>
+  <div class="tab active" onclick="sw('search',this)">🔍 Buscador</div>
   <div class="tab" onclick="sw('db',this)">📋 Base de datos</div>
   <div class="tab" onclick="sw('oc',this)">📄 Crear OC</div>
   <div class="tab" onclick="sw('dash',this)">📊 Dashboard <span class="soon">Próximamente</span></div>
@@ -213,21 +244,20 @@ tbody tr:hover{background:var(--g50)}
   <div class="tab" onclick="sw('seg',this)">📈 Seguimientos <span class="soon">Próximamente</span></div>
 </div>
 
-<!-- ═══ SEARCH PANEL ═══ -->
+<!-- SEARCH -->
 <div class="panel active" id="panel-search">
   <div class="s-hero">
     <h1>Buscador de <span>tarifas</span></h1>
-    <p>Busca por soporte, formato o medidas. Datos de concursos públicos.</p>
+    <p id="search-subtitle">Busca por soporte, formato o medidas. Filtrando por cliente activo.</p>
     <div class="srow">
       <div class="swrap"><input type="text" id="sinput" placeholder="Escribe soporte, formato o medidas..." oninput="liveSearch()"/></div>
     </div>
     <div class="chips">
-      <div class="chip" onclick="qs('elnacional')">elnacional.cat</div>
-      <div class="chip" onclick="qs('lavanguardia')">lavanguardia.com</div>
       <div class="chip" onclick="qs('300x600')">300x600</div>
       <div class="chip" onclick="qs('branded content')">Branded Content</div>
-      <div class="chip" onclick="qs('video inbaner')">Vídeo inbaner</div>
-      <div class="chip" onclick="qs('reels')">Reels</div>
+      <div class="chip" onclick="qs('video')">Vídeo</div>
+      <div class="chip" onclick="qs('robadoble')">Robadoble</div>
+      <div class="chip" onclick="qs('billboard')">Billboard</div>
       <div class="chip" onclick="qs('redaccional')">Redaccional</div>
       <div class="chip" onclick="qs('newsletter')">Newsletter</div>
     </div>
@@ -243,17 +273,6 @@ tbody tr:hover{background:var(--g50)}
       </div>
       <div class="ss">
         <div class="stitle">Filtros</div>
-        <div class="fg"><div class="fl">Tipo de formato</div>
-          <select id="ff" onchange="liveSearch()">
-            <option value="">Todos</option>
-            <option value="bàner|banner|gif">Banner display</option>
-            <option value="video|vídeo|inbaner|preroll">Vídeo / inbaner</option>
-            <option value="redaccional">Redaccional</option>
-            <option value="reels|reel|instagram|tik tok">Reels / RRSS</option>
-            <option value="newsletter">Newsletter</option>
-            <option value="branded content">Branded Content</option>
-          </select>
-        </div>
         <div class="fg"><div class="fl">Precio neto</div>
           <select id="fp" onchange="liveSearch()">
             <option value="">Todos</option>
@@ -263,28 +282,18 @@ tbody tr:hover{background:var(--g50)}
             <option value="10000+">Más de 10.000€</option>
           </select>
         </div>
-        <div class="fg"><div class="fl">Medidas</div>
-          <select id="fm" onchange="liveSearch()">
-            <option value="">Todas</option>
-            <option value="300x600">300x600</option>
-            <option value="300x250">300x250</option>
-            <option value="1920x1080">1920x1080 (vídeo)</option>
-            <option value="728x90">728x90</option>
-          </select>
-        </div>
       </div>
       <div class="ss">
         <button class="bghost" onclick="resetS()">↺ Limpiar filtros</button>
       </div>
     </div>
     <div class="rarea">
-      <div id="empty"><div class="ico">🔍</div><h3>Escribe para buscar</h3><p>Empieza a escribir o selecciona un filtro para ver las tarifas.</p></div>
+      <div id="empty"><div class="ico">🔍</div><h3>Escribe para buscar</h3><p>Empieza a escribir o selecciona un filtro.</p></div>
       <div id="rcont" style="display:none">
         <div class="rmeta"><div class="rcount">Mostrando <strong id="rshown">0</strong> de <strong id="rtot">0</strong> registros</div></div>
         <div class="tw"><table>
           <thead><tr>
             <th onclick="srt('soporte')">Soporte ↕</th>
-            <th onclick="srt('impresiones')">Impresiones ↕</th>
             <th onclick="srt('formato')">Formato ↕</th>
             <th onclick="srt('medidas')">Medidas ↕</th>
             <th onclick="srt('precio')">Precio NET ↕</th>
@@ -296,18 +305,36 @@ tbody tr:hover{background:var(--g50)}
   </div>
 </div>
 
-<!-- ═══ DB PANEL ═══ -->
+<!-- DB PANEL -->
 <div class="panel" id="panel-db">
   <div class="dbwrap">
     <div class="dbtop">
       <h2>Base de datos de tarifas</h2>
-      <button class="btn-red" onclick="toggleAdd()">+ Añadir registro</button>
+      <div class="dbtop-actions">
+        <button class="btn-outline" onclick="toggleBulk()">⬆ Carga masiva (Excel)</button>
+        <button class="btn-outline" onclick="downloadTemplate()">⬇ Descargar plantilla</button>
+        <button class="btn-red" onclick="toggleAdd()">+ Añadir registro</button>
+      </div>
     </div>
-    <div class="dbinfo">Total: <strong id="dbtot">0</strong> registros guardados en este navegador</div>
+    <div class="dbinfo">Cliente activo: <strong id="db-client">—</strong> · Total: <strong id="dbtot">0</strong> registros</div>
+
+    <!-- BULK UPLOAD -->
+    <div class="bulk-box" id="bulk-box">
+      <p><strong>Carga masiva desde Excel</strong><br>Descarga la plantilla, rellénala y súbela aquí. Las columnas deben ser:<br>Soporte · Cliente · Impresiones · Formato · Medidas · Precio Neto</p>
+      <div class="bulk-actions">
+        <label style="cursor:pointer">
+          <input type="file" id="bulk-file" accept=".xlsx,.csv" style="display:none" onchange="processBulk(this)"/>
+          <span class="btn-red" onclick="document.getElementById('bulk-file').click()">Seleccionar archivo Excel</span>
+        </label>
+      </div>
+      <div class="bulk-note">Los registros se añadirán a los existentes sin borrar nada. Formato soportado: .xlsx y .csv</div>
+    </div>
+
+    <!-- ADD FORM -->
     <div class="addform" id="addform">
       <div class="fgrid">
         <div class="ff"><label>Soporte *</label><input id="af-sop" placeholder="elnacional.cat"/></div>
-        <div class="ff"><label>Cliente *</label><input id="af-cli" value="Diputació de Barcelona"/></div>
+        <div class="ff"><label>Cliente *</label><input id="af-cli"/></div>
         <div class="ff"><label>Precio Neto (€)</label><input id="af-pre" type="number" placeholder="0"/></div>
         <div class="ff" style="grid-column:1/3"><label>Formato</label><textarea id="af-fmt" placeholder="Bàner robapàgines doble GIF animat..."></textarea></div>
         <div class="ff"><label>Medidas</label><input id="af-med" placeholder="300 x 600 píxels"/></div>
@@ -318,127 +345,134 @@ tbody tr:hover{background:var(--g50)}
         <button class="bsave" onclick="addRec()">Guardar</button>
       </div>
     </div>
+
     <div class="tw"><table>
-      <thead><tr><th>Soporte</th><th>Cliente</th><th>Formato</th><th>Medidas</th><th>Precio NET</th><th></th></tr></thead>
+      <thead><tr><th>Soporte</th><th>Cliente</th><th>Formato</th><th>Medidas</th><th style="text-align:right">Precio NET</th><th></th></tr></thead>
       <tbody id="dbtbody"></tbody>
     </table></div>
   </div>
 </div>
 
-<!-- ═══ OC PANEL ═══ -->
+<!-- OC PANEL -->
 <div class="panel" id="panel-oc">
-  <div class="ocwrap">
-    <div class="ocform-side">
-      <h2>Crear Orden de Compra</h2>
-      <p>Rellena los datos y genera el PDF listo para firmar.</p>
+  <div class="oc-outer">
+    <div class="oc-top">
+      <!-- FORM -->
+      <div class="oc-form-col">
+        <div style="font-size:16px;font-weight:700;margin-bottom:3px;letter-spacing:-.3px">Crear Orden de Compra</div>
+        <div style="font-size:12.5px;color:var(--g500);margin-bottom:16px">Rellena los datos y genera el PDF.</div>
 
-      <div class="fsec">
-        <div class="fsec-title">Identificación</div>
-        <div class="frow col2">
-          <div><label class="fl2">Nº OC *</label><input class="fi" id="oc-num" placeholder="DIARIDIBA_06"/></div>
-          <div><label class="fl2">Anunciante *</label><input class="fi" id="oc-anun" placeholder="Diputació de Barcelona"/></div>
+        <div class="fsec">
+          <div class="fsec-title">Identificación</div>
+          <div class="frow col2">
+            <div><label class="fl2">Nº OC *</label><input class="fi" id="oc-num" placeholder="DIARIDIBA_06" oninput="previewOC()"/></div>
+            <div><label class="fl2">Anunciante *</label><input class="fi" id="oc-anun" placeholder="Diputació de Barcelona" oninput="previewOC()"/></div>
+          </div>
+          <div class="frow col1">
+            <div><label class="fl2">Exclusivista / Medio *</label><input class="fi" id="oc-excl" placeholder="Lavanguardia" oninput="previewOC()"/></div>
+          </div>
         </div>
-        <div class="frow col1">
-          <div><label class="fl2">Exclusivista / Medio *</label><input class="fi" id="oc-excl" placeholder="Lavanguardia"/></div>
+
+        <div class="fsec">
+          <div class="fsec-title">Cabecera UTE</div>
+          <div class="frow col1"><div><label class="fl2">Nombre UTE</label><input class="fi" id="oc-ute" value="DIPUTACIO - INFINITY MEDIA COMMUNICATIONS SLU - ADSPLANNING SL" oninput="previewOC()"/></div></div>
+          <div class="frow col2">
+            <div><label class="fl2">Dirección</label><input class="fi" id="oc-dir" value="Pº del Til.lers, 3 · 08034-Barcelona" oninput="previewOC()"/></div>
+            <div><label class="fl2">CIF</label><input class="fi" id="oc-cif" value="U75999763" oninput="previewOC()"/></div>
+          </div>
+          <div class="frow col2">
+            <div><label class="fl2">Condiciones de pago</label><input class="fi" id="oc-cond" value="Transferencia bancaria a 60 días" oninput="previewOC()"/></div>
+            <div><label class="fl2">Email facturas</label><input class="fi" id="oc-email" value="facturas.ute@andbeyond.es" oninput="previewOC()"/></div>
+          </div>
         </div>
+
+        <button class="bgen" onclick="generateOC()">📥 Descargar PDF</button>
       </div>
 
-      <div class="fsec">
-        <div class="fsec-title">Cabecera UTE</div>
-        <div class="frow col1">
-          <div><label class="fl2">Nombre UTE</label><input class="fi" id="oc-ute" value="DIPUTACIO - INFINITY MEDIA COMMUNICATIONS SLU - ADSPLANNING SL"/></div>
-        </div>
-        <div class="frow col2">
-          <div><label class="fl2">Dirección</label><input class="fi" id="oc-dir" value="Pº del Til.lers, 3 · 08034-Barcelona"/></div>
-          <div><label class="fl2">CIF</label><input class="fi" id="oc-cif" value="U75999763"/></div>
-        </div>
-        <div class="frow col2">
-          <div><label class="fl2">Condiciones de pago</label><input class="fi" id="oc-cond" value="Transferencia bancaria a 60 días"/></div>
-          <div><label class="fl2">Email facturas</label><input class="fi" id="oc-email" value="facturas.ute@andbeyond.es"/></div>
-        </div>
-      </div>
-
-      <div class="fsec">
-        <div class="fsec-title">Líneas de inserción</div>
-        <div class="lines-box">
-          <div class="line-hdr"><span>Soporte</span><span>Formato</span><span>F. Inicio</span><span>F. Fin</span><span>Neto €</span><span></span></div>
-          <div id="lines-cont"></div>
-        </div>
-        <button class="badd-line" onclick="addLine()">+ Añadir línea</button>
-      </div>
-
-      <button class="bgen" onclick="generateOC()">Generar OC y descargar PDF</button>
-    </div>
-
-    <div class="oc-preview-side">
-      <h3>Vista previa</h3>
-      <div id="oc-printable">
-        <div class="oc-doc" id="oc-doc">
-          <div style="text-align:center;padding:60px 0;color:var(--g400)">
-            <div style="font-size:36px;margin-bottom:12px">📄</div>
-            <div style="font-size:14px">Rellena el formulario para ver la vista previa</div>
+      <!-- PREVIEW -->
+      <div class="oc-preview-col">
+        <h3>Vista previa del documento</h3>
+        <div id="oc-printable">
+          <div class="oc-doc" id="oc-doc">
+            <div style="text-align:center;padding:50px 0;color:var(--g400)">
+              <div style="font-size:32px;margin-bottom:10px">📄</div>
+              <div style="font-size:13px">Rellena el formulario para ver la vista previa</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- LINES - bottom bar -->
+    <div class="oc-bottom">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <h4>Líneas de inserción</h4>
+        <button class="badd-line" onclick="addLine()">+ Añadir línea</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="lines-table">
+          <thead><tr>
+            <th style="min-width:200px">Soporte</th>
+            <th style="min-width:160px">Formato</th>
+            <th style="width:100px">F. Inicio</th>
+            <th style="width:100px">F. Fin</th>
+            <th style="width:120px">Inserciones</th>
+            <th style="width:100px">Neto €</th>
+            <th style="width:30px"></th>
+          </tr></thead>
+          <tbody id="lines-tbody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ═══ MOCKUP PANELS ═══ -->
+<!-- MOCK PANELS -->
 <div class="panel" id="panel-dash">
-  <div class="mock-panel">
-    <div class="mock-card">
-      <div class="mock-ico">📊</div>
-      <h2>Dashboard de campañas</h2>
-      <p>Vista centralizada de todas las campañas activas, presupuestos ejecutados, KPIs por cliente y estado de cada inserción.</p>
-      <div class="mock-tag">En desarrollo · Próximamente</div>
-      <div class="mock-features">
-        <div class="mock-feat">Resumen de inversión por cliente</div>
-        <div class="mock-feat">Estado de campañas activas / pausadas</div>
-        <div class="mock-feat">OCs generadas vs. pendientes</div>
-        <div class="mock-feat">Alertas de vencimiento</div>
-      </div>
+  <div class="mock-panel"><div class="mock-card">
+    <div class="mock-ico">📊</div><h2>Dashboard de campañas</h2>
+    <p>Vista centralizada de todas las campañas activas, presupuestos ejecutados, KPIs por cliente y estado de cada inserción.</p>
+    <div class="mock-tag">En desarrollo · Próximamente</div>
+    <div class="mock-features">
+      <div class="mock-feat">Resumen de inversión por cliente</div>
+      <div class="mock-feat">Estado de campañas activas / pausadas</div>
+      <div class="mock-feat">OCs generadas vs. pendientes</div>
+      <div class="mock-feat">Alertas de vencimiento</div>
     </div>
-  </div>
+  </div></div>
 </div>
-
 <div class="panel" id="panel-cal">
-  <div class="mock-panel">
-    <div class="mock-card">
-      <div class="mock-ico">📅</div>
-      <h2>Calendario interactivo</h2>
-      <p>Visualiza todas las inserciones calendarizadas por cliente, con fechas de inicio y fin, y alertas automáticas.</p>
-      <div class="mock-tag">En desarrollo · Próximamente</div>
-      <div class="mock-features">
-        <div class="mock-feat">Vista mensual y semanal de campañas</div>
-        <div class="mock-feat">Filtro por cliente y soporte</div>
-        <div class="mock-feat">Alertas de inicio y fin de campaña</div>
-        <div class="mock-feat">Exportar a Google Calendar</div>
-      </div>
+  <div class="mock-panel"><div class="mock-card">
+    <div class="mock-ico">📅</div><h2>Calendario interactivo</h2>
+    <p>Visualiza todas las inserciones calendarizadas por cliente con fechas de inicio y fin y alertas automáticas.</p>
+    <div class="mock-tag">En desarrollo · Próximamente</div>
+    <div class="mock-features">
+      <div class="mock-feat">Vista mensual y semanal de campañas</div>
+      <div class="mock-feat">Filtro por cliente y soporte</div>
+      <div class="mock-feat">Alertas de inicio y fin</div>
+      <div class="mock-feat">Exportar a Google Calendar</div>
     </div>
-  </div>
+  </div></div>
+</div>
+<div class="panel" id="panel-seg">
+  <div class="mock-panel"><div class="mock-card">
+    <div class="mock-ico">📈</div><h2>Seguimientos</h2>
+    <p>Registro de seguimiento por campaña y cliente. Control de entregables, notas internas y estado de cada acción.</p>
+    <div class="mock-tag">En desarrollo · Próximamente</div>
+    <div class="mock-features">
+      <div class="mock-feat">Historial de comunicaciones</div>
+      <div class="mock-feat">Estado de entregables</div>
+      <div class="mock-feat">Notas internas por campaña</div>
+      <div class="mock-feat">Exportar informe</div>
+    </div>
+  </div></div>
 </div>
 
-<div class="panel" id="panel-seg">
-  <div class="mock-panel">
-    <div class="mock-card">
-      <div class="mock-ico">📈</div>
-      <h2>Seguimientos</h2>
-      <p>Registro de seguimiento por campaña y cliente. Control de entregables, notas internas y estado de cada acción.</p>
-      <div class="mock-tag">En desarrollo · Próximamente</div>
-      <div class="mock-features">
-        <div class="mock-feat">Historial de comunicaciones por cliente</div>
-        <div class="mock-feat">Estado de entregables</div>
-        <div class="mock-feat">Notas internas por campaña</div>
-        <div class="mock-feat">Exportar informe de seguimiento</div>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="toast" id="toast"></div>
 
 <script>
-// ═══ DATA ═══════════════════════════════════════════════════════════════════
-const INIT=[
+// ═══ EMBEDDED DATA ═══════════════════════════════════════════════════════════
+const DIBA_DATA=[
   {soporte:"20minutos.es (IP Barcelona província)",cliente:"Diputació de Barcelona",impresiones:"275.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:412.5},
   {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:603.75},
   {soporte:"Catalunyaplural.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1100},
@@ -446,7 +480,6 @@ const INIT=[
   {soporte:"Cronicaglobal.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1980},
   {soporte:"Diaridesabadell.com",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
   {soporte:"Diarideterrassa.com",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
-  {soporte:"Diarieducacio.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1100},
   {soporte:"El9nou.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:704},
   {soporte:"Elcritic.cat",cliente:"Diputació de Barcelona",impresiones:"80.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:775.2},
   {soporte:"Eldiario.es (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1650},
@@ -454,101 +487,91 @@ const INIT=[
   {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"500.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:3865},
   {soporte:"El Pais.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"350.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:525},
   {soporte:"Elpuntavui.cat",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1800},
-  {soporte:"Eltemps.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 4 setmanes, home",formato:"Bàner robapàgines vertical GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:970},
-  {soporte:"Eltriangle.eu",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1399},
-  {soporte:"iSabadell.cat",cliente:"Diputació de Barcelona",impresiones:"110.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:841.5},
-  {soporte:"Laciutat.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1700},
-  {soporte:"Larepublica.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:840},
   {soporte:"Lavanguardia.com",cliente:"Diputació de Barcelona",impresiones:"790.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:7110},
   {soporte:"Liniaxarxa.cat + Comunicacio21.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 3 setmanes, home + ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:3900},
   {soporte:"Metropoliabierta.com",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1320},
-  {soporte:"Monterrassa.cat",cliente:"Diputació de Barcelona",impresiones:"110.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:841.5},
-  {soporte:"Naciodigital.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
-  {soporte:"Naciobergueda.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
-  {soporte:"Naciogranollers.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
-  {soporte:"Naciomanresa.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
-  {soporte:"Naciosabadell.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
-  {soporte:"Nuvol.com",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 4 creativitats)",medidas:"300 x 600 píxels o similar",precio:765},
-  {soporte:"Osona.com",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:420},
-  {soporte:"Publico.es",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
+  {soporte:"Naciodigital.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
   {soporte:"Racocatala.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1000},
-  {soporte:"Regio7.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1105},
   {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 2 setmanes, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:700},
   {soporte:"Thenewbarcelonapost.com",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1175},
-  {soporte:"Totbarcelona.cat",cliente:"Diputació de Barcelona",impresiones:"110.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:841.5},
-  {soporte:"Totcerdanyola.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:690},
-  {soporte:"Totrubi.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:690},
-  {soporte:"Totsantcugat.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:690},
-  {soporte:"Vallesos.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 mes",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:475},
-  {soporte:"Vilapress.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:380.37},
   {soporte:"Vilaweb",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:200},
   {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.500.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:11595},
-  {soporte:"Racocatala.cat",cliente:"Diputació de Barcelona",impresiones:"600.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:600},
   {soporte:"Vilaweb",cliente:"Diputació de Barcelona",impresiones:"1.200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:8400},
   {soporte:"20minutos.es (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"750.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels (desktop) i 300x250 (mobile)",precio:4365},
   {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"300.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:3036},
-  {soporte:"Cronicaglobal.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"410.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:4059},
-  {soporte:"Diaridesabadell.com",cliente:"Diputació de Barcelona",impresiones:"225.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:2430},
-  {soporte:"Diarideterrassa.com",cliente:"Diputació de Barcelona",impresiones:"225.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:2430},
   {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.600.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:13648},
   {soporte:"Elperiodico.com i .cat",cliente:"Diputació de Barcelona",impresiones:"940.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:6862},
-  {soporte:"Esportiumaresme.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 mes, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:400},
-  {soporte:"Metropoliabierta.com",cliente:"Diputació de Barcelona",impresiones:"470.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:4136},
   {soporte:"Mundodeportivo.com",cliente:"Diputació de Barcelona",impresiones:"500.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300x600 píxels o similar",precio:4500},
-  {soporte:"Naciodigital.cat",cliente:"Diputació de Barcelona",impresiones:"225.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:5906.25},
   {soporte:"Sport.es",cliente:"Diputació de Barcelona",impresiones:"940.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 20s)",medidas:"300 x 600 píxels o similar",precio:6862},
   {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Branded Content digital (HUB digital o microsite)",medidas:"",precio:18000},
   {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Reels a Instagram i Tik Tok",medidas:"",precio:14000},
-  {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Reels a Instagram i Tik Tok (paid)",medidas:"",precio:2000},
-  {soporte:"Atresplayer.com + Atresmedia sites",cliente:"Diputació de Barcelona",impresiones:"296.429 impressions, ROS",formato:"Bàner Preroll/Midroll espot 20/25s - Multidispositiu - vídeo Instream",medidas:"1920x1080 píxels o similar",precio:4150},
-  {soporte:"Atresplayer.com (IP Barcelona)",cliente:"Diputació de Barcelona",impresiones:"188.636 impressions, ROS",formato:"Bàner Preroll/Midroll espot 20/25s - Smart TV - vídeo Instream",medidas:"1920x1080 píxels o similar",precio:4149.99},
-  {soporte:"Coolt.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:1000},
   {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.050.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels o similar",precio:8956.5},
   {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:4635},
-  {soporte:"Elnacional.cat (Difusió a xarxes socials)",cliente:"Diputació de Barcelona",impresiones:"3",formato:"Video Content (Instagram/Tik Tok) - Mínim 30.000 visualitzacions",medidas:"",precio:18540},
   {soporte:"El Pais.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"2.300.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels o similar",precio:16100},
-  {soporte:"Flaixfm.cat (Difusió a xarxes socials)",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Video Reels Experiència (àmbit província Barcelona)",medidas:"",precio:4950},
   {soporte:"Lavanguardia.com",cliente:"Diputació de Barcelona",impresiones:"900.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300x600 píxels o similar",precio:8100},
-  {soporte:"Ràdioestel.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 2 mesos, ROS",formato:"Baner lateral GIF animat",medidas:"400x600 píxels o similar",precio:169},
   {soporte:"Thenewbarcelonapost.com",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Redaccionals digitals (destacat a home + secció pròpia)",medidas:"",precio:9500},
   {soporte:"3cat.cat/3cat (web + APP)",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions",formato:"Video pre-roll. Video-Linear/Àudio Linear",medidas:"1.920x1.080 píxels o similar",precio:3105},
-  {soporte:"3cat.cat/3cat (Smart TV + HbbtV)",cliente:"Diputació de Barcelona",impresiones:"90.000 impressions",formato:"Video pre-roll (Video Linear TV)",medidas:"1.920x1.080 píxels o similar",precio:2174},
   {soporte:"3cat.cat",cliente:"Diputació de Barcelona",impresiones:"6",formato:"Post/Reels Instagram",medidas:"",precio:82593},
   {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"360.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:3484.8},
   {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"3 enviaments",formato:"Baner newsletter setmanal",medidas:"750 x 400 píxels",precio:1920},
-  {soporte:"Timeout.cat (Difusió a xarxes socials)",cliente:"Diputació de Barcelona",impresiones:"4 vídeos, 800.000 visualitzacions",formato:"Reels Instagram (inclou producció)",medidas:"",precio:12800},
-  {soporte:"Escapadarural.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Landing page (continguts + allotjaments)",medidas:"",precio:2055},
-  {soporte:"Komoot.com",cliente:"Diputació de Barcelona",impresiones:"4 col·leccions (fins a 12 rutes)",formato:"Contingut editorial en 5 idiomes",medidas:"",precio:14900},
+  {soporte:"Komoot.com",cliente:"Diputació de Barcelona",impresiones:"4 col·leccions",formato:"Contingut editorial en 5 idiomes",medidas:"",precio:14900},
   {soporte:"Femturisme.cat",cliente:"Diputació de Barcelona",impresiones:"6 enviaments",formato:"Newsletter",medidas:"",precio:840},
-  {soporte:"Femturisme.cat",cliente:"Diputació de Barcelona",impresiones:"6 baners, cost fix",formato:"Megabaner GIF animat",medidas:"1.200 x 600 píxels",precio:990},
   {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:900},
   {soporte:"Núvol.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:630},
-  {soporte:"Catorze.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:696},
-  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"950.000 impressions (posició branday HOME)",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels",precio:8103.5},
-  {soporte:"Viajar.elperiodico.com (22 diaris Premsa Ibérica)",cliente:"Diputació de Barcelona",impresiones:"250.000 impressions",formato:"Carrusel Instagram, Facebook i Tik Tok",medidas:"",precio:3000}
+  {soporte:"Catorze.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:696}
 ];
 
-// ═══ STATE ═══════════════════════════════════════════════════════════════════
-let DB=[];let curData=[];let sortCol='';let sortDir=1;
-let ocLines=[];let ocCounter=1;
+const AMB_DATA=[{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Doble Pàgina Color","medidas":"Feiners","precio":4210.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600 (Desktop + Mobile)","precio":6.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600 (Desktop + Mobile)","precio":6.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"Desktop + Mobile","precio":8.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"Desktop + Mobile","precio":8.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)","medidas":"Totes les mides","precio":6.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)","medidas":"Totes les mides","precio":6.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Doble Pàgina Color","medidas":"","precio":5670.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Pàgina Imparell","medidas":"","precio":2835.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Pàgina Color Imparell","medidas":"","precio":2184.5},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Mitja Pàgina Color Imparell","medidas":"","precio":1570.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Robaplanes Color Imparell","medidas":"","precio":2135.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Peu de Pàgina Color Imparell","medidas":"","precio":1095.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":11250.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Monogràfic - especial online","medidas":"","precio":22500.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300X600","precio":6.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300X600","precio":6.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"980X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"980X90 / 300X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"980X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"980X90 / 300X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Patrocini / Participació Taula Rodona","medidas":"","precio":13500.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Monogràfic- especial online","medidas":"","precio":4892.5},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)","medidas":"","precio":6.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)","medidas":"","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":3500.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Background 1664 x 1000 + Billboard 980 x 250","precio":13.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Background 1664 x 1000 + Billboard 980 x 250","precio":13.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Redaccional","precio":4500.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Monogràfic - especial online","medidas":"","precio":5500.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300x250","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"300x600","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300x250","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"300x600","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Redaccional","precio":150.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Doble Robapàgines","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Doble Robapàgines","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"Billboard","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"Billboard","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Robapàgines","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Superbàner","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Robapàgines","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Superbàner","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article_ Import Absolut","medidas":"","precio":1295.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X250_Robapàgines","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"728X90_Megabàner","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X250_Robapàgines","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"728X90_Megabàner","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":1750.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"970X250","precio":8.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"970X250","precio":8.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X300","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"760X600","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X300","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"760X600","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Publicat a HOME  i SECCIÓ, difós a xarxes socials amb promoció","precio":3900.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X250","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"800X600","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X250","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"800X600","precio":6.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Inclou publicació a portada, i xarxes socials","precio":1500.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":8.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":8.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":800.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":8.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":8.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Article + enviament a butlletí digital + xarxes socials","precio":900.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":8.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":8.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"970x250","precio":8.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"970x250","precio":8.0},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":8.0},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":8.0},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Publireportatge incloent destacat 300x150 en carrusel de portada","precio":6800.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"970x90","precio":24.5},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"970x90","precio":24.5},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":10240.0},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"120 x 600 ó 160 x 600","precio":10.71},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"120 x 600 ó 160 x 600","precio":10.71},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":5500.0},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":3850.0},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"THE NEW BARCELONA POST","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":2612.5},{"soporte":"THE NEW BARCELONA POST","cliente":"AMB","impresiones":"","formato":"Patrocini / Participació Taula Rodona","medidas":"","precio":577.5},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":900.0},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Branded Content (Articles)","medidas":"Branded content","precio":5000.0},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Pàgina color","medidas":"","precio":4000.0},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Altres patrocinis","medidas":"Pàgina + logo patrocinador","precio":10000.0},{"soporte":"ANUARI THE ECONOMIST","cliente":"AMB","impresiones":"","formato":"Branded Content (Articles)","medidas":"Branded content online","precio":5000.0},{"soporte":"ANUARI THE ECONOMIST","cliente":"AMB","impresiones":"","formato":"Pàgina color","medidas":"Pàgina color / contra","precio":4000.0},{"soporte":"Linia Mar / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Doble pàgina color","medidas":"","precio":9048.0},{"soporte":"Linia Mar / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":4524.0},{"soporte":"Linia Mar / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":1575.0},{"soporte":"Linia Mar / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"","precio":2100.0},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":767.53},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":511.68},{"soporte":"La voz de Castelldefels/lavoz.cat","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":708.09},{"soporte":"La voz de Castelldefels/lavoz.cat","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":318.64},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":426.58},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":277.62},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":217.74},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":163.3},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"","precio":383.64},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":409.35},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Doble Pàgina","medidas":"","precio":718.2},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":359.1},{"soporte":"La Vall de Verç/lavalldeverc.cat","cliente":"AMB","impresiones":"","formato":"Doble Pàgina","medidas":"","precio":596.0},{"soporte":"La Vall de Verç/lavalldeverc.cat","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":298.0},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Doble pàgina color","medidas":"","precio":2262.0},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"","precio":585.0},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":393.75},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":429.09},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":279.25},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":301.11},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":195.96},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":429.09},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":279.25},{"soporte":"Diaridesantacoloma.com","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell","medidas":"","precio":720.0},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell","medidas":"","precio":1156.0},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":260.0},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"","precio":175.0}];
 
-function loadDB(){try{const s=localStorage.getItem('ap_db2');if(s)DB=JSON.parse(s);}catch(e){}if(!DB.length)DB=[...INIT];saveDB();}
-function saveDB(){localStorage.setItem('ap_db2',JSON.stringify(DB));}
+// ═══ STATE ═══════════════════════════════════════════════════════════════════
+let DB={};
+let activeClient='Diputació de Barcelona';
+let curData=[];
+let sortCol='';let sortDir=1;
+let ocLines=[];
+
+function getClientDB(){return DB[activeClient]||[];}
+function setClientDB(arr){DB[activeClient]=arr;saveDB();}
+
+function loadDB(){
+  try{const s=localStorage.getItem('ap_db3');if(s)DB=JSON.parse(s);}catch(e){}
+  if(!DB['Diputació de Barcelona'])DB['Diputació de Barcelona']=[...DIBA_DATA];
+  if(!DB['AMB'])DB['AMB']=[...AMB_DATA];
+  saveDB();
+}
+function saveDB(){localStorage.setItem('ap_db3',JSON.stringify(DB));}
 function fmt(n){return n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'€';}
 function fmtn(n){return n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-// ═══ INIT ════════════════════════════════════════════════════════════════════
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
 window.addEventListener('load',()=>{
   loadDB();
-  document.getElementById('hclient').textContent='Diputació de Barcelona';
-  document.getElementById('hrecs').textContent=DB.length;
-  curData=[...DB];
-  renderDB();
-  addLine();addLine(); // start with 2 lines
-  autoOCNum();
+  updateHeader();
+  addLine();addLine();
+  document.getElementById('af-cli').value=activeClient;
 });
 
-// ═══ TABS ═════════════════════════════════════════════════════════════════════
+function updateHeader(){
+  const data=getClientDB();
+  document.getElementById('hrecs').textContent=data.length;
+  document.getElementById('db-client').textContent=activeClient;
+  document.getElementById('search-subtitle').textContent=`Busca por soporte, formato o medidas. Cliente activo: ${activeClient} (${data.length} tarifas)`;
+}
+
+function switchClient(){
+  activeClient=document.getElementById('client-select').value;
+  updateHeader();
+  curData=[...getClientDB()];
+  resetS();
+  renderDB();
+  document.getElementById('af-cli').value=activeClient;
+}
+
 function sw(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -561,35 +584,19 @@ function qs(q){document.getElementById('sinput').value=q;liveSearch();}
 
 function liveSearch(){
   const q=document.getElementById('sinput').value.toLowerCase().trim();
-  const ff=document.getElementById('ff').value;
   const fp=document.getElementById('fp').value;
-  const fm=document.getElementById('fm').value;
-
-  let data=[...DB];
-
-  if(q){
-    data=data.filter(r=>
-      r.soporte.toLowerCase().includes(q)||
-      r.formato.toLowerCase().includes(q)||
-      r.medidas.toLowerCase().includes(q)||
-      r.impresiones.toLowerCase().includes(q)||
-      r.cliente.toLowerCase().includes(q)
-    );
-  }
-
-  if(ff){
-    const terms=ff.split('|');
-    data=data.filter(r=>terms.some(t=>r.formato.toLowerCase().includes(t)));
-  }
+  let data=[...getClientDB()];
+  if(q){data=data.filter(r=>
+    r.soporte.toLowerCase().includes(q)||
+    r.formato.toLowerCase().includes(q)||
+    r.medidas.toLowerCase().includes(q)||
+    r.impresiones.toLowerCase().includes(q)
+  );}
   if(fp){
     const[mn,mx]=fp==='10000+'?[10000,Infinity]:fp.split('-').map(Number);
     data=data.filter(r=>r.precio>=mn&&r.precio<=(mx||Infinity));
   }
-  if(fm) data=data.filter(r=>r.medidas.toLowerCase().includes(fm.toLowerCase()));
-
-  curData=data;
-  renderTable(data, q||ff||fp||fm);
-  computeStats(data);
+  curData=data;renderTable(data,!!(q||fp));computeStats(data);
 }
 
 function computeStats(data){
@@ -603,8 +610,11 @@ function computeStats(data){
 
 function resetS(){
   document.getElementById('sinput').value='';
-  ['ff','fp','fm'].forEach(id=>document.getElementById(id).value='');
-  curData=[...DB];renderTable(DB,false);computeStats(DB);
+  document.getElementById('fp').value='';
+  const empty=document.getElementById('empty');
+  empty.innerHTML='<div class="ico">🔍</div><h3>Escribe para buscar</h3><p>Empieza a escribir o selecciona un filtro.</p>';
+  document.getElementById('empty').style.display='block';
+  document.getElementById('rcont').style.display='none';
 }
 
 function srt(col){
@@ -613,61 +623,67 @@ function srt(col){
     const av=a[col]??'';const bv=b[col]??'';
     return(typeof av==='number'?(av-bv):av.toString().localeCompare(bv.toString()))*sortDir;
   });
-  curData=s;renderTable(s,!!document.getElementById('sinput').value);
+  curData=s;renderTable(s,true);
 }
 
-function renderTable(data, hasQuery){
+function renderTable(data,hasQuery){
   const empty=document.getElementById('empty');
   const cont=document.getElementById('rcont');
-  if(!hasQuery&&!document.getElementById('ff').value&&!document.getElementById('fp').value&&!document.getElementById('fm').value){
-    empty.style.display='block';cont.style.display='none';return;
-  }
+  if(!hasQuery){empty.style.display='block';cont.style.display='none';return;}
   if(!data.length){
-    empty.innerHTML='<div class="ico">😕</div><h3>Sin resultados</h3><p>Prueba con otro término o ajusta los filtros.</p>';
+    empty.innerHTML='<div class="ico">😕</div><h3>Sin resultados</h3><p>Prueba con otro término.</p>';
     empty.style.display='block';cont.style.display='none';return;
   }
   empty.style.display='none';cont.style.display='block';
   document.getElementById('rshown').textContent=data.length;
-  document.getElementById('rtot').textContent=DB.length;
+  document.getElementById('rtot').textContent=getClientDB().length;
   document.getElementById('tbody').innerHTML=data.map(r=>`
     <tr>
       <td class="tds">${r.soporte}</td>
-      <td class="tdi">${r.impresiones||'—'}</td>
       <td class="tdf">${r.formato||'—'}</td>
       <td class="tdm">${r.medidas||'—'}</td>
       <td class="tdp ${r.precio===0?'tdpz':''}">${r.precio>0?fmtn(r.precio)+' €':'—'}</td>
     </tr>`).join('');
 }
 
-// ═══ DB PANEL ═════════════════════════════════════════════════════════════════
+// ═══ DB PANEL ════════════════════════════════════════════════════════════════
 function toggleAdd(){
   const f=document.getElementById('addform');
   f.classList.toggle('open');
+  document.getElementById('bulk-box').classList.remove('open');
   if(f.classList.contains('open')){
-    document.getElementById('af-sop').value='';
-    document.getElementById('af-fmt').value='';
-    document.getElementById('af-med').value='';
-    document.getElementById('af-imp').value='';
-    document.getElementById('af-pre').value='';
+    ['af-sop','af-fmt','af-med','af-imp','af-pre'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('af-cli').value=activeClient;
   }
+}
+function toggleBulk(){
+  const b=document.getElementById('bulk-box');
+  b.classList.toggle('open');
+  document.getElementById('addform').classList.remove('open');
 }
 function addRec(){
   const sop=document.getElementById('af-sop').value.trim();
   if(!sop){alert('El soporte es obligatorio');return;}
-  DB.push({
+  const arr=getClientDB();
+  arr.push({
     soporte:sop,
-    cliente:document.getElementById('af-cli').value.trim(),
+    cliente:document.getElementById('af-cli').value.trim()||activeClient,
     impresiones:document.getElementById('af-imp').value.trim(),
     formato:document.getElementById('af-fmt').value.trim(),
     medidas:document.getElementById('af-med').value.trim(),
     precio:parseFloat(document.getElementById('af-pre').value)||0
   });
-  saveDB();renderDB();document.getElementById('hrecs').textContent=DB.length;toggleAdd();
+  setClientDB(arr);updateHeader();renderDB();toggleAdd();toast('✓ Registro añadido');
 }
-function delRec(i){if(!confirm('¿Eliminar este registro?'))return;DB.splice(i,1);saveDB();renderDB();document.getElementById('hrecs').textContent=DB.length;}
+function delRec(i){
+  if(!confirm('¿Eliminar este registro?'))return;
+  const arr=getClientDB();arr.splice(i,1);
+  setClientDB(arr);updateHeader();renderDB();toast('Registro eliminado');
+}
 function renderDB(){
-  document.getElementById('dbtot').textContent=DB.length;
-  document.getElementById('dbtbody').innerHTML=DB.map((r,i)=>`
+  const data=getClientDB();
+  document.getElementById('dbtot').textContent=data.length;
+  document.getElementById('dbtbody').innerHTML=data.map((r,i)=>`
     <tr>
       <td style="font-weight:600;font-size:13px">${r.soporte}</td>
       <td style="font-size:12px;color:var(--g500)">${r.cliente}</td>
@@ -678,32 +694,75 @@ function renderDB(){
     </tr>`).join('');
 }
 
-// ═══ OC PANEL ════════════════════════════════════════════════════════════════
-function autoOCNum(){
-  const saved=localStorage.getItem('ap_oc_counter');
-  ocCounter=saved?parseInt(saved)+1:6;
-  // Don't auto-fill, let user write it
+// ═══ BULK UPLOAD ══════════════════════════════════════════════════════════════
+function downloadTemplate(){
+  const csv='Soporte,Cliente,Impresiones,Formato,Medidas,Precio Neto\nElnacional.cat,Diputació de Barcelona,500.000 impressions,Bàner robapàgines doble GIF,300x600 píxels,3865\n';
+  const blob=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='plantilla_tarifas_adsplanning.csv';a.click();
+  toast('✓ Plantilla descargada');
 }
 
+function processBulk(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const text=e.target.result;
+    const lines=text.split('\n').filter(l=>l.trim());
+    if(lines.length<2){toast('El archivo está vacío');return;}
+    const headers=lines[0].split(',').map(h=>h.trim().toLowerCase());
+    const sopIdx=headers.findIndex(h=>h.includes('soport'));
+    const cliIdx=headers.findIndex(h=>h.includes('client'));
+    const impIdx=headers.findIndex(h=>h.includes('impr') || h.includes('peces'));
+    const fmtIdx=headers.findIndex(h=>h.includes('format'));
+    const medIdx=headers.findIndex(h=>h.includes('medi') || h.includes('mida'));
+    const preIdx=headers.findIndex(h=>h.includes('preu') || h.includes('precio') || h.includes('net'));
+    if(sopIdx<0){toast('No se encontró columna "Soporte"');return;}
+    let added=0;
+    const arr=getClientDB();
+    for(let i=1;i<lines.length;i++){
+      const cols=lines[i].split(',');
+      const sop=(cols[sopIdx]||'').trim().replace(/"/g,'');
+      if(!sop)continue;
+      const precio=parseFloat((cols[preIdx]||'0').replace(/[€\s"]/g,'').replace(',','.'))||0;
+      arr.push({
+        soporte:sop,
+        cliente:(cols[cliIdx]||activeClient).trim().replace(/"/g,'')||activeClient,
+        impresiones:(cols[impIdx]||'').trim().replace(/"/g,''),
+        formato:(cols[fmtIdx]||'').trim().replace(/"/g,''),
+        medidas:(cols[medIdx]||'').trim().replace(/"/g,''),
+        precio
+      });
+      added++;
+    }
+    setClientDB(arr);updateHeader();renderDB();
+    document.getElementById('bulk-box').classList.remove('open');
+    input.value='';
+    toast(`✓ ${added} registros importados`);
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+// ═══ OC PANEL ════════════════════════════════════════════════════════════════
 function addLine(){
-  const id=Date.now();
-  ocLines.push({id});
-  renderLines();
+  const id=Date.now()+Math.random();
+  ocLines.push({id});renderLines();
 }
 function removeLine(id){
-  ocLines=ocLines.filter(l=>l.id!==id);
-  renderLines();
+  ocLines=ocLines.filter(l=>l.id!==id);renderLines();previewOC();
 }
 function renderLines(){
-  document.getElementById('lines-cont').innerHTML=ocLines.map(l=>`
-    <div class="line-row" id="line-${l.id}">
-      <input placeholder="Soporte / web" id="ls-${l.id}"/>
-      <input placeholder="Formato" id="lf-${l.id}"/>
-      <input placeholder="dd/mm/aa" id="li-${l.id}"/>
-      <input placeholder="dd/mm/aa" id="le-${l.id}"/>
-      <input type="number" placeholder="0.00" id="lp-${l.id}" oninput="calcOCTotals()"/>
-      <button class="bdel" onclick="removeLine(${l.id})">✕</button>
-    </div>`).join('');
+  document.getElementById('lines-tbody').innerHTML=ocLines.map(l=>`
+    <tr>
+      <td><input class="li wide" placeholder="Soporte / web" id="ls-${l.id}" oninput="previewOC()"/></td>
+      <td><input class="li med" placeholder="Formato" id="lf-${l.id}" oninput="previewOC()"/></td>
+      <td><input class="li narrow" placeholder="20/04/2026" id="li-${l.id}" oninput="previewOC()"/></td>
+      <td><input class="li narrow" placeholder="18/10/2026" id="le-${l.id}" oninput="previewOC()"/></td>
+      <td><input class="li med" placeholder="500.000 impr." id="lin-${l.id}" oninput="previewOC()"/></td>
+      <td><input class="li price" type="number" placeholder="0.00" id="lp-${l.id}" oninput="previewOC()"/></td>
+      <td><button class="bdel" onclick="removeLine(${l.id})">✕</button></td>
+    </tr>`).join('');
 }
 
 function getLines(){
@@ -712,18 +771,12 @@ function getLines(){
     formato:document.getElementById('lf-'+l.id)?.value||'',
     inicio:document.getElementById('li-'+l.id)?.value||'',
     fin:document.getElementById('le-'+l.id)?.value||'',
+    inserciones:document.getElementById('lin-'+l.id)?.value||'',
     neto:parseFloat(document.getElementById('lp-'+l.id)?.value)||0
   })).filter(l=>l.soporte||l.neto);
 }
 
-function calcOCTotals(){
-  const lines=getLines();
-  const neto=lines.reduce((a,b)=>a+b.neto,0);
-  const iva=neto*0.21;
-  return{neto,iva,total:neto+iva};
-}
-
-function generateOC(){
+function previewOC(){
   const num=document.getElementById('oc-num').value.trim();
   const anun=document.getElementById('oc-anun').value.trim();
   const excl=document.getElementById('oc-excl').value.trim();
@@ -732,68 +785,53 @@ function generateOC(){
   const cif=document.getElementById('oc-cif').value.trim();
   const cond=document.getElementById('oc-cond').value.trim();
   const email=document.getElementById('oc-email').value.trim();
-  if(!num||!anun||!excl){alert('Rellena Nº OC, Anunciante y Exclusivista');return;}
-
+  if(!num&&!anun&&!excl)return;
   const lines=getLines();
-  const{neto,iva,total}=calcOCTotals();
+  const neto=lines.reduce((a,b)=>a+b.neto,0);
+  const iva=neto*0.21;
+  const total=neto+iva;
   const today=new Date().toLocaleDateString('es-ES');
-
-  const rowsHTML=lines.length?lines.map(l=>`
-    <tr>
-      <td>${l.soporte}</td>
-      <td>${l.formato}</td>
-      <td>${l.inicio}</td>
-      <td>${l.fin}</td>
-      <td style="text-align:right">${fmtn(l.neto)} €</td>
-      <td style="text-align:right">${fmtn(l.neto*0.21)} €</td>
-      <td style="text-align:right">${fmtn(l.neto*1.21)} €</td>
-    </tr>`).join(''):`<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:20px">Sin líneas añadidas</td></tr>`;
-
+  const rowsHTML=lines.length?lines.map(l=>`<tr>
+    <td>${l.soporte}</td><td>${l.formato}</td><td>${l.inicio}</td><td>${l.fin}</td>
+    <td>${l.inserciones}</td>
+    <td style="text-align:right">${fmtn(l.neto)} €</td>
+    <td style="text-align:right">${fmtn(l.neto*0.21)} €</td>
+    <td style="text-align:right">${fmtn(l.neto*1.21)} €</td>
+  </tr>`).join(''):`<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:16px">Añade líneas de inserción abajo</td></tr>`;
   document.getElementById('oc-doc').innerHTML=`
     <div class="oc-hdr-block">
-      <div class="oc-company">
-        <strong>${ute}</strong>
-        ${dir}<br>
-        Condiciones de pago: ${cond}.<br>
-        CIF: ${cif} &nbsp;·&nbsp; Enviar a: ${email}
-      </div>
-      <div class="oc-meta-right">
-        <div style="font-size:9px;color:var(--g500);margin-bottom:2px">Fecha: ${today}</div>
-        <div class="oc-num">Nº ORDEN DE COMPRA: ${num}</div>
-      </div>
+      <div class="oc-company"><strong>${ute}</strong>${dir}<br>Cond. pago: ${cond}<br>CIF: ${cif} · ${email}</div>
+      <div class="oc-meta-right"><div style="font-size:8px;margin-bottom:2px">Fecha: ${today}</div><div class="oc-num">Nº OC: ${num}</div></div>
     </div>
     <div class="oc-mid">
-      <div class="oc-mid-item"><label>Anunciante</label><span>${anun}</span></div>
-      <div class="oc-mid-item"><label>Exclusivista</label><span>${excl}</span></div>
-      <div class="oc-mid-item"><label>Nº OC</label><span>${num}</span></div>
+      <div class="oc-mid-item"><label>Anunciante</label><span>${anun||'—'}</span></div>
+      <div class="oc-mid-item"><label>Exclusivista</label><span>${excl||'—'}</span></div>
+      <div class="oc-mid-item"><label>Nº OC</label><span>${num||'—'}</span></div>
     </div>
-    <table class="oc-table">
-      <thead><tr>
-        <th>Soporte</th><th>Formato</th><th>Fecha inicio</th><th>Fecha fin</th>
-        <th style="text-align:right">Neto</th><th style="text-align:right">IVA</th><th style="text-align:right">Total</th>
-      </tr></thead>
-      <tbody>${rowsHTML}</tbody>
-    </table>
-    <div class="oc-totals">
-      <div class="oc-totals-box">
-        <div class="oc-tot-row"><span>Neto</span><span>${fmtn(neto)} €</span></div>
-        <div class="oc-tot-row"><span>IVA (21%)</span><span>${fmtn(iva)} €</span></div>
-        <div class="oc-tot-row"><span>TOTAL</span><span>${fmtn(total)} €</span></div>
-      </div>
-    </div>
+    <table class="oc-table"><thead><tr>
+      <th>Soporte</th><th>Formato</th><th>F.Inicio</th><th>F.Fin</th><th>Inserciones</th>
+      <th style="text-align:right">Neto</th><th style="text-align:right">IVA</th><th style="text-align:right">Total</th>
+    </tr></thead><tbody>${rowsHTML}</tbody></table>
+    <div class="oc-totals"><div class="oc-totals-box">
+      <div class="oc-tot-row"><span>Neto</span><span>${fmtn(neto)} €</span></div>
+      <div class="oc-tot-row"><span>IVA (21%)</span><span>${fmtn(iva)} €</span></div>
+      <div class="oc-tot-row"><span>TOTAL</span><span>${fmtn(total)} €</span></div>
+    </div></div>
     <div class="oc-foot">
-      <div class="oc-cond">Condiciones de pago: ${cond}<br>Email facturas: ${email}</div>
+      <div class="oc-cond">Cond. pago: ${cond}<br>Email: ${email}</div>
       <div class="oc-sign"><div class="oc-sign-line"></div>FDO. ${excl}</div>
     </div>`;
-
-  // Save counter
-  localStorage.setItem('ap_oc_counter', parseInt(num.replace(/\D/g,''))||ocCounter);
-
-  // Print to PDF
-  setTimeout(()=>window.print(), 300);
 }
 
-// Enter search
+function generateOC(){
+  const num=document.getElementById('oc-num').value.trim();
+  const anun=document.getElementById('oc-anun').value.trim();
+  const excl=document.getElementById('oc-excl').value.trim();
+  if(!num||!anun||!excl){alert('Rellena Nº OC, Anunciante y Exclusivista');return;}
+  previewOC();
+  setTimeout(()=>window.print(),300);
+}
+
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&document.activeElement.id==='sinput')liveSearch();
 });
