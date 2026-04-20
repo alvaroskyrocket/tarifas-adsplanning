@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ADSPLANNING · Gestión de Campañas</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --red:#E8222A;--red-d:#c41920;--red-l:#fef2f2;
   --g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;
   --g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
-  --white:#fff;
+  --white:#fff;--blue:#2563eb;--blue-l:#eff6ff;
 }
 body{font-family:'Outfit',sans-serif;background:var(--g50);color:var(--g900);min-height:100vh;display:flex;flex-direction:column;font-size:15px}
 
@@ -25,11 +26,14 @@ header{background:var(--white);border-bottom:1px solid var(--g200);padding:0 24p
 .hright{display:flex;align-items:center;gap:8px}
 .pill{background:var(--g100);border:1px solid var(--g200);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--g500)}
 .pill strong{color:var(--g900)}
+.client-switcher{display:flex;align-items:center;gap:6px;background:var(--white);border:1.5px solid var(--g200);border-radius:8px;padding:4px 8px}
+.client-switcher label{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.client-switcher select{border:none;background:transparent;font-size:13px;font-weight:600;color:var(--g900);font-family:'Outfit',sans-serif;cursor:pointer;outline:none}
 
-/* CLIENT SWITCHER */
-.client-switcher{display:flex;align-items:center;gap:6px;background:var(--white);border:1.5px solid var(--g200);border-radius:8px;padding:4px 6px}
-.client-switcher label{font-size:11px;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-.client-switcher select{border:none;background:transparent;font-size:13px;font-weight:600;color:var(--g900);font-family:'Outfit',sans-serif;cursor:pointer;outline:none;padding-right:4px}
+/* TIPO BADGES */
+.badge{display:inline-block;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+.badge-cpm{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.badge-fix{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
 
 /* TABS */
 .tabs{background:var(--white);border-bottom:1px solid var(--g200);padding:0 24px;display:flex;gap:0;overflow-x:auto}
@@ -42,24 +46,22 @@ header{background:var(--white);border-bottom:1px solid var(--g200);padding:0 24p
 .panel{display:none;flex:1;flex-direction:column}
 .panel.active{display:flex}
 
-/* SEARCH HERO */
+/* SEARCH */
 .s-hero{background:var(--white);border-bottom:1px solid var(--g200);padding:20px 24px}
 .s-hero h1{font-size:20px;font-weight:700;letter-spacing:-.4px;margin-bottom:3px}
 .s-hero h1 span{color:var(--red)}
 .s-hero p{color:var(--g500);font-size:13px;margin-bottom:16px}
 .srow{display:flex;gap:10px;max-width:680px}
 .swrap{flex:1;position:relative}
-.swrap::before{content:'⌕';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:17px;pointer-events:none}
+.swrap::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:17px;pointer-events:none}
 .swrap input{width:100%;border:1.5px solid var(--g200);border-radius:10px;padding:10px 12px 10px 36px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
 .swrap input:focus{border-color:var(--red)}
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .chip{background:var(--white);border:1px solid var(--g200);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--g600);cursor:pointer;transition:all .15s;font-weight:500}
 .chip:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
-
 .slayout{display:flex;flex:1;overflow:hidden}
 .sidebar{width:220px;min-width:220px;border-right:1px solid var(--g200);background:var(--white);padding:16px;overflow-y:auto}
 .rarea{flex:1;padding:20px 24px;overflow-y:auto;background:var(--g50)}
-
 .ss{margin-bottom:20px}
 .stitle{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--g400);margin-bottom:9px}
 .si{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--g100);font-size:13px}
@@ -67,7 +69,7 @@ header{background:var(--white);border-bottom:1px solid var(--g200);padding:0 24p
 .sv{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red);font-weight:500}
 .fl{font-size:12px;color:var(--g600);margin-bottom:5px;font-weight:500}
 .fg{margin-bottom:11px}
-select{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:7px 10px;font-size:12.5px;color:var(--g900);font-family:'Outfit',sans-serif;outline:none;background:var(--white);cursor:pointer;transition:border-color .15s}
+select{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:7px 10px;font-size:12.5px;color:var(--g900);font-family:'Outfit',sans-serif;outline:none;background:var(--white);cursor:pointer}
 select:focus{border-color:var(--red)}
 .bghost{width:100%;background:var(--white);border:1.5px solid var(--g200);border-radius:8px;padding:8px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--g600);transition:all .15s;margin-bottom:7px}
 .bghost:hover{border-color:var(--g400);color:var(--g900)}
@@ -81,16 +83,14 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 thead{background:var(--g50);border-bottom:1px solid var(--g200)}
 th{padding:10px 13px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--g500);white-space:nowrap;cursor:pointer;user-select:none}
 th:hover{color:var(--g900)}
-td{padding:10px 13px;border-bottom:1px solid var(--g100);vertical-align:top;line-height:1.4;color:var(--g700)}
+td{padding:10px 13px;border-bottom:1px solid var(--g100);vertical-align:middle;color:var(--g700)}
 tr:last-child td{border-bottom:none}
 tbody tr:hover{background:var(--g50)}
 .tds{font-weight:600;color:var(--g900);max-width:190px}
 .tdf{color:var(--g500);font-size:12px;max-width:240px}
-.tdm{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);white-space:nowrap}
-.tdi{font-size:12px;color:var(--g500);max-width:150px}
+.tdm{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);white-space:nowrap}
 .tdp{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--g900);text-align:right;white-space:nowrap}
 .tdpz{color:var(--g300)}
-
 #empty{text-align:center;padding:70px 40px;color:var(--g400)}
 #empty .ico{font-size:40px;margin-bottom:12px;opacity:.4}
 #empty h3{font-size:16px;font-weight:600;color:var(--g600);margin-bottom:5px}
@@ -107,22 +107,19 @@ tbody tr:hover{background:var(--g50)}
 .btn-outline:hover{border-color:var(--g600);color:var(--g900)}
 .dbinfo{font-size:12.5px;color:var(--g500);margin-bottom:12px}
 .dbinfo strong{color:var(--g900)}
-
-/* BULK UPLOAD BOX */
 .bulk-box{background:var(--white);border:1.5px dashed var(--g300);border-radius:10px;padding:20px;margin-bottom:16px;display:none;text-align:center}
 .bulk-box.open{display:block}
 .bulk-box p{font-size:13px;color:var(--g500);margin-bottom:12px;line-height:1.6}
 .bulk-box p strong{color:var(--g900)}
 .bulk-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .bulk-note{font-size:11.5px;color:var(--g400);margin-top:10px}
-
 .addform{background:var(--white);border:1.5px solid var(--g200);border-radius:10px;padding:20px;margin-bottom:16px;display:none;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .addform.open{display:block}
 .fgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:13px}
 @media(max-width:700px){.fgrid{grid-template-columns:1fr 1fr}}
 .ff label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--g500);margin-bottom:4px}
-.ff input,.ff textarea{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:8px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
-.ff input:focus,.ff textarea:focus{border-color:var(--red)}
+.ff input,.ff textarea,.ff select{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:8px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
+.ff input:focus,.ff textarea:focus,.ff select:focus{border-color:var(--red)}
 .ff textarea{resize:vertical;min-height:54px}
 .factions{display:flex;gap:10px;justify-content:flex-end}
 .bsave{background:var(--red);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif}
@@ -130,65 +127,75 @@ tbody tr:hover{background:var(--g50)}
 .bdel{background:none;border:none;color:var(--g300);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:5px;transition:all .15s}
 .bdel:hover{color:var(--red);background:var(--red-l)}
 
-/* OC PANEL - new layout */
+/* OC PANEL */
 .oc-outer{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.oc-top{display:grid;grid-template-columns:380px 1fr;flex:1;overflow:hidden}
+.oc-top{display:grid;grid-template-columns:360px 1fr;flex:1;overflow:hidden;min-height:0}
 @media(max-width:900px){.oc-top{grid-template-columns:1fr;overflow:visible}}
 .oc-form-col{border-right:1px solid var(--g200);background:var(--white);padding:20px;overflow-y:auto}
-.oc-preview-col{background:var(--g50);padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
-.oc-preview-col h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g400)}
-.oc-bottom{border-top:1px solid var(--g200);background:var(--white);padding:16px 24px}
-.oc-bottom h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g500);margin-bottom:10px}
-
-.fsec{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--g100)}
+.oc-preview-col{background:var(--g50);padding:20px;overflow-y:auto}
+.oc-preview-col h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g400);margin-bottom:12px}
+.oc-bottom{border-top:1px solid var(--g200);background:var(--white);padding:16px 20px;max-height:280px;overflow-y:auto}
+.oc-bottom-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+.oc-bottom-hdr h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g500)}
+.oc-bottom-actions{display:flex;gap:8px;align-items:center}
+.fsec{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--g100)}
 .fsec:last-of-type{border-bottom:none}
-.fsec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g400);margin-bottom:9px}
-.frow{display:grid;gap:9px;margin-bottom:9px}
+.fsec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g400);margin-bottom:8px}
+.frow{display:grid;gap:8px;margin-bottom:8px}
 .frow.col2{grid-template-columns:1fr 1fr}
-.frow.col3{grid-template-columns:1fr 1fr 1fr}
 .frow.col1{grid-template-columns:1fr}
 .fl2{display:block;font-size:11px;font-weight:600;color:var(--g600);margin-bottom:4px}
-.fi{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:9px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
+.fi{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:8px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
 .fi:focus{border-color:var(--red)}
 .bgen{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s;margin-top:4px}
 .bgen:hover{background:var(--red-d)}
 
-/* OC LINES - horizontal table in bottom bar */
-.lines-table{width:100%;border-collapse:collapse;font-size:12.5px}
-.lines-table th{padding:7px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500);background:var(--g50);border-bottom:1px solid var(--g200)}
-.lines-table td{padding:5px 6px;border-bottom:1px solid var(--g100)}
+/* COLUMN MANAGER */
+.col-manager{background:var(--g50);border:1px solid var(--g200);border-radius:8px;padding:12px;margin-bottom:12px;display:none}
+.col-manager.open{display:block}
+.col-manager-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--g500);margin-bottom:10px}
+.col-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.col-tag{display:flex;align-items:center;gap:4px;background:var(--white);border:1.5px solid var(--g200);border-radius:6px;padding:4px 8px;font-size:12px;font-weight:500;cursor:grab;user-select:none;transition:border-color .15s}
+.col-tag.dragging{opacity:.4;border-style:dashed}
+.col-tag.drag-over{border-color:var(--red)}
+.col-tag-del{color:var(--g400);cursor:pointer;font-size:13px;line-height:1;padding:0 2px}
+.col-tag-del:hover{color:var(--red)}
+.col-tag-handle{color:var(--g400);font-size:12px;cursor:grab}
+.col-add-row{display:flex;gap:8px;align-items:center}
+.col-add-input{flex:1;border:1.5px solid var(--g200);border-radius:8px;padding:7px 10px;font-size:13px;font-family:'Outfit',sans-serif;outline:none}
+.col-add-input:focus{border-color:var(--red)}
+.col-add-btn{background:var(--g900);color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap}
+
+/* OC LINES TABLE */
+.lines-table-wrap{overflow-x:auto}
+.lines-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:600px}
+.lines-table th{padding:7px 8px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500);background:var(--g50);border-bottom:1px solid var(--g200);white-space:nowrap}
+.lines-table td{padding:4px 6px;border-bottom:1px solid var(--g100);vertical-align:middle}
 .lines-table tr:last-child td{border-bottom:none}
 .li{width:100%;border:1px solid var(--g200);border-radius:6px;padding:6px 8px;font-size:12px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;background:var(--white)}
 .li:focus{border-color:var(--red)}
-.li.wide{min-width:180px}
-.li.med{min-width:120px}
-.li.narrow{width:100px}
-.li.price{width:90px;text-align:right}
-.badd-line{margin-top:10px;background:var(--g50);border:1.5px dashed var(--g300);border-radius:8px;padding:7px 16px;font-size:12.5px;color:var(--g500);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
-.badd-line:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
 
 /* OC DOC PREVIEW */
-.oc-doc{background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:32px;font-size:11px;line-height:1.5;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.oc-hdr-block{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--g900)}
+.oc-doc{background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:28px;font-size:11px;line-height:1.5;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.oc-hdr-block{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--g900)}
 .oc-company{font-size:9px;color:var(--g500);line-height:1.7}
 .oc-company strong{font-size:10px;color:var(--g900);display:block;margin-bottom:2px}
 .oc-meta-right{text-align:right;font-size:9px;color:var(--g500)}
 .oc-num{font-size:12px;font-weight:700;color:var(--g900)}
-.oc-mid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;padding:10px;background:var(--g50);border-radius:7px}
+.oc-mid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;padding:10px;background:var(--g50);border-radius:7px}
 .oc-mid-item label{display:block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:2px}
 .oc-mid-item span{font-size:10px;font-weight:600;color:var(--g900)}
-.oc-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:10px}
+.oc-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:10px}
 .oc-table th{padding:7px 8px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--g900);color:var(--white)}
-.oc-table th:last-child,.oc-table td:last-child{text-align:right}
 .oc-table td{padding:7px 8px;border-bottom:1px solid var(--g100);vertical-align:top}
-.oc-totals{display:flex;justify-content:flex-end;margin-bottom:20px}
+.oc-totals{display:flex;justify-content:flex-end;margin-bottom:16px}
 .oc-totals-box{border:1px solid var(--g200);border-radius:7px;overflow:hidden;min-width:180px}
 .oc-tot-row{display:flex;justify-content:space-between;padding:6px 10px;font-size:10px;border-bottom:1px solid var(--g100)}
 .oc-tot-row:last-child{border-bottom:none;background:var(--g900);color:var(--white);font-weight:700;font-size:11px}
-.oc-foot{display:flex;justify-content:space-between;align-items:flex-end;padding-top:12px;border-top:1px solid var(--g200)}
+.oc-foot{display:flex;justify-content:space-between;align-items:flex-end;padding-top:10px;border-top:1px solid var(--g200)}
 .oc-cond{font-size:8px;color:var(--g500);line-height:1.7}
 .oc-sign{text-align:right;font-size:8px;color:var(--g500)}
-.oc-sign-line{width:100px;border-top:1px solid var(--g400);margin-left:auto;margin-bottom:3px;margin-top:20px}
+.oc-sign-line{width:100px;border-top:1px solid var(--g400);margin-left:auto;margin-bottom:3px;margin-top:18px}
 
 /* MOCK */
 .mock-panel{flex:1;display:flex;align-items:center;justify-content:center;background:var(--g50);padding:40px}
@@ -199,7 +206,24 @@ tbody tr:hover{background:var(--g50)}
 .mock-tag{display:inline-block;background:var(--red-l);color:var(--red);border:1px solid #fecaca;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600}
 .mock-features{text-align:left;margin-top:14px;display:flex;flex-direction:column;gap:7px}
 .mock-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--g600)}
-.mock-feat::before{content:'→';color:var(--red);font-weight:700}
+.mock-feat::before{content:"→";color:var(--red);font-weight:700}
+
+/* INLINE EDIT */
+.db-row-editing{background:#fffbeb !important}
+.db-row-editing:hover{background:#fffbeb !important}
+.ei{width:100%;border:1.5px solid var(--g300);border-radius:6px;padding:5px 8px;font-size:12.5px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;background:var(--white);min-width:80px}
+.ei:focus{border-color:var(--red)}
+.ei-price{text-align:right;max-width:90px}
+.bedit{background:none;border:none;color:var(--g400);cursor:pointer;font-size:14px;padding:4px 6px;border-radius:5px;transition:all .15s}
+.bedit:hover{color:var(--blue);background:var(--blue-l)}
+.bsave-row{background:#16a34a;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:13px;cursor:pointer;font-weight:600;font-family:'Outfit',sans-serif;transition:background .15s}
+.bsave-row:hover{background:#15803d}
+.bcancel-row{background:var(--white);border:1.5px solid var(--g200);color:var(--g600);border-radius:5px;padding:4px 9px;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;margin-left:4px}
+.bcancel-row:hover{border-color:var(--g400)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--g900);color:#fff;border-radius:10px;padding:12px 18px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
 
 /* PRINT */
 @media print{
@@ -208,10 +232,6 @@ tbody tr:hover{background:var(--g50)}
   #oc-printable{position:fixed;top:0;left:0;width:100%;padding:30px;background:white}
   .oc-doc{box-shadow:none;border:none}
 }
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--g900);color:#fff;border-radius:10px;padding:12px 18px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
-.toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -248,16 +268,16 @@ tbody tr:hover{background:var(--g50)}
 <div class="panel active" id="panel-search">
   <div class="s-hero">
     <h1>Buscador de <span>tarifas</span></h1>
-    <p id="search-subtitle">Busca por soporte, formato o medidas. Filtrando por cliente activo.</p>
+    <p id="search-subtitle">Busca por soporte, formato o medidas.</p>
     <div class="srow">
       <div class="swrap"><input type="text" id="sinput" placeholder="Escribe soporte, formato o medidas..." oninput="liveSearch()"/></div>
     </div>
     <div class="chips">
       <div class="chip" onclick="qs('300x600')">300x600</div>
-      <div class="chip" onclick="qs('branded content')">Branded Content</div>
-      <div class="chip" onclick="qs('video')">Vídeo</div>
       <div class="chip" onclick="qs('robadoble')">Robadoble</div>
       <div class="chip" onclick="qs('billboard')">Billboard</div>
+      <div class="chip" onclick="qs('branded content')">Branded Content</div>
+      <div class="chip" onclick="qs('video')">Vídeo</div>
       <div class="chip" onclick="qs('redaccional')">Redaccional</div>
       <div class="chip" onclick="qs('newsletter')">Newsletter</div>
     </div>
@@ -273,6 +293,13 @@ tbody tr:hover{background:var(--g50)}
       </div>
       <div class="ss">
         <div class="stitle">Filtros</div>
+        <div class="fg"><div class="fl">Tipo de tarifa</div>
+          <select id="ft" onchange="liveSearch()">
+            <option value="">Todos</option>
+            <option value="CPM">CPM</option>
+            <option value="Coste Fijo">Coste Fijo</option>
+          </select>
+        </div>
         <div class="fg"><div class="fl">Precio neto</div>
           <select id="fp" onchange="liveSearch()">
             <option value="">Todos</option>
@@ -294,6 +321,7 @@ tbody tr:hover{background:var(--g50)}
         <div class="tw"><table>
           <thead><tr>
             <th onclick="srt('soporte')">Soporte ↕</th>
+            <th>Tipo</th>
             <th onclick="srt('formato')">Formato ↕</th>
             <th onclick="srt('medidas')">Medidas ↕</th>
             <th onclick="srt('precio')">Precio NET ↕</th>
@@ -311,30 +339,31 @@ tbody tr:hover{background:var(--g50)}
     <div class="dbtop">
       <h2>Base de datos de tarifas</h2>
       <div class="dbtop-actions">
-        <button class="btn-outline" onclick="toggleBulk()">⬆ Carga masiva (Excel)</button>
+        <button class="btn-outline" onclick="toggleBulk()">⬆ Importar Excel</button>
         <button class="btn-outline" onclick="downloadTemplate()">⬇ Descargar plantilla</button>
         <button class="btn-red" onclick="toggleAdd()">+ Añadir registro</button>
       </div>
     </div>
-    <div class="dbinfo">Cliente activo: <strong id="db-client">—</strong> · Total: <strong id="dbtot">0</strong> registros</div>
+    <div class="dbinfo">Cliente: <strong id="db-client">—</strong> · Total: <strong id="dbtot">0</strong> registros</div>
 
-    <!-- BULK UPLOAD -->
     <div class="bulk-box" id="bulk-box">
-      <p><strong>Carga masiva desde Excel</strong><br>Descarga la plantilla, rellénala y súbela aquí. Las columnas deben ser:<br>Soporte · Cliente · Impresiones · Formato · Medidas · Precio Neto</p>
+      <p><strong>Importar desde Excel</strong><br>Descarga la plantilla .xlsx, rellénala y súbela aquí.<br>Columnas requeridas: Soporte · Cliente · Impresiones · Tipo · Formato · Medidas · Precio Neto</p>
       <div class="bulk-actions">
         <label style="cursor:pointer">
           <input type="file" id="bulk-file" accept=".xlsx,.csv" style="display:none" onchange="processBulk(this)"/>
-          <span class="btn-red" onclick="document.getElementById('bulk-file').click()">Seleccionar archivo Excel</span>
+          <span class="btn-red" style="padding:9px 16px;display:inline-block" onclick="document.getElementById('bulk-file').click()">Seleccionar archivo</span>
         </label>
       </div>
-      <div class="bulk-note">Los registros se añadirán a los existentes sin borrar nada. Formato soportado: .xlsx y .csv</div>
+      <div class="bulk-note">Los registros se añaden sin borrar los existentes · Formatos: .xlsx y .csv</div>
     </div>
 
-    <!-- ADD FORM -->
     <div class="addform" id="addform">
       <div class="fgrid">
         <div class="ff"><label>Soporte *</label><input id="af-sop" placeholder="elnacional.cat"/></div>
         <div class="ff"><label>Cliente *</label><input id="af-cli"/></div>
+        <div class="ff"><label>Tipo</label>
+          <select id="af-tipo"><option value="Coste Fijo">Coste Fijo</option><option value="CPM">CPM</option></select>
+        </div>
         <div class="ff"><label>Precio Neto (€)</label><input id="af-pre" type="number" placeholder="0"/></div>
         <div class="ff" style="grid-column:1/3"><label>Formato</label><textarea id="af-fmt" placeholder="Bàner robapàgines doble GIF animat..."></textarea></div>
         <div class="ff"><label>Medidas</label><input id="af-med" placeholder="300 x 600 píxels"/></div>
@@ -347,7 +376,7 @@ tbody tr:hover{background:var(--g50)}
     </div>
 
     <div class="tw"><table>
-      <thead><tr><th>Soporte</th><th>Cliente</th><th>Formato</th><th>Medidas</th><th style="text-align:right">Precio NET</th><th></th></tr></thead>
+      <thead><tr><th>Soporte</th><th>Cliente</th><th>Tipo</th><th>Formato</th><th>Medidas</th><th style="text-align:right">Precio NET</th><th></th></tr></thead>
       <tbody id="dbtbody"></tbody>
     </table></div>
   </div>
@@ -357,11 +386,9 @@ tbody tr:hover{background:var(--g50)}
 <div class="panel" id="panel-oc">
   <div class="oc-outer">
     <div class="oc-top">
-      <!-- FORM -->
       <div class="oc-form-col">
         <div style="font-size:16px;font-weight:700;margin-bottom:3px;letter-spacing:-.3px">Crear Orden de Compra</div>
-        <div style="font-size:12.5px;color:var(--g500);margin-bottom:16px">Rellena los datos y genera el PDF.</div>
-
+        <div style="font-size:12px;color:var(--g500);margin-bottom:14px">Rellena los datos y genera el PDF.</div>
         <div class="fsec">
           <div class="fsec-title">Identificación</div>
           <div class="frow col2">
@@ -372,7 +399,6 @@ tbody tr:hover{background:var(--g50)}
             <div><label class="fl2">Exclusivista / Medio *</label><input class="fi" id="oc-excl" placeholder="Lavanguardia" oninput="previewOC()"/></div>
           </div>
         </div>
-
         <div class="fsec">
           <div class="fsec-title">Cabecera UTE</div>
           <div class="frow col1"><div><label class="fl2">Nombre UTE</label><input class="fi" id="oc-ute" value="DIPUTACIO - INFINITY MEDIA COMMUNICATIONS SLU - ADSPLANNING SL" oninput="previewOC()"/></div></div>
@@ -385,11 +411,9 @@ tbody tr:hover{background:var(--g50)}
             <div><label class="fl2">Email facturas</label><input class="fi" id="oc-email" value="facturas.ute@andbeyond.es" oninput="previewOC()"/></div>
           </div>
         </div>
-
         <button class="bgen" onclick="generateOC()">📥 Descargar PDF</button>
       </div>
 
-      <!-- PREVIEW -->
       <div class="oc-preview-col">
         <h3>Vista previa del documento</h3>
         <div id="oc-printable">
@@ -403,23 +427,29 @@ tbody tr:hover{background:var(--g50)}
       </div>
     </div>
 
-    <!-- LINES - bottom bar -->
+    <!-- LINES BOTTOM -->
     <div class="oc-bottom">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="oc-bottom-hdr">
         <h4>Líneas de inserción</h4>
-        <button class="badd-line" onclick="addLine()">+ Añadir línea</button>
+        <div class="oc-bottom-actions">
+          <button class="btn-outline" style="font-size:12px;padding:6px 12px" onclick="toggleColManager()">⚙ Gestionar columnas</button>
+          <button class="btn-outline" style="font-size:12px;padding:6px 12px" onclick="addLine()">+ Añadir línea</button>
+        </div>
       </div>
-      <div style="overflow-x:auto">
-        <table class="lines-table">
-          <thead><tr>
-            <th style="min-width:200px">Soporte</th>
-            <th style="min-width:160px">Formato</th>
-            <th style="width:100px">F. Inicio</th>
-            <th style="width:100px">F. Fin</th>
-            <th style="width:120px">Inserciones</th>
-            <th style="width:100px">Neto €</th>
-            <th style="width:30px"></th>
-          </tr></thead>
+
+      <!-- COLUMN MANAGER -->
+      <div class="col-manager" id="col-manager">
+        <div class="col-manager-title">Columnas activas (arrastra para reordenar, × para eliminar)</div>
+        <div class="col-tags" id="col-tags"></div>
+        <div class="col-add-row">
+          <input class="col-add-input" id="col-new-name" placeholder="Nombre de nueva columna..." onkeydown="if(event.key==='Enter')addColumn()"/>
+          <button class="col-add-btn" onclick="addColumn()">+ Añadir columna</button>
+        </div>
+      </div>
+
+      <div class="lines-table-wrap">
+        <table class="lines-table" id="lines-table">
+          <thead id="lines-thead"></thead>
           <tbody id="lines-tbody"></tbody>
         </table>
       </div>
@@ -428,118 +458,121 @@ tbody tr:hover{background:var(--g50)}
 </div>
 
 <!-- MOCK PANELS -->
-<div class="panel" id="panel-dash">
-  <div class="mock-panel"><div class="mock-card">
-    <div class="mock-ico">📊</div><h2>Dashboard de campañas</h2>
-    <p>Vista centralizada de todas las campañas activas, presupuestos ejecutados, KPIs por cliente y estado de cada inserción.</p>
-    <div class="mock-tag">En desarrollo · Próximamente</div>
-    <div class="mock-features">
-      <div class="mock-feat">Resumen de inversión por cliente</div>
-      <div class="mock-feat">Estado de campañas activas / pausadas</div>
-      <div class="mock-feat">OCs generadas vs. pendientes</div>
-      <div class="mock-feat">Alertas de vencimiento</div>
-    </div>
-  </div></div>
-</div>
-<div class="panel" id="panel-cal">
-  <div class="mock-panel"><div class="mock-card">
-    <div class="mock-ico">📅</div><h2>Calendario interactivo</h2>
-    <p>Visualiza todas las inserciones calendarizadas por cliente con fechas de inicio y fin y alertas automáticas.</p>
-    <div class="mock-tag">En desarrollo · Próximamente</div>
-    <div class="mock-features">
-      <div class="mock-feat">Vista mensual y semanal de campañas</div>
-      <div class="mock-feat">Filtro por cliente y soporte</div>
-      <div class="mock-feat">Alertas de inicio y fin</div>
-      <div class="mock-feat">Exportar a Google Calendar</div>
-    </div>
-  </div></div>
-</div>
-<div class="panel" id="panel-seg">
-  <div class="mock-panel"><div class="mock-card">
-    <div class="mock-ico">📈</div><h2>Seguimientos</h2>
-    <p>Registro de seguimiento por campaña y cliente. Control de entregables, notas internas y estado de cada acción.</p>
-    <div class="mock-tag">En desarrollo · Próximamente</div>
-    <div class="mock-features">
-      <div class="mock-feat">Historial de comunicaciones</div>
-      <div class="mock-feat">Estado de entregables</div>
-      <div class="mock-feat">Notas internas por campaña</div>
-      <div class="mock-feat">Exportar informe</div>
-    </div>
-  </div></div>
-</div>
+<div class="panel" id="panel-dash"><div class="mock-panel"><div class="mock-card">
+  <div class="mock-ico">📊</div><h2>Dashboard de campañas</h2>
+  <p>Vista centralizada de todas las campañas activas, presupuestos ejecutados, KPIs por cliente y estado de cada inserción.</p>
+  <div class="mock-tag">En desarrollo · Próximamente</div>
+  <div class="mock-features">
+    <div class="mock-feat">Resumen de inversión por cliente</div>
+    <div class="mock-feat">Estado de campañas activas / pausadas</div>
+    <div class="mock-feat">OCs generadas vs. pendientes</div>
+    <div class="mock-feat">Alertas de vencimiento</div>
+  </div>
+</div></div></div>
+<div class="panel" id="panel-cal"><div class="mock-panel"><div class="mock-card">
+  <div class="mock-ico">📅</div><h2>Calendario interactivo</h2>
+  <p>Visualiza todas las inserciones calendarizadas por cliente con fechas de inicio y fin y alertas automáticas.</p>
+  <div class="mock-tag">En desarrollo · Próximamente</div>
+  <div class="mock-features">
+    <div class="mock-feat">Vista mensual y semanal de campañas</div>
+    <div class="mock-feat">Filtro por cliente y soporte</div>
+    <div class="mock-feat">Alertas de inicio y fin</div>
+    <div class="mock-feat">Exportar a Google Calendar</div>
+  </div>
+</div></div></div>
+<div class="panel" id="panel-seg"><div class="mock-panel"><div class="mock-card">
+  <div class="mock-ico">📈</div><h2>Seguimientos</h2>
+  <p>Registro de seguimiento por campaña y cliente. Control de entregables, notas internas y estado de cada acción.</p>
+  <div class="mock-tag">En desarrollo · Próximamente</div>
+  <div class="mock-features">
+    <div class="mock-feat">Historial de comunicaciones</div>
+    <div class="mock-feat">Estado de entregables</div>
+    <div class="mock-feat">Notas internas por campaña</div>
+    <div class="mock-feat">Exportar informe</div>
+  </div>
+</div></div></div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══ EMBEDDED DATA ═══════════════════════════════════════════════════════════
 const DIBA_DATA=[
-  {soporte:"20minutos.es (IP Barcelona província)",cliente:"Diputació de Barcelona",impresiones:"275.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:412.5},
-  {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:603.75},
-  {soporte:"Catalunyaplural.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1100},
-  {soporte:"Catalunyapress.cat",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:994.64},
-  {soporte:"Cronicaglobal.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1980},
-  {soporte:"Diaridesabadell.com",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
-  {soporte:"Diarideterrassa.com",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
-  {soporte:"El9nou.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:704},
-  {soporte:"Elcritic.cat",cliente:"Diputació de Barcelona",impresiones:"80.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:775.2},
-  {soporte:"Eldiario.es (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1650},
-  {soporte:"Elmon.cat",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:1530},
-  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"500.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:3865},
-  {soporte:"El Pais.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"350.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:525},
-  {soporte:"Elpuntavui.cat",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1800},
-  {soporte:"Lavanguardia.com",cliente:"Diputació de Barcelona",impresiones:"790.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:7110},
-  {soporte:"Liniaxarxa.cat + Comunicacio21.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 3 setmanes, home + ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:3900},
-  {soporte:"Metropoliabierta.com",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1320},
-  {soporte:"Naciodigital.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875},
-  {soporte:"Racocatala.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1000},
-  {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 2 setmanes, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:700},
-  {soporte:"Thenewbarcelonapost.com",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1175},
-  {soporte:"Vilaweb",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:200},
-  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.500.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:11595},
-  {soporte:"Vilaweb",cliente:"Diputació de Barcelona",impresiones:"1.200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:8400},
-  {soporte:"20minutos.es (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"750.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels (desktop) i 300x250 (mobile)",precio:4365},
-  {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"300.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:3036},
-  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.600.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:13648},
-  {soporte:"Elperiodico.com i .cat",cliente:"Diputació de Barcelona",impresiones:"940.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:6862},
-  {soporte:"Mundodeportivo.com",cliente:"Diputació de Barcelona",impresiones:"500.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300x600 píxels o similar",precio:4500},
-  {soporte:"Sport.es",cliente:"Diputació de Barcelona",impresiones:"940.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 20s)",medidas:"300 x 600 píxels o similar",precio:6862},
-  {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Branded Content digital (HUB digital o microsite)",medidas:"",precio:18000},
-  {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Reels a Instagram i Tik Tok",medidas:"",precio:14000},
-  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.050.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels o similar",precio:8956.5},
-  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:4635},
-  {soporte:"El Pais.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"2.300.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels o similar",precio:16100},
-  {soporte:"Lavanguardia.com",cliente:"Diputació de Barcelona",impresiones:"900.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300x600 píxels o similar",precio:8100},
-  {soporte:"Thenewbarcelonapost.com",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Redaccionals digitals (destacat a home + secció pròpia)",medidas:"",precio:9500},
-  {soporte:"3cat.cat/3cat (web + APP)",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions",formato:"Video pre-roll. Video-Linear/Àudio Linear",medidas:"1.920x1.080 píxels o similar",precio:3105},
-  {soporte:"3cat.cat",cliente:"Diputació de Barcelona",impresiones:"6",formato:"Post/Reels Instagram",medidas:"",precio:82593},
-  {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"360.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:3484.8},
-  {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"3 enviaments",formato:"Baner newsletter setmanal",medidas:"750 x 400 píxels",precio:1920},
-  {soporte:"Komoot.com",cliente:"Diputació de Barcelona",impresiones:"4 col·leccions",formato:"Contingut editorial en 5 idiomes",medidas:"",precio:14900},
-  {soporte:"Femturisme.cat",cliente:"Diputació de Barcelona",impresiones:"6 enviaments",formato:"Newsletter",medidas:"",precio:840},
-  {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:900},
-  {soporte:"Núvol.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:630},
-  {soporte:"Catorze.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:696}
+  {soporte:"20minutos.es (IP Barcelona província)",cliente:"Diputació de Barcelona",impresiones:"275.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:412.5,tipo:"CPM"},
+  {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:603.75,tipo:"CPM"},
+  {soporte:"Catalunyaplural.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1100,tipo:"CPM"},
+  {soporte:"Catalunyapress.cat",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:994.64,tipo:"CPM"},
+  {soporte:"Cronicaglobal.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1980,tipo:"CPM"},
+  {soporte:"Diaridesabadell.com",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875,tipo:"CPM"},
+  {soporte:"Diarideterrassa.com",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875,tipo:"CPM"},
+  {soporte:"El9nou.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:704,tipo:"Coste Fijo"},
+  {soporte:"Elcritic.cat",cliente:"Diputació de Barcelona",impresiones:"80.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:775.2,tipo:"CPM"},
+  {soporte:"Eldiario.es (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1650,tipo:"CPM"},
+  {soporte:"Elmon.cat",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:1530,tipo:"CPM"},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"500.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:3865,tipo:"CPM"},
+  {soporte:"El Pais.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"350.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:525,tipo:"CPM"},
+  {soporte:"Elpuntavui.cat",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1800,tipo:"CPM"},
+  {soporte:"Lavanguardia.com",cliente:"Diputació de Barcelona",impresiones:"790.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:7110,tipo:"CPM"},
+  {soporte:"Liniaxarxa.cat + Comunicacio21.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 3 setmanes, home + ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 kb)",medidas:"300 x 600 píxels o similar",precio:3900,tipo:"Coste Fijo"},
+  {soporte:"Metropoliabierta.com",cliente:"Diputació de Barcelona",impresiones:"150.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1320,tipo:"CPM"},
+  {soporte:"Naciodigital.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:875,tipo:"CPM"},
+  {soporte:"Racocatala.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1000,tipo:"CPM"},
+  {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 2 setmanes, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:700,tipo:"Coste Fijo"},
+  {soporte:"Thenewbarcelonapost.com",cliente:"Diputació de Barcelona",impresiones:"Cost fix, 1 setmana, home i ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1175,tipo:"Coste Fijo"},
+  {soporte:"Vilaweb",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:200,tipo:"CPM"},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.500.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:11595,tipo:"CPM"},
+  {soporte:"Vilaweb",cliente:"Diputació de Barcelona",impresiones:"1.200.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:8400,tipo:"CPM"},
+  {soporte:"20minutos.es (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"750.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels (desktop) i 300x250 (mobile)",precio:4365,tipo:"CPM"},
+  {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"300.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:3036,tipo:"CPM"},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.600.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:13648,tipo:"CPM"},
+  {soporte:"Elperiodico.com i .cat",cliente:"Diputació de Barcelona",impresiones:"940.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300 x 600 píxels o similar",precio:6862,tipo:"CPM"},
+  {soporte:"Mundodeportivo.com",cliente:"Diputació de Barcelona",impresiones:"500.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 15s)",medidas:"300x600 píxels o similar",precio:4500,tipo:"CPM"},
+  {soporte:"Sport.es",cliente:"Diputació de Barcelona",impresiones:"940.000 impressions, ROS",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 20s)",medidas:"300 x 600 píxels o similar",precio:6862,tipo:"CPM"},
+  {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Branded Content digital (HUB digital o microsite)",medidas:"",precio:18000,tipo:"Coste Fijo"},
+  {soporte:"20minutos.es",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Reels a Instagram i Tik Tok",medidas:"",precio:14000,tipo:"Coste Fijo"},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1.050.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels o similar",precio:8956.5,tipo:"CPM"},
+  {soporte:"Elnacional.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:4635,tipo:"Coste Fijo"},
+  {soporte:"El Pais.com (IP Catalunya)",cliente:"Diputació de Barcelona",impresiones:"2.300.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300 x 600 píxels o similar",precio:16100,tipo:"CPM"},
+  {soporte:"Lavanguardia.com",cliente:"Diputació de Barcelona",impresiones:"900.000 impressions",formato:"Bàner robapàgines doble amb video inbaner fins a 2 Mb (vídeo 25s)",medidas:"300x600 píxels o similar",precio:8100,tipo:"CPM"},
+  {soporte:"Thenewbarcelonapost.com",cliente:"Diputació de Barcelona",impresiones:"4",formato:"Redaccionals digitals (destacat a home + secció pròpia)",medidas:"",precio:9500,tipo:"Coste Fijo"},
+  {soporte:"3cat.cat/3cat (web + APP)",cliente:"Diputació de Barcelona",impresiones:"200.000 impressions",formato:"Video pre-roll. Video-Linear/Àudio Linear",medidas:"1.920x1.080 píxels o similar",precio:3105,tipo:"CPM"},
+  {soporte:"3cat.cat",cliente:"Diputació de Barcelona",impresiones:"6",formato:"Post/Reels Instagram",medidas:"",precio:82593,tipo:"Coste Fijo"},
+  {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"360.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 3 creativitats)",medidas:"300 x 600 píxels o similar",precio:3484.8,tipo:"CPM"},
+  {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"3 enviaments",formato:"Baner newsletter setmanal",medidas:"750 x 400 píxels",precio:1920,tipo:"Coste Fijo"},
+  {soporte:"Komoot.com",cliente:"Diputació de Barcelona",impresiones:"4 col·leccions",formato:"Contingut editorial en 5 idiomes",medidas:"",precio:14900,tipo:"Coste Fijo"},
+  {soporte:"Femturisme.cat",cliente:"Diputació de Barcelona",impresiones:"6 enviaments",formato:"Newsletter",medidas:"",precio:840,tipo:"Coste Fijo"},
+  {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:900,tipo:"Coste Fijo"},
+  {soporte:"Núvol.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:630,tipo:"Coste Fijo"},
+  {soporte:"Catorze.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:696,tipo:"Coste Fijo"}
 ];
+const AMB_DATA=[{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Doble Pàgina Color","medidas":"Feiners","precio":4210.0,"tipo":"Coste Fijo"},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600 (Desktop + Mobile)","precio":6.0,"tipo":"CPM"},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600 (Desktop + Mobile)","precio":6.0,"tipo":"CPM"},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"Desktop + Mobile","precio":8.0,"tipo":"CPM"},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"Desktop + Mobile","precio":8.0,"tipo":"CPM"},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)","medidas":"Totes les mides","precio":6.0,"tipo":"CPM"},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)","medidas":"Totes les mides","precio":6.0,"tipo":"CPM"},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Doble Pàgina Color","medidas":"","precio":5670.0,"tipo":"Coste Fijo"},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Pàgina Imparell","medidas":"","precio":2835.0,"tipo":"Coste Fijo"},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Pàgina Color Imparell","medidas":"","precio":2184.5,"tipo":"Coste Fijo"},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Mitja Pàgina Color Imparell","medidas":"","precio":1570.0,"tipo":"Coste Fijo"},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Robaplanes Color Imparell","medidas":"","precio":2135.0,"tipo":"Coste Fijo"},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Peu de Pàgina Color Imparell","medidas":"","precio":1095.0,"tipo":"Coste Fijo"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":11250.0,"tipo":"Coste Fijo"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Monogràfic - especial online","medidas":"","precio":22500.0,"tipo":"Coste Fijo"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300X600","precio":6.0,"tipo":"CPM"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300X600","precio":6.0,"tipo":"CPM"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980X250","precio":8.0,"tipo":"CPM"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980X250","precio":8.0,"tipo":"CPM"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"980X250","precio":8.0,"tipo":"CPM"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"980X90 / 300X250","precio":8.0,"tipo":"CPM"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"980X250","precio":8.0,"tipo":"CPM"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"980X90 / 300X250","precio":8.0,"tipo":"CPM"},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Patrocini / Participació Taula Rodona","medidas":"","precio":13500.0,"tipo":"Coste Fijo"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Monogràfic- especial online","medidas":"","precio":4892.5,"tipo":"Coste Fijo"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":3500.0,"tipo":"Coste Fijo"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Background 1664 x 1000 + Billboard 980 x 250","precio":13.0,"tipo":"CPM"},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Background 1664 x 1000 + Billboard 980 x 250","precio":13.0,"tipo":"CPM"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Redaccional","precio":4500.0,"tipo":"Coste Fijo"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Monogràfic - especial online","medidas":"","precio":5500.0,"tipo":"Coste Fijo"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300x250","precio":6.0,"tipo":"CPM"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300x250","precio":6.0,"tipo":"CPM"},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Redaccional","precio":150.0,"tipo":"Coste Fijo"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Doble Robapàgines","precio":6.0,"tipo":"CPM"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Doble Robapàgines","precio":6.0,"tipo":"CPM"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"Billboard","precio":6.0,"tipo":"CPM"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"Billboard","precio":6.0,"tipo":"CPM"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Robapàgines","precio":6.0,"tipo":"CPM"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Superbàner","precio":6.0,"tipo":"CPM"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Robapàgines","precio":6.0,"tipo":"CPM"},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Superbàner","precio":6.0,"tipo":"CPM"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article_ Import Absolut","medidas":"","precio":1295.0,"tipo":"Coste Fijo"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0,"tipo":"CPM"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0,"tipo":"CPM"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X250_Robapàgines","precio":6.0,"tipo":"CPM"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"728X90_Megabàner","precio":6.0,"tipo":"CPM"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X250_Robapàgines","precio":6.0,"tipo":"CPM"},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"728X90_Megabàner","precio":6.0,"tipo":"CPM"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":1750.0,"tipo":"Coste Fijo"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"970X250","precio":8.0,"tipo":"CPM"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"970X250","precio":8.0,"tipo":"CPM"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X300","precio":6.0,"tipo":"CPM"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"760X600","precio":6.0,"tipo":"CPM"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X300","precio":6.0,"tipo":"CPM"},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"760X600","precio":6.0,"tipo":"CPM"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Publicat a HOME  i SECCIÓ, difós a xarxes socials amb promoció","precio":3900.0,"tipo":"Coste Fijo"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X250","precio":6.0,"tipo":"CPM"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"800X600","precio":6.0,"tipo":"CPM"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X250","precio":6.0,"tipo":"CPM"},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"800X600","precio":6.0,"tipo":"CPM"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Branded content +  difusió a les xarxes socials","precio":1800.0,"tipo":"Coste Fijo"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"970X250","precio":8.0,"tipo":"CPM"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"970X250","precio":8.0,"tipo":"CPM"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X250","precio":6.0,"tipo":"CPM"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"970x250","precio":6.0,"tipo":"CPM"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X250","precio":6.0,"tipo":"CPM"},{"soporte":"MONPLANETA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"970x250","precio":6.0,"tipo":"CPM"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Inclou publicació a portada, i xarxes socials","precio":1500.0,"tipo":"Coste Fijo"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":800.0,"tipo":"Coste Fijo"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300x250","precio":8.0,"tipo":"CPM"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"300x600","precio":8.0,"tipo":"CPM"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300x250","precio":8.0,"tipo":"CPM"},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"300x600","precio":8.0,"tipo":"CPM"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Article + enviament a butlletí digital + xarxes socials","precio":900.0,"tipo":"Coste Fijo"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":8.0,"tipo":"CPM"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":8.0,"tipo":"CPM"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"970x250","precio":8.0,"tipo":"CPM"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"970x250","precio":8.0,"tipo":"CPM"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Robapàgines 300x250","precio":8.0,"tipo":"CPM"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Megabàner 728x90","precio":8.0,"tipo":"CPM"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Robapàgines 300x250","precio":8.0,"tipo":"CPM"},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Megabàner 728x90","precio":8.0,"tipo":"CPM"},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":8.0,"tipo":"CPM"},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":8.0,"tipo":"CPM"},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Robapàgines 300x250","precio":8.0,"tipo":"CPM"},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Megabàner 900x90","precio":8.0,"tipo":"CPM"},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Robapàgines 300x250","precio":8.0,"tipo":"CPM"},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Megabàner 900x90","precio":8.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Publireportatge incloent destacat 300x150 en carrusel de portada UNA SETMANA_no inclou producció","precio":6800.0,"tipo":"Coste Fijo"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Mega 728x90 i roba 250x300","precio":6.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Billboard 980x250","precio":6.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Mega 728x90 i roba 250x300","precio":6.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Billboard 980x250","precio":6.0,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"970x90","precio":24.5,"tipo":"CPM"},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"970x90","precio":24.5,"tipo":"CPM"},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0,"tipo":"CPM"},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0,"tipo":"CPM"},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300x250","precio":6.0,"tipo":"CPM"},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300x250","precio":6.0,"tipo":"CPM"},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"300x600","precio":6.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":10240.0,"tipo":"Coste Fijo"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"990 x 250","precio":8.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"990 x 250","precio":8.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":6.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Top bàner  320 x 100","precio":6.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":6.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Top bàner  320 x 100","precio":6.0,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"120 x 600 ó 160 x 600","precio":10.71,"tipo":"CPM"},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"120 x 600 ó 160 x 600","precio":10.71,"tipo":"CPM"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":5500.0,"tipo":"Coste Fijo"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"990 x 250","precio":8.0,"tipo":"CPM"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"990 x 250","precio":8.0,"tipo":"CPM"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":6.0,"tipo":"CPM"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Top bàner  320 x 100","precio":6.0,"tipo":"CPM"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":6.0,"tipo":"CPM"},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Top bàner  320 x 100","precio":6.0,"tipo":"CPM"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":3850.0,"tipo":"Coste Fijo"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"990 x 250","precio":8.0,"tipo":"CPM"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"990 x 250","precio":8.0,"tipo":"CPM"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":6.0,"tipo":"CPM"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Top bàner  320 x 100","precio":6.0,"tipo":"CPM"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":6.0,"tipo":"CPM"},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Top bàner  320 x 100","precio":6.0,"tipo":"CPM"},{"soporte":"THE NEW BARCELONA POST","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":2612.5,"tipo":"Coste Fijo"},{"soporte":"THE NEW BARCELONA POST","cliente":"AMB","impresiones":"","formato":"Patrocini / Participació Taula Rodona","medidas":"","precio":577.5,"tipo":"Coste Fijo"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"OFF_Pàgina color","medidas":"","precio":6000.0,"tipo":"Coste Fijo"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":900.0,"tipo":"Coste Fijo"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0,"tipo":"CPM"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"990 x 250","precio":8.0,"tipo":"CPM"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"990 x 250","precio":8.0,"tipo":"CPM"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":8.0,"tipo":"CPM"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Top bàner  320 x 100","precio":6.0,"tipo":"CPM"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":8.0,"tipo":"CPM"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Top bàner  320 x 100","precio":6.0,"tipo":"CPM"},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Patrocini / Participació Taula Rodona","medidas":"","precio":6000.0,"tipo":"Coste Fijo"},{"soporte":"VIAEMPRESA","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":7.0,"tipo":"CPM"},{"soporte":"VIAEMPRESA","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"990 x 250","precio":7.0,"tipo":"CPM"},{"soporte":"VIAEMPRESA","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Megabàner o gigabàner  ( 728 x 90 ó 970 x 90)","precio":7.0,"tipo":"CPM"},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Branded Content (Articles)","medidas":"Branded content","precio":5000.0,"tipo":"Coste Fijo"},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Pàgina color","medidas":"","precio":4000.0,"tipo":"Coste Fijo"},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Altres patrocinis","medidas":"Pàgina + logo patrocinador","precio":10000.0,"tipo":"Coste Fijo"},{"soporte":"ANUARI THE ECONOMIST","cliente":"AMB","impresiones":"","formato":"Branded Content (Articles)","medidas":"Branded content online","precio":5000.0,"tipo":"Coste Fijo"},{"soporte":"ANUARI THE ECONOMIST","cliente":"AMB","impresiones":"","formato":"Pàgina color","medidas":"Pàgina color / contra","precio":4000.0,"tipo":"Coste Fijo"},{"soporte":"ANUARI THE ECONOMIST","cliente":"AMB","impresiones":"","formato":"Patrocinis","medidas":"Pàgina + logo patrocinador","precio":10000.0,"tipo":"Coste Fijo"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Doble pàgina color","medidas":"","precio":9048.0,"tipo":"Coste Fijo"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":4524.0,"tipo":"Coste Fijo"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"","precio":2340.0,"tipo":"Coste Fijo"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell","medidas":"","precio":4524.0,"tipo":"Coste Fijo"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Mitja pàgina color imparell","medidas":"","precio":2550.0,"tipo":"Coste Fijo"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Peu de pàgina color imparell","medidas":"","precio":1536.0,"tipo":"Coste Fijo"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":1575.0,"tipo":"CPM"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"","precio":2100.0,"tipo":"CPM"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":1575.0,"tipo":"CPM"},{"soporte":"Linia Mar Baix Llobregat / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"","precio":2100.0,"tipo":"CPM"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":767.53,"tipo":"Coste Fijo"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":511.68,"tipo":"CPM"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Billboard  (HOME)","medidas":"Megabaner 728 x 90","precio":383.76,"tipo":"CPM"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Robavideo/you-tube 300 x 250","precio":383.76,"tipo":"CPM"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":383.76,"tipo":"CPM"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Robadoble 300 x 600","precio":511.68,"tipo":"CPM"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Billboard (ROS)","medidas":"Megabaner 728 x 90","precio":383.76,"tipo":"CPM"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Robavideo/you-tube 300 x 250","precio":383.76,"tipo":"CPM"},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"Baner 300 x 250","precio":383.76,"tipo":"CPM"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":708.09,"tipo":"Coste Fijo"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":318.64,"tipo":"CPM"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Billboard  (HOME)","medidas":"Megabaner 728 x 90","precio":238.98,"tipo":"CPM"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Robavideo/you-tube 300 x 250","precio":238.98,"tipo":"CPM"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":238.98,"tipo":"CPM"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Robadoble 300 x 600","precio":318.64,"tipo":"CPM"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Billboard (ROS)","medidas":"Megabaner 728 x 90","precio":238.98,"tipo":"CPM"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Robavideo/you-tube 300 x 250","precio":238.98,"tipo":"CPM"},{"soporte":"La voz de Castelldefels/lavoz.cat (on/off)","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"Baner 300 x 250","precio":238.98,"tipo":"CPM"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":426.58,"tipo":"Coste Fijo"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":277.62,"tipo":"CPM"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Billboard  (HOME)","medidas":"Megabaner 728 x 90","precio":208.21,"tipo":"CPM"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Robavideo/you-tube 300 x 250","precio":208.21,"tipo":"CPM"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":208.21,"tipo":"CPM"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Robadoble 300 x 600","precio":277.62,"tipo":"CPM"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Billboard (ROS)","medidas":"Megabaner 728 x 90","precio":208.21,"tipo":"CPM"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Robavideo/you-tube 300 x 250","precio":208.21,"tipo":"CPM"},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"Baner 300 x 250","precio":208.21,"tipo":"CPM"},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":217.74,"tipo":"CPM"},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Billboard  (HOME)","medidas":"Megabaner 728 x 90","precio":163.3,"tipo":"CPM"},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Robavideo/you-tube 300 x 250","precio":163.3,"tipo":"CPM"},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":163.3,"tipo":"CPM"},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Robadoble 300 x 600","precio":217.74,"tipo":"CPM"},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Billboard (ROS)","medidas":"Megabaner 728 x 90","precio":163.3,"tipo":"CPM"},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Robavideo/you-tube 300 x 250","precio":163.3,"tipo":"CPM"},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"Baner 300 x 250","precio":163.3,"tipo":"CPM"},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"","precio":383.64,"tipo":"Coste Fijo"},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":409.35,"tipo":"CPM"},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"","precio":283.49,"tipo":"CPM"},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":409.35,"tipo":"CPM"},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"","precio":283.49,"tipo":"CPM"},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Doble Pàgina","medidas":"","precio":718.2,"tipo":"Coste Fijo"},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":359.1,"tipo":"Coste Fijo"},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell (d'una a tres insercions)","medidas":"","precio":359.1,"tipo":"Coste Fijo"},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Mitja pàgina color imparell (d'una a tres insercions)","medidas":"","precio":212.63,"tipo":"Coste Fijo"},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"1/4 plana Color Imparell (d'una a tres insercions)","medidas":"","precio":103.69,"tipo":"Coste Fijo"},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Contraportada (d'una a tres insercions)","medidas":"","precio":359.1,"tipo":"Coste Fijo"},{"soporte":"La Vall de Verç/lavalldeverc.cat","cliente":"AMB","impresiones":"","formato":"Doble Pàgina","medidas":"","precio":596.0,"tipo":"Coste Fijo"},{"soporte":"La Vall de Verç/lavalldeverc.cat","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":298.0,"tipo":"Coste Fijo"},{"soporte":"La Vall de Verç/lavalldeverc.cat","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell (d'una a tres insercions)","medidas":"","precio":298.0,"tipo":"Coste Fijo"},{"soporte":"La Vall de Verç/lavalldeverc.cat","cliente":"AMB","impresiones":"","formato":"Mitja pàgina color imparell (d'una a tres insercions)","medidas":"","precio":150.0,"tipo":"Coste Fijo"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Doble pàgina color","medidas":"","precio":2262.0,"tipo":"Coste Fijo"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":1131.0,"tipo":"Coste Fijo"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"","precio":585.0,"tipo":"Coste Fijo"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell","medidas":"","precio":1131.0,"tipo":"Coste Fijo"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Mitja pàgina color imparell","medidas":"","precio":637.5,"tipo":"Coste Fijo"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Peu de pàgina color imparell","medidas":"","precio":384.0,"tipo":"Coste Fijo"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":393.75,"tipo":"CPM"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"","precio":525.0,"tipo":"CPM"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":393.75,"tipo":"CPM"},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"","precio":525.0,"tipo":"CPM"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":429.09,"tipo":"Coste Fijo"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":279.25,"tipo":"CPM"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Billboard  (HOME)","medidas":"Megabaner 728 x 90","precio":209.44,"tipo":"CPM"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Robavideo/you-tube 300 x 250","precio":209.44,"tipo":"CPM"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":209.44,"tipo":"CPM"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Robadoble 300 x 600","precio":279.25,"tipo":"CPM"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Billboard (ROS)","medidas":"Megabaner 728 x 90","precio":209.44,"tipo":"CPM"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Robavideo/you-tube 300 x 250","precio":209.44,"tipo":"CPM"},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"Baner 300 x 250","precio":209.44,"tipo":"CPM"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":301.11,"tipo":"Coste Fijo"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":195.96,"tipo":"CPM"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Billboard  (HOME)","medidas":"Megabaner 728 x 90","precio":146.97,"tipo":"CPM"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Robavideo/you-tube 300 x 250","precio":146.97,"tipo":"CPM"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":146.97,"tipo":"CPM"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Robadoble 300 x 600","precio":195.96,"tipo":"CPM"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Billboard (ROS)","medidas":"Megabaner 728 x 90","precio":146.97,"tipo":"CPM"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Robavideo/you-tube 300 x 250","precio":146.97,"tipo":"CPM"},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"Baner 300 x 250","precio":146.97,"tipo":"CPM"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":429.09,"tipo":"Coste Fijo"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":279.25,"tipo":"CPM"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Billboard  (HOME)","medidas":"Megabaner 728 x 90","precio":209.44,"tipo":"CPM"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Robavideo/you-tube 300 x 250","precio":209.44,"tipo":"CPM"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":209.44,"tipo":"CPM"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Robadoble 300 x 600","precio":279.25,"tipo":"CPM"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Billboard (ROS)","medidas":"Megabaner 728 x 90","precio":209.44,"tipo":"CPM"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Robavideo/you-tube 300 x 250","precio":209.44,"tipo":"CPM"},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"Baner 300 x 250","precio":209.44,"tipo":"CPM"},{"soporte":"Diaridesantacoloma.com","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell","medidas":"","precio":720.0,"tipo":"Coste Fijo"},{"soporte":"Diaridesantacoloma.com","cliente":"AMB","impresiones":"","formato":"Mitja pàgina color imparell","medidas":"","precio":450.0,"tipo":"Coste Fijo"},{"soporte":"Diaridesantacoloma.com","cliente":"AMB","impresiones":"","formato":"Peu de pàgina color imparell","medidas":"","precio":225.0,"tipo":"Coste Fijo"},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell","medidas":"","precio":1156.0,"tipo":"Coste Fijo"},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Mitja pàgina color imparell","medidas":"","precio":500.0,"tipo":"Coste Fijo"},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Peu de pàgina color imparell","medidas":"","precio":360.0,"tipo":"Coste Fijo"},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":260.0,"tipo":"CPM"},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"","precio":175.0,"tipo":"CPM"},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":125.0,"tipo":"CPM"},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (ROS)","medidas":"","precio":90.0,"tipo":"CPM"}];
 
-const AMB_DATA=[{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Doble Pàgina Color","medidas":"Feiners","precio":4210.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600 (Desktop + Mobile)","precio":6.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600 (Desktop + Mobile)","precio":6.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"Desktop + Mobile","precio":8.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"Desktop + Mobile","precio":8.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)","medidas":"Totes les mides","precio":6.0},{"soporte":"ABC_ED. CATALUNYA","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)","medidas":"Totes les mides","precio":6.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Doble Pàgina Color","medidas":"","precio":5670.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Pàgina Imparell","medidas":"","precio":2835.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Pàgina Color Imparell","medidas":"","precio":2184.5},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Mitja Pàgina Color Imparell","medidas":"","precio":1570.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Robaplanes Color Imparell","medidas":"","precio":2135.0},{"soporte":"EL TRIANGLE   (ON/OFF)","cliente":"AMB","impresiones":"","formato":"Peu de Pàgina Color Imparell","medidas":"","precio":1095.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":11250.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Monogràfic - especial online","medidas":"","precio":22500.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300X600","precio":6.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300X600","precio":6.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"980X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"980X90 / 300X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"980X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"980X90 / 300X250","precio":8.0},{"soporte":"ELCONFIDENCIAL.COM","cliente":"AMB","impresiones":"","formato":"Patrocini / Participació Taula Rodona","medidas":"","precio":13500.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Monogràfic- especial online","medidas":"","precio":4892.5},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)","medidas":"","precio":6.0},{"soporte":"EL NACIONAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)","medidas":"","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":3500.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"300 x 250 / 728x90 / 980x90","precio":6.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"Background 1664 x 1000 + Billboard 980 x 250","precio":13.0},{"soporte":"EL DIARIO.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"Background 1664 x 1000 + Billboard 980 x 250","precio":13.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Redaccional","precio":4500.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Monogràfic - especial online","medidas":"","precio":5500.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300x250","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"300x600","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300x250","precio":6.0},{"soporte":"NACIO DIGITAL.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"300x600","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Redaccional","precio":150.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Doble Robapàgines","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"Doble Robapàgines","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"Billboard","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"Billboard","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"Robapàgines","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"Superbàner","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"Robapàgines","precio":6.0},{"soporte":"PUBLICO.ES","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"Superbàner","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article_ Import Absolut","medidas":"","precio":1295.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X250_Robapàgines","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"728X90_Megabàner","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X250_Robapàgines","precio":6.0},{"soporte":"EUROPAPRESS.ES /    AL DIA.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"728X90_Megabàner","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":1750.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"970X250","precio":8.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"970X250","precio":8.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X300","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"760X600","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X300","precio":6.0},{"soporte":"VILAWEB.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"760X600","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Publicat a HOME  i SECCIÓ, difós a xarxes socials amb promoció","precio":3900.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ PETIT","medidas":"300X250","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic (HOME)_ GRAN","medidas":"800X600","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ PETIT","medidas":"300X250","precio":6.0},{"soporte":"ELMON.CAT","cliente":"AMB","impresiones":"","formato":"Bàner Estàtic  (ROS)_ GRAN","medidas":"800X600","precio":6.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Inclou publicació a portada, i xarxes socials","precio":1500.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":8.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":8.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"LAREPUBLICA.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":800.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":8.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":8.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"CATALUNYAPLURAL","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Article + enviament a butlletí digital + xarxes socials","precio":900.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":8.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":8.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"970x250","precio":8.0},{"soporte":"SOCIAL.CAT","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"970x250","precio":8.0},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":8.0},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":8.0},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"ELCRITIC","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"Publireportatge incloent destacat 300x150 en carrusel de portada","precio":6800.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300x600","precio":6.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300x600","precio":6.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"980x250","precio":8.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"980x250","precio":8.0},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"970x90","precio":24.5},{"soporte":"ELECONOMISTA.ES","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"970x90","precio":24.5},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":6.0},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"","precio":6.0},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Billboard (HOME)","medidas":"","precio":8.0},{"soporte":"CINCODIAS","cliente":"AMB","impresiones":"","formato":"Billboard  (ROS)","medidas":"","precio":8.0},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":10240.0},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Animated Skin (HOME)","medidas":"120 x 600 ó 160 x 600","precio":10.71},{"soporte":"LA INFORMACIÓN.COM","cliente":"AMB","impresiones":"","formato":"Animated Skin (ROS)","medidas":"120 x 600 ó 160 x 600","precio":10.71},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":5500.0},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"CRÒNICAGLOBAL.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":3850.0},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"METRÒPOLIABIERTA.COM","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"THE NEW BARCELONA POST","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":2612.5},{"soporte":"THE NEW BARCELONA POST","cliente":"AMB","impresiones":"","formato":"Patrocini / Participació Taula Rodona","medidas":"","precio":577.5},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Publicació Article","medidas":"","precio":900.0},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"300 x 600","precio":6.0},{"soporte":"LA CIUTAT","cliente":"AMB","impresiones":"","formato":"Robadoble (ROS)","medidas":"300 x 600","precio":6.0},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Branded Content (Articles)","medidas":"Branded content","precio":5000.0},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Pàgina color","medidas":"","precio":4000.0},{"soporte":"EL TEMPS","cliente":"AMB","impresiones":"","formato":"Altres patrocinis","medidas":"Pàgina + logo patrocinador","precio":10000.0},{"soporte":"ANUARI THE ECONOMIST","cliente":"AMB","impresiones":"","formato":"Branded Content (Articles)","medidas":"Branded content online","precio":5000.0},{"soporte":"ANUARI THE ECONOMIST","cliente":"AMB","impresiones":"","formato":"Pàgina color","medidas":"Pàgina color / contra","precio":4000.0},{"soporte":"Linia Mar / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Doble pàgina color","medidas":"","precio":9048.0},{"soporte":"Linia Mar / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":4524.0},{"soporte":"Linia Mar / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":1575.0},{"soporte":"Linia Mar / Línia Cornellà / Línia Tres / Línia l'Hospitalet","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"","precio":2100.0},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":767.53},{"soporte":"Viu Molins de Rei","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":511.68},{"soporte":"La voz de Castelldefels/lavoz.cat","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":708.09},{"soporte":"La voz de Castelldefels/lavoz.cat","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":318.64},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":426.58},{"soporte":"fetasant feliu","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":277.62},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":217.74},{"soporte":"Santboidiari","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"Baner 300 x 250","precio":163.3},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"","precio":383.64},{"soporte":"La Bústia del Baix Llobregat","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":409.35},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Doble Pàgina","medidas":"","precio":718.2},{"soporte":"Delta Llobregat","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":359.1},{"soporte":"La Vall de Verç/lavalldeverc.cat","cliente":"AMB","impresiones":"","formato":"Doble Pàgina","medidas":"","precio":596.0},{"soporte":"La Vall de Verç/lavalldeverc.cat","cliente":"AMB","impresiones":"","formato":"Pàgina imparell","medidas":"","precio":298.0},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Doble pàgina color","medidas":"","precio":2262.0},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"","precio":585.0},{"soporte":"Línia Nord/comunicacio21.com","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":393.75},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":429.09},{"soporte":"Diari de Badalona / diaridebadalona.com","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":279.25},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":301.11},{"soporte":"Eltotbadalona.cat","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":195.96},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Publicació article","medidas":"Article, Branded content","precio":429.09},{"soporte":"ElMirall / Elmirall.net","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"Robadoble 300 x 600","precio":279.25},{"soporte":"Diaridesantacoloma.com","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell","medidas":"","precio":720.0},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Pàgina color imparell","medidas":"","precio":1156.0},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Robadoble (HOME)","medidas":"","precio":260.0},{"soporte":"Diari de L'Hospitalet","cliente":"AMB","impresiones":"","formato":"Bàner estàtic  (HOME)","medidas":"","precio":175.0}];
-
-// ═══ STATE ═══════════════════════════════════════════════════════════════════
+// ═══ STATE ════════════════════════════════════════════════════════════════
 let DB={};
 let activeClient='Diputació de Barcelona';
 let curData=[];
 let sortCol='';let sortDir=1;
 let ocLines=[];
 
+// Default OC columns - id, label, width, isPrice
+let OC_COLS=[
+  {id:'soporte',label:'Soporte',width:180,isPrice:false},
+  {id:'formato',label:'Formato',width:160,isPrice:false},
+  {id:'inicio',label:'F. Inicio',width:100,isPrice:false},
+  {id:'fin',label:'F. Fin',width:100,isPrice:false},
+  {id:'inserciones',label:'Inserciones',width:110,isPrice:false},
+  {id:'neto',label:'Neto €',width:90,isPrice:true}
+];
+let dragSrcIdx=null;
+
+// ═══ INIT ════════════════════════════════════════════════════════════════
 function getClientDB(){return DB[activeClient]||[];}
 function setClientDB(arr){DB[activeClient]=arr;saveDB();}
-
 function loadDB(){
-  try{const s=localStorage.getItem('ap_db3');if(s)DB=JSON.parse(s);}catch(e){}
+  try{const s=localStorage.getItem('ap_db4');if(s)DB=JSON.parse(s);}catch(e){}
   if(!DB['Diputació de Barcelona'])DB['Diputació de Barcelona']=[...DIBA_DATA];
   if(!DB['AMB'])DB['AMB']=[...AMB_DATA];
   saveDB();
 }
-function saveDB(){localStorage.setItem('ap_db3',JSON.stringify(DB));}
+function saveDB(){localStorage.setItem('ap_db4',JSON.stringify(DB));}
 function fmt(n){return n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'€';}
 function fmtn(n){return n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
@@ -549,10 +582,17 @@ function toast(msg){
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
+function badgeHTML(tipo){
+  if(tipo==='CPM')return '<span class="badge badge-cpm">CPM</span>';
+  return '<span class="badge badge-fix">Coste Fijo</span>';
+}
+
 window.addEventListener('load',()=>{
   loadDB();
   updateHeader();
   addLine();addLine();
+  renderColTags();
+  renderLinesTable();
   document.getElementById('af-cli').value=activeClient;
 });
 
@@ -560,15 +600,12 @@ function updateHeader(){
   const data=getClientDB();
   document.getElementById('hrecs').textContent=data.length;
   document.getElementById('db-client').textContent=activeClient;
-  document.getElementById('search-subtitle').textContent=`Busca por soporte, formato o medidas. Cliente activo: ${activeClient} (${data.length} tarifas)`;
+  document.getElementById('search-subtitle').textContent='Cliente activo: '+activeClient+' ('+data.length+' tarifas)';
 }
 
 function switchClient(){
   activeClient=document.getElementById('client-select').value;
-  updateHeader();
-  curData=[...getClientDB()];
-  resetS();
-  renderDB();
+  updateHeader();curData=[...getClientDB()];resetS();renderDB();
   document.getElementById('af-cli').value=activeClient;
 }
 
@@ -579,24 +616,26 @@ function sw(name,el){
   document.getElementById('panel-'+name).classList.add('active');
 }
 
-// ═══ SEARCH ══════════════════════════════════════════════════════════════════
+// ═══ SEARCH ══════════════════════════════════════════════════════════════
 function qs(q){document.getElementById('sinput').value=q;liveSearch();}
 
 function liveSearch(){
   const q=document.getElementById('sinput').value.toLowerCase().trim();
+  const ft=document.getElementById('ft').value;
   const fp=document.getElementById('fp').value;
   let data=[...getClientDB()];
-  if(q){data=data.filter(r=>
+  if(q)data=data.filter(r=>
     r.soporte.toLowerCase().includes(q)||
     r.formato.toLowerCase().includes(q)||
-    r.medidas.toLowerCase().includes(q)||
-    r.impresiones.toLowerCase().includes(q)
-  );}
+    (r.medidas||'').toLowerCase().includes(q)||
+    (r.impresiones||'').toLowerCase().includes(q)
+  );
+  if(ft)data=data.filter(r=>(r.tipo||'Coste Fijo')===ft);
   if(fp){
     const[mn,mx]=fp==='10000+'?[10000,Infinity]:fp.split('-').map(Number);
     data=data.filter(r=>r.precio>=mn&&r.precio<=(mx||Infinity));
   }
-  curData=data;renderTable(data,!!(q||fp));computeStats(data);
+  curData=data;renderTable(data,!!(q||ft||fp));computeStats(data);
 }
 
 function computeStats(data){
@@ -610,9 +649,9 @@ function computeStats(data){
 
 function resetS(){
   document.getElementById('sinput').value='';
+  document.getElementById('ft').value='';
   document.getElementById('fp').value='';
-  const empty=document.getElementById('empty');
-  empty.innerHTML='<div class="ico">🔍</div><h3>Escribe para buscar</h3><p>Empieza a escribir o selecciona un filtro.</p>';
+  document.getElementById('empty').innerHTML='<div class="ico">🔍</div><h3>Escribe para buscar</h3><p>Empieza a escribir o selecciona un filtro.</p>';
   document.getElementById('empty').style.display='block';
   document.getElementById('rcont').style.display='none';
 }
@@ -640,25 +679,25 @@ function renderTable(data,hasQuery){
   document.getElementById('tbody').innerHTML=data.map(r=>`
     <tr>
       <td class="tds">${r.soporte}</td>
+      <td>${badgeHTML(r.tipo||'Coste Fijo')}</td>
       <td class="tdf">${r.formato||'—'}</td>
       <td class="tdm">${r.medidas||'—'}</td>
       <td class="tdp ${r.precio===0?'tdpz':''}">${r.precio>0?fmtn(r.precio)+' €':'—'}</td>
     </tr>`).join('');
 }
 
-// ═══ DB PANEL ════════════════════════════════════════════════════════════════
+// ═══ DB PANEL ════════════════════════════════════════════════════════════
 function toggleAdd(){
-  const f=document.getElementById('addform');
-  f.classList.toggle('open');
+  const f=document.getElementById('addform');f.classList.toggle('open');
   document.getElementById('bulk-box').classList.remove('open');
   if(f.classList.contains('open')){
     ['af-sop','af-fmt','af-med','af-imp','af-pre'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('af-cli').value=activeClient;
+    document.getElementById('af-tipo').value='Coste Fijo';
   }
 }
 function toggleBulk(){
-  const b=document.getElementById('bulk-box');
-  b.classList.toggle('open');
+  const b=document.getElementById('bulk-box');b.classList.toggle('open');
   document.getElementById('addform').classList.remove('open');
 }
 function addRec(){
@@ -668,6 +707,7 @@ function addRec(){
   arr.push({
     soporte:sop,
     cliente:document.getElementById('af-cli').value.trim()||activeClient,
+    tipo:document.getElementById('af-tipo').value,
     impresiones:document.getElementById('af-imp').value.trim(),
     formato:document.getElementById('af-fmt').value.trim(),
     medidas:document.getElementById('af-med').value.trim(),
@@ -680,27 +720,98 @@ function delRec(i){
   const arr=getClientDB();arr.splice(i,1);
   setClientDB(arr);updateHeader();renderDB();toast('Registro eliminado');
 }
+let editingIdx=null;
+
 function renderDB(){
   const data=getClientDB();
   document.getElementById('dbtot').textContent=data.length;
-  document.getElementById('dbtbody').innerHTML=data.map((r,i)=>`
-    <tr>
-      <td style="font-weight:600;font-size:13px">${r.soporte}</td>
-      <td style="font-size:12px;color:var(--g500)">${r.cliente}</td>
-      <td style="font-size:12px;color:var(--g500);max-width:200px">${r.formato||'—'}</td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red)">${r.medidas||'—'}</td>
-      <td style="font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right;font-size:13px">${r.precio>0?fmtn(r.precio)+' €':'—'}</td>
-      <td><button class="bdel" onclick="delRec(${i})">✕</button></td>
-    </tr>`).join('');
+  document.getElementById('dbtbody').innerHTML=data.map((r,i)=>{
+    if(i===editingIdx) return editRowHTML(r,i);
+    return viewRowHTML(r,i);
+  }).join('');
 }
 
-// ═══ BULK UPLOAD ══════════════════════════════════════════════════════════════
+function viewRowHTML(r,i){
+  return `<tr class="db-row" id="dbrow-${i}">
+    <td style="font-weight:600;font-size:13px">${esc(r.soporte)}</td>
+    <td style="font-size:12px;color:var(--g500)">${esc(r.cliente)}</td>
+    <td>${badgeHTML(r.tipo||'Coste Fijo')}</td>
+    <td style="font-size:12px;color:var(--g500);max-width:200px">${esc(r.formato||'—')}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue)">${esc(r.medidas||'—')}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right;font-size:13px">${r.precio>0?fmtn(r.precio)+' €':'—'}</td>
+    <td style="white-space:nowrap">
+      <button class="bedit" onclick="startEdit(${i})" title="Editar">✏</button>
+      <button class="bdel" onclick="delRec(${i})" title="Eliminar">✕</button>
+    </td>
+  </tr>`;
+}
+
+function editRowHTML(r,i){
+  return `<tr class="db-row db-row-editing" id="dbrow-${i}">
+    <td><input class="ei" id="ei-sop" value="${esc(r.soporte)}" placeholder="Soporte"/></td>
+    <td><input class="ei" id="ei-cli" value="${esc(r.cliente)}" placeholder="Cliente"/></td>
+    <td><select class="ei" id="ei-tipo" style="width:auto">
+      <option ${r.tipo==='CPM'?'selected':''}>CPM</option>
+      <option ${r.tipo==='Coste Fijo'||!r.tipo?'selected':''}>Coste Fijo</option>
+    </select></td>
+    <td><input class="ei" id="ei-fmt" value="${esc(r.formato||'')}" placeholder="Formato"/></td>
+    <td><input class="ei" id="ei-med" value="${esc(r.medidas||'')}" placeholder="Medidas"/></td>
+    <td><input class="ei ei-price" id="ei-pre" type="number" value="${r.precio||0}" placeholder="0"/></td>
+    <td style="white-space:nowrap">
+      <button class="bsave-row" onclick="saveEdit(${i})" title="Guardar">✓</button>
+      <button class="bcancel-row" onclick="cancelEdit()" title="Cancelar">✕</button>
+    </td>
+  </tr>`;
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+function startEdit(i){
+  editingIdx=i;
+  renderDB();
+  // Focus first input
+  setTimeout(()=>document.getElementById('ei-sop')?.focus(),50);
+}
+
+function cancelEdit(){editingIdx=null;renderDB();}
+
+function saveEdit(i){
+  const arr=getClientDB();
+  const sop=document.getElementById('ei-sop')?.value.trim();
+  if(!sop){toast('El soporte no puede estar vacío');return;}
+  arr[i]={
+    soporte:sop,
+    cliente:document.getElementById('ei-cli')?.value.trim()||activeClient,
+    tipo:document.getElementById('ei-tipo')?.value||'Coste Fijo',
+    formato:document.getElementById('ei-fmt')?.value.trim()||'',
+    medidas:document.getElementById('ei-med')?.value.trim()||'',
+    precio:parseFloat(document.getElementById('ei-pre')?.value)||0,
+    impresiones:arr[i].impresiones||''
+  };
+  editingIdx=null;
+  setClientDB(arr);updateHeader();renderDB();toast('✓ Registro actualizado');
+}
+
+// ═══ BULK UPLOAD ══════════════════════════════════════════════════════════
 function downloadTemplate(){
-  const csv='Soporte,Cliente,Impresiones,Formato,Medidas,Precio Neto\nElnacional.cat,Diputació de Barcelona,500.000 impressions,Bàner robapàgines doble GIF,300x600 píxels,3865\n';
-  const blob=new Blob([csv],{type:'text/csv'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='plantilla_tarifas_adsplanning.csv';a.click();
-  toast('✓ Plantilla descargada');
+  if(typeof XLSX==='undefined'){toast('Cargando librería...');return;}
+  const ws=XLSX.utils.aoa_to_sheet([
+    ['Soporte','Cliente','Impresiones','Tipo','Formato','Medidas','Precio Neto'],
+    ['Elnacional.cat','Diputació de Barcelona','500.000 impressions, ROS','CPM','Bàner robapàgines doble GIF','300x600 píxels',3865],
+    ['Lavanguardia.com','Diputació de Barcelona','1 mes','Coste Fijo','Branded Content','',15000]
+  ]);
+  // Style header row
+  const range=XLSX.utils.decode_range(ws['!ref']);
+  for(let C=range.s.c;C<=range.e.c;C++){
+    const addr=XLSX.utils.encode_cell({r:0,c:C});
+    if(!ws[addr])continue;
+    ws[addr].s={font:{bold:true},fill:{fgColor:{rgb:'E8222A'}},font:{color:{rgb:'FFFFFF'},bold:true}};
+  }
+  ws['!cols']=[{wch:25},{wch:25},{wch:30},{wch:12},{wch:40},{wch:20},{wch:14}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,'Tarifas',ws);
+  XLSX.writeFile(wb,'plantilla_tarifas_adsplanning.xlsx');
+  toast('✓ Plantilla .xlsx descargada');
 }
 
 function processBulk(input){
@@ -708,74 +819,154 @@ function processBulk(input){
   if(!file)return;
   const reader=new FileReader();
   reader.onload=function(e){
-    const text=e.target.result;
-    const lines=text.split('\n').filter(l=>l.trim());
-    if(lines.length<2){toast('El archivo está vacío');return;}
-    const headers=lines[0].split(',').map(h=>h.trim().toLowerCase());
-    const sopIdx=headers.findIndex(h=>h.includes('soport'));
-    const cliIdx=headers.findIndex(h=>h.includes('client'));
-    const impIdx=headers.findIndex(h=>h.includes('impr') || h.includes('peces'));
-    const fmtIdx=headers.findIndex(h=>h.includes('format'));
-    const medIdx=headers.findIndex(h=>h.includes('medi') || h.includes('mida'));
-    const preIdx=headers.findIndex(h=>h.includes('preu') || h.includes('precio') || h.includes('net'));
-    if(sopIdx<0){toast('No se encontró columna "Soporte"');return;}
+    let rows=[];
+    try{
+      const wb=XLSX.read(e.target.result,{type:'binary'});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+    }catch(err){
+      // Fallback CSV
+      const text=new TextDecoder('utf-8').decode(new Uint8Array(e.target.result));
+      const lines=text.split('\n').filter(l=>l.trim());
+      if(lines.length<2){toast('Archivo vacío');return;}
+      const hdrs=lines[0].split(',').map(h=>h.trim().toLowerCase());
+      for(let i=1;i<lines.length;i++){
+        const cols=lines[i].split(',');
+        const obj={};
+        hdrs.forEach((h,j)=>obj[h]=(cols[j]||'').trim().replace(/"/g,''));
+        rows.push(obj);
+      }
+    }
     let added=0;
     const arr=getClientDB();
-    for(let i=1;i<lines.length;i++){
-      const cols=lines[i].split(',');
-      const sop=(cols[sopIdx]||'').trim().replace(/"/g,'');
-      if(!sop)continue;
-      const precio=parseFloat((cols[preIdx]||'0').replace(/[€\s"]/g,'').replace(',','.'))||0;
+    const keyMap=(h)=>{
+      h=h.toLowerCase();
+      if(h.includes('soport'))return 'soporte';
+      if(h.includes('client'))return 'cliente';
+      if(h.includes('impr')||h.includes('peces'))return 'impresiones';
+      if(h.includes('tipo'))return 'tipo';
+      if(h.includes('format'))return 'formato';
+      if(h.includes('medi')||h.includes('mida'))return 'medidas';
+      if(h.includes('preu')||h.includes('precio')||h.includes('net'))return 'precio';
+      return h;
+    };
+    rows.forEach(row=>{
+      const mapped={};
+      Object.keys(row).forEach(k=>mapped[keyMap(k)]=row[k]);
+      if(!mapped.soporte)return;
       arr.push({
-        soporte:sop,
-        cliente:(cols[cliIdx]||activeClient).trim().replace(/"/g,'')||activeClient,
-        impresiones:(cols[impIdx]||'').trim().replace(/"/g,''),
-        formato:(cols[fmtIdx]||'').trim().replace(/"/g,''),
-        medidas:(cols[medIdx]||'').trim().replace(/"/g,''),
-        precio
+        soporte:String(mapped.soporte||''),
+        cliente:String(mapped.cliente||activeClient),
+        tipo:String(mapped.tipo||'Coste Fijo'),
+        impresiones:String(mapped.impresiones||''),
+        formato:String(mapped.formato||''),
+        medidas:String(mapped.medidas||''),
+        precio:parseFloat(String(mapped.precio||'0').replace(/[^0-9.,]/g,'').replace(',','.'))||0
       });
       added++;
-    }
+    });
     setClientDB(arr);updateHeader();renderDB();
     document.getElementById('bulk-box').classList.remove('open');
     input.value='';
-    toast(`✓ ${added} registros importados`);
+    toast('✓ '+added+' registros importados');
   };
-  reader.readAsText(file,'UTF-8');
+  reader.readAsBinaryString(file);
 }
 
-// ═══ OC PANEL ════════════════════════════════════════════════════════════════
+// ═══ OC PANEL — COLUMN MANAGER ════════════════════════════════════════════
+function toggleColManager(){
+  document.getElementById('col-manager').classList.toggle('open');
+}
+
+function renderColTags(){
+  const container=document.getElementById('col-tags');
+  container.innerHTML=OC_COLS.map((col,i)=>`
+    <div class="col-tag" draggable="true" id="ctag-${i}"
+      ondragstart="dragStart(${i})" ondragover="dragOver(event,${i})" ondrop="dragDrop(event,${i})" ondragend="dragEnd()">
+      <span class="col-tag-handle">⠿</span>
+      <span>${col.label}</span>
+      <span class="col-tag-del" onclick="removeCol(${i})">×</span>
+    </div>`).join('');
+}
+
+function addColumn(){
+  const input=document.getElementById('col-new-name');
+  const name=input.value.trim();
+  if(!name)return;
+  const id='custom_'+Date.now();
+  OC_COLS.push({id,label:name,width:120,isPrice:false});
+  // Add field to existing lines
+  ocLines.forEach(l=>l[id]='');
+  input.value='';
+  renderColTags();
+  renderLinesTable();
+  previewOC();
+  toast('✓ Columna "'+name+'" añadida');
+}
+
+function removeCol(i){
+  if(OC_COLS.length<=1){toast('Debe haber al menos una columna');return;}
+  OC_COLS.splice(i,1);
+  renderColTags();
+  renderLinesTable();
+  previewOC();
+}
+
+// Drag & drop for columns
+function dragStart(i){dragSrcIdx=i;document.getElementById('ctag-'+i).classList.add('dragging');}
+function dragOver(e,i){e.preventDefault();document.getElementById('ctag-'+i).classList.add('drag-over');}
+function dragDrop(e,i){
+  e.preventDefault();
+  document.querySelectorAll('.col-tag').forEach(t=>t.classList.remove('drag-over'));
+  if(dragSrcIdx===null||dragSrcIdx===i)return;
+  const moved=OC_COLS.splice(dragSrcIdx,1)[0];
+  OC_COLS.splice(i,0,moved);
+  renderColTags();
+  renderLinesTable();
+  previewOC();
+}
+function dragEnd(){
+  dragSrcIdx=null;
+  document.querySelectorAll('.col-tag').forEach(t=>t.classList.remove('dragging','drag-over'));
+}
+
+// ═══ OC LINES ════════════════════════════════════════════════════════════
 function addLine(){
-  const id=Date.now()+Math.random();
-  ocLines.push({id});renderLines();
+  const line={id:Date.now()+Math.random()};
+  OC_COLS.forEach(c=>line[c.id]='');
+  ocLines.push(line);
+  renderLinesTable();
 }
+
 function removeLine(id){
-  ocLines=ocLines.filter(l=>l.id!==id);renderLines();previewOC();
-}
-function renderLines(){
-  document.getElementById('lines-tbody').innerHTML=ocLines.map(l=>`
-    <tr>
-      <td><input class="li wide" placeholder="Soporte / web" id="ls-${l.id}" oninput="previewOC()"/></td>
-      <td><input class="li med" placeholder="Formato" id="lf-${l.id}" oninput="previewOC()"/></td>
-      <td><input class="li narrow" placeholder="20/04/2026" id="li-${l.id}" oninput="previewOC()"/></td>
-      <td><input class="li narrow" placeholder="18/10/2026" id="le-${l.id}" oninput="previewOC()"/></td>
-      <td><input class="li med" placeholder="500.000 impr." id="lin-${l.id}" oninput="previewOC()"/></td>
-      <td><input class="li price" type="number" placeholder="0.00" id="lp-${l.id}" oninput="previewOC()"/></td>
-      <td><button class="bdel" onclick="removeLine(${l.id})">✕</button></td>
-    </tr>`).join('');
+  ocLines=ocLines.filter(l=>l.id!==id);
+  renderLinesTable();previewOC();
 }
 
-function getLines(){
-  return ocLines.map(l=>({
-    soporte:document.getElementById('ls-'+l.id)?.value||'',
-    formato:document.getElementById('lf-'+l.id)?.value||'',
-    inicio:document.getElementById('li-'+l.id)?.value||'',
-    fin:document.getElementById('le-'+l.id)?.value||'',
-    inserciones:document.getElementById('lin-'+l.id)?.value||'',
-    neto:parseFloat(document.getElementById('lp-'+l.id)?.value)||0
-  })).filter(l=>l.soporte||l.neto);
+function renderLinesTable(){
+  // Header
+  document.getElementById('lines-thead').innerHTML='<tr>'+
+    OC_COLS.map(c=>`<th style="min-width:${c.width}px">${c.label}</th>`).join('')+
+    '<th style="width:30px"></th></tr>';
+  // Rows
+  document.getElementById('lines-tbody').innerHTML=ocLines.map(l=>
+    '<tr>'+OC_COLS.map(c=>`
+      <td><input class="li" value="${l[c.id]||''}" 
+        type="${c.isPrice?'number':'text'}"
+        placeholder="${c.isPrice?'0.00':c.label}"
+        id="lc-${l.id}-${c.id}"
+        oninput="updateLine(${l.id},'${c.id}',this.value)"/></td>`).join('')+
+    `<td><button class="bdel" onclick="removeLine(${l.id})">✕</button></td></tr>`
+  ).join('');
 }
 
+function updateLine(id,col,val){
+  const line=ocLines.find(l=>l.id===id);
+  if(line)line[col]=val;
+  previewOC();
+}
+
+// ═══ OC PREVIEW & PDF ════════════════════════════════════════════════════
 function previewOC(){
   const num=document.getElementById('oc-num').value.trim();
   const anun=document.getElementById('oc-anun').value.trim();
@@ -786,18 +977,30 @@ function previewOC(){
   const cond=document.getElementById('oc-cond').value.trim();
   const email=document.getElementById('oc-email').value.trim();
   if(!num&&!anun&&!excl)return;
-  const lines=getLines();
-  const neto=lines.reduce((a,b)=>a+b.neto,0);
+
+  // Find price column
+  const priceCol=OC_COLS.find(c=>c.isPrice);
+  const neto=ocLines.reduce((sum,l)=>{
+    const v=priceCol?parseFloat(l[priceCol.id])||0:0;
+    return sum+v;
+  },0);
   const iva=neto*0.21;
   const total=neto+iva;
   const today=new Date().toLocaleDateString('es-ES');
-  const rowsHTML=lines.length?lines.map(l=>`<tr>
-    <td>${l.soporte}</td><td>${l.formato}</td><td>${l.inicio}</td><td>${l.fin}</td>
-    <td>${l.inserciones}</td>
-    <td style="text-align:right">${fmtn(l.neto)} €</td>
-    <td style="text-align:right">${fmtn(l.neto*0.21)} €</td>
-    <td style="text-align:right">${fmtn(l.neto*1.21)} €</td>
-  </tr>`).join(''):`<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:16px">Añade líneas de inserción abajo</td></tr>`;
+
+  const thHTML=OC_COLS.map(c=>`<th>${c.label}</th>`).join('');
+  const rowsHTML=ocLines.length?ocLines.map(l=>{
+    const tds=OC_COLS.map(c=>{
+      const v=l[c.id]||'';
+      if(c.isPrice){
+        const n=parseFloat(v)||0;
+        return`<td style="text-align:right">${n>0?fmtn(n)+' €':'—'}</td>`;
+      }
+      return`<td>${v||'—'}</td>`;
+    }).join('');
+    return`<tr>${tds}</tr>`;
+  }).join(''):`<tr><td colspan="${OC_COLS.length}" style="text-align:center;color:var(--g400);padding:14px">Sin líneas</td></tr>`;
+
   document.getElementById('oc-doc').innerHTML=`
     <div class="oc-hdr-block">
       <div class="oc-company"><strong>${ute}</strong>${dir}<br>Cond. pago: ${cond}<br>CIF: ${cif} · ${email}</div>
@@ -808,10 +1011,7 @@ function previewOC(){
       <div class="oc-mid-item"><label>Exclusivista</label><span>${excl||'—'}</span></div>
       <div class="oc-mid-item"><label>Nº OC</label><span>${num||'—'}</span></div>
     </div>
-    <table class="oc-table"><thead><tr>
-      <th>Soporte</th><th>Formato</th><th>F.Inicio</th><th>F.Fin</th><th>Inserciones</th>
-      <th style="text-align:right">Neto</th><th style="text-align:right">IVA</th><th style="text-align:right">Total</th>
-    </tr></thead><tbody>${rowsHTML}</tbody></table>
+    <table class="oc-table"><thead><tr>${thHTML}</tr></thead><tbody>${rowsHTML}</tbody></table>
     <div class="oc-totals"><div class="oc-totals-box">
       <div class="oc-tot-row"><span>Neto</span><span>${fmtn(neto)} €</span></div>
       <div class="oc-tot-row"><span>IVA (21%)</span><span>${fmtn(iva)} €</span></div>
