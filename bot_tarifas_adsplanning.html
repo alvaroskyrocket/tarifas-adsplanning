@@ -3,350 +3,442 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADSPLANNING · Tarifas Digitals</title>
+<title>ADSPLANNING · Gestión de Campañas</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
-  --red:#E8222A;
-  --red-dark:#c41920;
-  --red-light:#fef2f2;
-  --gray-50:#f9fafb;
-  --gray-100:#f3f4f6;
-  --gray-200:#e5e7eb;
-  --gray-300:#d1d5db;
-  --gray-400:#9ca3af;
-  --gray-500:#6b7280;
-  --gray-700:#374151;
-  --gray-900:#111827;
-  --white:#ffffff;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
-  --shadow:0 4px 16px rgba(0,0,0,.10);
-  --shadow-lg:0 8px 32px rgba(0,0,0,.14);
-  --radius:10px;
+  --red:#E8222A;--red-d:#c41920;--red-l:#fef2f2;
+  --g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;
+  --g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --white:#fff;
 }
+body{font-family:'Outfit',sans-serif;background:var(--g50);color:var(--g900);min-height:100vh;display:flex;flex-direction:column;font-size:15px}
 
-body{font-family:'Outfit',sans-serif;background:var(--gray-50);color:var(--gray-900);min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+/* HEADER */
+header{background:var(--white);border-bottom:1px solid var(--g200);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.hlogo{display:flex;align-items:center;gap:10px}
+.hmark{background:var(--red);color:#fff;font-weight:700;font-size:11px;padding:5px 8px;border-radius:5px;letter-spacing:.5px}
+.hname{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.hsep{color:var(--g300);margin:0 4px}
+.hsub{font-size:13px;color:var(--g500)}
+.hright{display:flex;align-items:center;gap:8px}
+.pill{background:var(--g100);border:1px solid var(--g200);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--g500)}
+.pill strong{color:var(--g900)}
 
-/* ── SETUP ── */
-#setup-screen{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:var(--gray-50)}
-.setup-card{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:48px 40px;max-width:440px;width:100%;box-shadow:var(--shadow-lg)}
-.setup-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;justify-content:center}
-.setup-logo .mark{background:var(--red);color:white;font-weight:700;font-size:13px;padding:6px 10px;border-radius:6px;letter-spacing:.5px}
-.setup-logo .name{font-size:18px;font-weight:700;letter-spacing:-.3px}
-.setup-card h2{font-size:20px;font-weight:700;margin-bottom:6px;text-align:center}
-.setup-card p{color:var(--gray-500);font-size:13.5px;line-height:1.6;margin-bottom:24px;text-align:center}
-.field label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--gray-500);margin-bottom:6px}
-.field input{width:100%;border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:12px 14px;font-size:13px;font-family:'JetBrains Mono',monospace;color:var(--gray-900);outline:none;transition:border-color .2s;background:var(--gray-50)}
-.field input:focus{border-color:var(--red);background:var(--white)}
-.field{margin-bottom:16px}
-.btn-red{width:100%;background:var(--red);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s,transform .1s;letter-spacing:.2px}
-.btn-red:hover{background:var(--red-dark)}
-.btn-red:active{transform:scale(.98)}
-.setup-note{margin-top:14px;font-size:12px;color:var(--gray-400);text-align:center;line-height:1.5}
-
-/* ── APP ── */
-#app-screen{display:none;flex-direction:column;flex:1}
-
-/* ── HEADER ── */
-header{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:200;box-shadow:var(--shadow-sm)}
-.hdr-logo{display:flex;align-items:center;gap:10px}
-.hdr-logo .mark{background:var(--red);color:white;font-weight:700;font-size:11px;padding:5px 8px;border-radius:5px;letter-spacing:.5px}
-.hdr-logo .name{font-size:15px;font-weight:700;letter-spacing:-.2px}
-.hdr-logo .sep{color:var(--gray-300);margin:0 4px}
-.hdr-logo .sub{font-size:13px;color:var(--gray-500);font-weight:400}
-.hdr-right{display:flex;align-items:center;gap:10px}
-.pill{background:var(--gray-100);border:1px solid var(--gray-200);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--gray-500)}
-.pill strong{color:var(--gray-900)}
-
-/* ── TABS ── */
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--gray-200);background:var(--white);padding:0 32px}
-.tab{padding:14px 20px;font-size:13.5px;font-weight:500;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;user-select:none}
-.tab:hover{color:var(--gray-900)}
+/* TABS */
+.tabs{background:var(--white);border-bottom:1px solid var(--g200);padding:0 28px;display:flex;gap:0}
+.tab{padding:13px 18px;font-size:13.5px;font-weight:500;color:var(--g500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;user-select:none;display:flex;align-items:center;gap:6px}
+.tab:hover{color:var(--g900)}
 .tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:600}
+.tab .soon{font-size:10px;background:var(--g200);color:var(--g500);border-radius:10px;padding:2px 7px;font-weight:500}
 
-/* ── PANELS ── */
-.panel{display:none;flex:1}
-.panel.active{display:flex;flex-direction:column}
+/* PANELS */
+.panel{display:none;flex:1;flex-direction:column}
+.panel.active{display:flex}
 
-/* ── SEARCH HERO ── */
-.search-hero{background:var(--white);border-bottom:1px solid var(--gray-200);padding:28px 32px}
-.search-hero h1{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
-.search-hero h1 span{color:var(--red)}
-.search-hero p{color:var(--gray-500);font-size:13.5px;margin-bottom:20px}
-.search-row{display:flex;gap:10px;max-width:700px}
-.search-wrap{flex:1;position:relative}
-.search-wrap input{width:100%;border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:12px 14px 12px 40px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--gray-900);outline:none;transition:border-color .2s;background:var(--white)}
-.search-wrap input:focus{border-color:var(--red)}
-.search-wrap::before{content:'⌕';position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:17px;pointer-events:none}
-.btn-search{background:var(--red);color:white;border:none;border-radius:var(--radius);padding:12px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s;white-space:nowrap}
-.btn-search:hover{background:var(--red-dark)}
-.btn-search:disabled{opacity:.5;cursor:not-allowed}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.chip{background:var(--white);border:1px solid var(--gray-200);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--gray-600);cursor:pointer;transition:all .15s;font-weight:500}
-.chip:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+/* ── SEARCH PANEL ── */
+.s-hero{background:var(--white);border-bottom:1px solid var(--g200);padding:24px 28px}
+.s-hero h1{font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:4px}
+.s-hero h1 span{color:var(--red)}
+.s-hero p{color:var(--g500);font-size:13px;margin-bottom:18px}
+.srow{display:flex;gap:10px;max-width:680px}
+.swrap{flex:1;position:relative}
+.swrap::before{content:'⌕';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:17px;pointer-events:none}
+.swrap input{width:100%;border:1.5px solid var(--g200);border-radius:10px;padding:11px 12px 11px 38px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
+.swrap input:focus{border-color:var(--red)}
+.sbtn{background:var(--red);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;transition:background .15s}
+.sbtn:hover{background:var(--red-d)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.chip{background:var(--white);border:1px solid var(--g200);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--g600);cursor:pointer;transition:all .15s;font-weight:500}
+.chip:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
 
-/* ── LAYOUT ── */
-.content-layout{display:flex;flex:1;overflow:hidden}
-.sidebar{width:240px;min-width:240px;border-right:1px solid var(--gray-200);background:var(--white);padding:20px;overflow-y:auto}
-.results-area{flex:1;padding:24px 28px;overflow-y:auto;background:var(--gray-50)}
+.slayout{display:flex;flex:1;overflow:hidden}
+.sidebar{width:230px;min-width:230px;border-right:1px solid var(--g200);background:var(--white);padding:18px;overflow-y:auto}
+.rarea{flex:1;padding:22px 26px;overflow-y:auto;background:var(--g50)}
 
-/* ── SIDEBAR ── */
-.s-section{margin-bottom:24px}
-.s-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-400);margin-bottom:10px}
-.stat-item{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--gray-100);font-size:13px}
-.stat-item:last-child{border-bottom:none}
-.stat-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red);font-weight:500}
-.f-label{font-size:12px;color:var(--gray-600);margin-bottom:5px;font-weight:500}
-.f-group{margin-bottom:13px}
-select{width:100%;border:1.5px solid var(--gray-200);border-radius:8px;padding:8px 10px;font-size:12.5px;color:var(--gray-900);font-family:'Outfit',sans-serif;outline:none;background:var(--white);cursor:pointer;transition:border-color .15s}
+.ss{margin-bottom:22px}
+.stitle{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--g400);margin-bottom:9px}
+.si{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--g100);font-size:13px}
+.si:last-child{border-bottom:none}
+.sv{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red);font-weight:500}
+.fl{font-size:12px;color:var(--g600);margin-bottom:5px;font-weight:500}
+.fg{margin-bottom:12px}
+select{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:8px 10px;font-size:12.5px;color:var(--g900);font-family:'Outfit',sans-serif;outline:none;background:var(--white);cursor:pointer;transition:border-color .15s}
 select:focus{border-color:var(--red)}
-.btn-ghost{width:100%;background:var(--white);border:1.5px solid var(--gray-200);border-radius:8px;padding:9px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--gray-600);transition:all .15s;margin-bottom:7px}
-.btn-ghost:hover{border-color:var(--gray-400);color:var(--gray-900)}
+.bghost{width:100%;background:var(--white);border:1.5px solid var(--g200);border-radius:8px;padding:9px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--g600);transition:all .15s;margin-bottom:7px}
+.bghost:hover{border-color:var(--g400);color:var(--g900)}
 
-/* ── AI ANSWER ── */
-#ai-answer{background:var(--white);border:1.5px solid var(--gray-200);border-left:3px solid var(--red);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;display:none}
-#ai-answer.visible{display:block}
-.ai-hdr{display:flex;align-items:center;gap:7px;margin-bottom:8px}
-.ai-dot{width:7px;height:7px;background:var(--red);border-radius:50%}
-.ai-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--red)}
-#ai-text{font-size:13.5px;line-height:1.65;color:var(--gray-700)}
-
-/* ── LOADING ── */
-#loading{display:none;align-items:center;gap:10px;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--gray-500)}
-#loading.visible{display:flex}
-.spinner{width:16px;height:16px;border:2px solid var(--gray-200);border-top-color:var(--red);border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── RESULTS META ── */
-.r-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.r-count{font-size:13px;color:var(--gray-500)}
-.r-count strong{color:var(--gray-900)}
-
-/* ── TABLE ── */
-.table-wrap{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+/* TABLE */
+.rmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.rcount{font-size:13px;color:var(--g500)}
+.rcount strong{color:var(--g900)}
+.tw{background:var(--white);border:1px solid var(--g200);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 table{width:100%;border-collapse:collapse;font-size:13px}
-thead{background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
-th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--gray-500);white-space:nowrap;cursor:pointer;user-select:none}
-th:hover{color:var(--gray-900)}
-td{padding:12px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.45;color:var(--gray-700)}
+thead{background:var(--g50);border-bottom:1px solid var(--g200)}
+th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--g500);white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{color:var(--g900)}
+td{padding:11px 14px;border-bottom:1px solid var(--g100);vertical-align:top;line-height:1.4;color:var(--g700)}
 tr:last-child td{border-bottom:none}
-tbody tr:hover{background:var(--gray-50)}
-.td-soporte{font-weight:600;color:var(--gray-900);max-width:200px}
-.td-formato{color:var(--gray-500);font-size:12px;max-width:260px}
-.td-medidas{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);white-space:nowrap}
-.td-imps{font-size:12px;color:var(--gray-500);max-width:150px}
-.td-precio{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--gray-900);text-align:right;white-space:nowrap}
-.td-precio.zero{color:var(--gray-300)}
+tbody tr:hover{background:var(--g50)}
+.tds{font-weight:600;color:var(--g900);max-width:190px}
+.tdf{color:var(--g500);font-size:12px;max-width:240px}
+.tdm{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);white-space:nowrap}
+.tdi{font-size:12px;color:var(--g500);max-width:150px}
+.tdp{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--g900);text-align:right;white-space:nowrap}
+.tdpz{color:var(--g300)}
 
-/* ── EMPTY ── */
-#empty-state{text-align:center;padding:80px 40px;color:var(--gray-400)}
-#empty-state .ico{font-size:42px;margin-bottom:14px;opacity:.5}
-#empty-state h3{font-size:17px;font-weight:600;color:var(--gray-600);margin-bottom:6px}
-#empty-state p{font-size:13.5px}
+#empty{text-align:center;padding:70px 40px;color:var(--g400)}
+#empty .ico{font-size:40px;margin-bottom:12px;opacity:.4}
+#empty h3{font-size:16px;font-weight:600;color:var(--g600);margin-bottom:5px}
+#empty p{font-size:13px}
 
 /* ── DB PANEL ── */
-.db-panel{flex:1;padding:28px 32px;background:var(--gray-50);overflow-y:auto}
-.db-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.db-top h2{font-size:18px;font-weight:700;letter-spacing:-.3px}
-.btn-add{background:var(--red);color:white;border:none;border-radius:var(--radius);padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s}
-.btn-add:hover{background:var(--red-dark)}
+.dbwrap{flex:1;padding:24px 28px;background:var(--g50);overflow-y:auto}
+.dbtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.dbtop h2{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.btn-red{background:var(--red);color:#fff;border:none;border-radius:9px;padding:9px 17px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s}
+.btn-red:hover{background:var(--red-d)}
+.dbinfo{font-size:12.5px;color:var(--g500);margin-bottom:12px}
+.dbinfo strong{color:var(--g900)}
 
-/* FORM */
-.add-form{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:24px;margin-bottom:20px;display:none;box-shadow:var(--shadow-sm)}
-.add-form.open{display:block}
-.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
-.form-field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gray-500);margin-bottom:5px}
-.form-field input,.form-field textarea{width:100%;border:1.5px solid var(--gray-200);border-radius:8px;padding:10px 12px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--gray-900);outline:none;transition:border-color .2s}
-.form-field input:focus,.form-field textarea:focus{border-color:var(--red)}
-.form-field textarea{resize:vertical;min-height:60px}
-.form-actions{display:flex;gap:10px;justify-content:flex-end}
-.btn-save{background:var(--red);color:white;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif}
-.btn-cancel{background:var(--white);border:1.5px solid var(--gray-200);color:var(--gray-600);border-radius:8px;padding:10px 18px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif}
+.addform{background:var(--white);border:1.5px solid var(--g200);border-radius:10px;padding:22px;margin-bottom:18px;display:none;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.addform.open{display:block}
+.fgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.ff label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--g500);margin-bottom:5px}
+.ff input,.ff textarea{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:9px 11px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
+.ff input:focus,.ff textarea:focus{border-color:var(--red)}
+.ff textarea{resize:vertical;min-height:56px}
+.factions{display:flex;gap:10px;justify-content:flex-end}
+.bsave{background:var(--red);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif}
+.bcancel{background:var(--white);border:1.5px solid var(--g200);color:var(--g600);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif}
+.bdel{background:none;border:none;color:var(--g300);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:5px;transition:all .15s}
+.bdel:hover{color:var(--red);background:var(--red-l)}
 
-/* DB TABLE */
-.db-table-wrap{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
-.db-table-wrap table th:last-child,.db-table-wrap table td:last-child{text-align:center}
-.btn-del{background:none;border:none;color:var(--gray-300);cursor:pointer;font-size:15px;padding:4px 8px;border-radius:5px;transition:all .15s}
-.btn-del:hover{color:var(--red);background:var(--red-light)}
-.db-info{font-size:12.5px;color:var(--gray-500);margin-bottom:14px}
-.db-info strong{color:var(--gray-900)}
+/* ── OC PANEL ── */
+.ocwrap{flex:1;display:flex;gap:0;overflow:hidden}
+.ocform-side{width:400px;min-width:400px;border-right:1px solid var(--g200);background:var(--white);padding:22px;overflow-y:auto}
+.ocform-side h2{font-size:16px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px}
+.ocform-side p{font-size:12.5px;color:var(--g500);margin-bottom:18px}
+.oc-preview-side{flex:1;padding:24px;background:var(--g50);overflow-y:auto}
+.oc-preview-side h3{font-size:13px;font-weight:600;color:var(--g500);margin-bottom:14px;text-transform:uppercase;letter-spacing:.6px}
+
+.fsec{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--g100)}
+.fsec:last-of-type{border-bottom:none}
+.fsec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g400);margin-bottom:10px}
+.frow{display:grid;gap:10px;margin-bottom:10px}
+.frow.col2{grid-template-columns:1fr 1fr}
+.frow.col3{grid-template-columns:1fr 1fr 1fr}
+.frow.col1{grid-template-columns:1fr}
+.fl2{display:block;font-size:11px;font-weight:600;color:var(--g600);margin-bottom:4px}
+.fi{width:100%;border:1.5px solid var(--g200);border-radius:8px;padding:9px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--g900);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--red)}
+
+/* LINES */
+.lines-box{border:1.5px solid var(--g200);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.line-hdr{display:grid;grid-template-columns:2fr 1.5fr 80px 80px 80px 30px;gap:6px;padding:7px 10px;background:var(--g50);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500)}
+.line-row{display:grid;grid-template-columns:2fr 1.5fr 80px 80px 80px 30px;gap:6px;padding:6px 10px;border-top:1px solid var(--g100);align-items:center}
+.line-row input{border:1px solid var(--g200);border-radius:6px;padding:5px 7px;font-size:12px;font-family:'Outfit',sans-serif;width:100%;outline:none;background:var(--white)}
+.line-row input:focus{border-color:var(--red)}
+.badd-line{background:var(--g50);border:1.5px dashed var(--g300);border-radius:8px;width:100%;padding:8px;font-size:12.5px;color:var(--g500);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s;margin-bottom:14px}
+.badd-line:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
+.bgen{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s}
+.bgen:hover{background:var(--red-d)}
+
+/* ── OC PDF PREVIEW ── */
+.oc-doc{background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:40px;font-family:'Outfit',sans-serif;font-size:12px;line-height:1.5;max-width:700px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.oc-hdr-block{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--g900)}
+.oc-company{font-size:9px;color:var(--g500);line-height:1.6}
+.oc-company strong{font-size:11px;color:var(--g900);display:block;margin-bottom:2px}
+.oc-meta-right{text-align:right;font-size:9px;color:var(--g500)}
+.oc-num{font-size:13px;font-weight:700;color:var(--g900)}
+.oc-mid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px;padding:12px;background:var(--g50);border-radius:7px}
+.oc-mid-item label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:3px}
+.oc-mid-item span{font-size:11px;font-weight:600;color:var(--g900)}
+.oc-table{width:100%;border-collapse:collapse;margin-bottom:18px}
+.oc-table th{padding:8px 10px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--g900);color:var(--white)}
+.oc-table th:last-child,.oc-table td:last-child{text-align:right}
+.oc-table td{padding:8px 10px;border-bottom:1px solid var(--g100);font-size:10.5px;vertical-align:top}
+.oc-table tr:last-child td{border-bottom:none}
+.oc-totals{display:flex;justify-content:flex-end;margin-bottom:24px}
+.oc-totals-box{border:1px solid var(--g200);border-radius:7px;overflow:hidden;min-width:200px}
+.oc-tot-row{display:flex;justify-content:space-between;padding:7px 12px;font-size:11px;border-bottom:1px solid var(--g100)}
+.oc-tot-row:last-child{border-bottom:none;background:var(--g900);color:var(--white);font-weight:700;font-size:12px}
+.oc-foot{display:flex;justify-content:space-between;align-items:flex-end;padding-top:14px;border-top:1px solid var(--g200)}
+.oc-cond{font-size:9px;color:var(--g500);line-height:1.6}
+.oc-sign{text-align:right;font-size:9px;color:var(--g500)}
+.oc-sign-line{width:120px;border-top:1px solid var(--g400);margin-left:auto;margin-bottom:4px;margin-top:24px}
+
+/* MOCKUP PANELS */
+.mock-panel{flex:1;display:flex;align-items:center;justify-content:center;background:var(--g50);flex-direction:column;gap:16px;padding:60px}
+.mock-card{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:48px 40px;max-width:480px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.mock-ico{font-size:48px;margin-bottom:16px}
+.mock-card h2{font-size:19px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px}
+.mock-card p{color:var(--g500);font-size:13.5px;line-height:1.65;margin-bottom:20px}
+.mock-tag{display:inline-block;background:var(--red-l);color:var(--red);border:1px solid #fecaca;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600}
+.mock-features{text-align:left;margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.mock-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--g600)}
+.mock-feat::before{content:'→';color:var(--red);font-weight:700}
+
+/* PDF PRINT */
+@media print{
+  body *{visibility:hidden}
+  #oc-printable,#oc-printable *{visibility:visible}
+  #oc-printable{position:fixed;top:0;left:0;width:100%;padding:30px;background:white}
+  .oc-doc{box-shadow:none;border:none;max-width:100%}
+}
 </style>
 </head>
 <body>
 
-<!-- SETUP -->
-<div id="setup-screen">
-  <div class="setup-card">
-    <div class="setup-logo">
-      <div class="mark">AP</div>
-      <div class="name">ADSPLANNING</div>
+<header>
+  <div class="hlogo">
+    <div class="hmark">AP</div>
+    <span class="hname">ADSPLANNING</span>
+    <span class="hsep">|</span>
+    <span class="hsub">Gestión de Campañas</span>
+  </div>
+  <div class="hright">
+    <div class="pill">Cliente activo: <strong id="hclient">—</strong></div>
+    <div class="pill"><strong id="hrecs">—</strong> tarifas</div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="sw('search',this)">🔍 Buscador de tarifas</div>
+  <div class="tab" onclick="sw('db',this)">📋 Base de datos</div>
+  <div class="tab" onclick="sw('oc',this)">📄 Crear OC</div>
+  <div class="tab" onclick="sw('dash',this)">📊 Dashboard <span class="soon">Próximamente</span></div>
+  <div class="tab" onclick="sw('cal',this)">📅 Calendario <span class="soon">Próximamente</span></div>
+  <div class="tab" onclick="sw('seg',this)">📈 Seguimientos <span class="soon">Próximamente</span></div>
+</div>
+
+<!-- ═══ SEARCH PANEL ═══ -->
+<div class="panel active" id="panel-search">
+  <div class="s-hero">
+    <h1>Buscador de <span>tarifas</span></h1>
+    <p>Busca por soporte, formato o medidas. Datos de concursos públicos.</p>
+    <div class="srow">
+      <div class="swrap"><input type="text" id="sinput" placeholder="Escribe soporte, formato o medidas..." oninput="liveSearch()"/></div>
     </div>
-    <h2>Buscador de Tarifas</h2>
-    <p>Introduce tu clave de API de Anthropic para activar el asistente inteligente. Se guarda solo en tu navegador.</p>
-    <div class="field">
-      <label>Clave de API</label>
-      <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off"/>
+    <div class="chips">
+      <div class="chip" onclick="qs('elnacional')">elnacional.cat</div>
+      <div class="chip" onclick="qs('lavanguardia')">lavanguardia.com</div>
+      <div class="chip" onclick="qs('300x600')">300x600</div>
+      <div class="chip" onclick="qs('branded content')">Branded Content</div>
+      <div class="chip" onclick="qs('video inbaner')">Vídeo inbaner</div>
+      <div class="chip" onclick="qs('reels')">Reels</div>
+      <div class="chip" onclick="qs('redaccional')">Redaccional</div>
+      <div class="chip" onclick="qs('newsletter')">Newsletter</div>
     </div>
-    <button class="btn-red" onclick="activateApp()">Acceder al buscador →</button>
-    <p class="setup-note">🔒 Tu clave nunca sale de tu dispositivo excepto para llamar a api.anthropic.com</p>
+  </div>
+  <div class="slayout">
+    <div class="sidebar">
+      <div class="ss">
+        <div class="stitle">Resumen</div>
+        <div class="si"><span>Resultados</span><span class="sv" id="st-tot">—</span></div>
+        <div class="si"><span>Precio medio</span><span class="sv" id="st-avg">—</span></div>
+        <div class="si"><span>Máximo</span><span class="sv" id="st-max">—</span></div>
+        <div class="si"><span>Mínimo</span><span class="sv" id="st-min">—</span></div>
+      </div>
+      <div class="ss">
+        <div class="stitle">Filtros</div>
+        <div class="fg"><div class="fl">Tipo de formato</div>
+          <select id="ff" onchange="liveSearch()">
+            <option value="">Todos</option>
+            <option value="bàner|banner|gif">Banner display</option>
+            <option value="video|vídeo|inbaner|preroll">Vídeo / inbaner</option>
+            <option value="redaccional">Redaccional</option>
+            <option value="reels|reel|instagram|tik tok">Reels / RRSS</option>
+            <option value="newsletter">Newsletter</option>
+            <option value="branded content">Branded Content</option>
+          </select>
+        </div>
+        <div class="fg"><div class="fl">Precio neto</div>
+          <select id="fp" onchange="liveSearch()">
+            <option value="">Todos</option>
+            <option value="0-500">Hasta 500€</option>
+            <option value="500-2000">500 – 2.000€</option>
+            <option value="2000-10000">2.000 – 10.000€</option>
+            <option value="10000+">Más de 10.000€</option>
+          </select>
+        </div>
+        <div class="fg"><div class="fl">Medidas</div>
+          <select id="fm" onchange="liveSearch()">
+            <option value="">Todas</option>
+            <option value="300x600">300x600</option>
+            <option value="300x250">300x250</option>
+            <option value="1920x1080">1920x1080 (vídeo)</option>
+            <option value="728x90">728x90</option>
+          </select>
+        </div>
+      </div>
+      <div class="ss">
+        <button class="bghost" onclick="resetS()">↺ Limpiar filtros</button>
+      </div>
+    </div>
+    <div class="rarea">
+      <div id="empty"><div class="ico">🔍</div><h3>Escribe para buscar</h3><p>Empieza a escribir o selecciona un filtro para ver las tarifas.</p></div>
+      <div id="rcont" style="display:none">
+        <div class="rmeta"><div class="rcount">Mostrando <strong id="rshown">0</strong> de <strong id="rtot">0</strong> registros</div></div>
+        <div class="tw"><table>
+          <thead><tr>
+            <th onclick="srt('soporte')">Soporte ↕</th>
+            <th onclick="srt('impresiones')">Impresiones ↕</th>
+            <th onclick="srt('formato')">Formato ↕</th>
+            <th onclick="srt('medidas')">Medidas ↕</th>
+            <th onclick="srt('precio')">Precio NET ↕</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- APP -->
-<div id="app-screen">
-  <header>
-    <div class="hdr-logo">
-      <div class="mark">AP</div>
-      <span class="name">ADSPLANNING</span>
-      <span class="sep">|</span>
-      <span class="sub">Tarifas Concursos Públicos</span>
+<!-- ═══ DB PANEL ═══ -->
+<div class="panel" id="panel-db">
+  <div class="dbwrap">
+    <div class="dbtop">
+      <h2>Base de datos de tarifas</h2>
+      <button class="btn-red" onclick="toggleAdd()">+ Añadir registro</button>
     </div>
-    <div class="hdr-right">
-      <div class="pill">Cliente: <strong>Diputació de Barcelona</strong></div>
-      <div class="pill" id="rec-count"><strong>—</strong> registros</div>
+    <div class="dbinfo">Total: <strong id="dbtot">0</strong> registros guardados en este navegador</div>
+    <div class="addform" id="addform">
+      <div class="fgrid">
+        <div class="ff"><label>Soporte *</label><input id="af-sop" placeholder="elnacional.cat"/></div>
+        <div class="ff"><label>Cliente *</label><input id="af-cli" value="Diputació de Barcelona"/></div>
+        <div class="ff"><label>Precio Neto (€)</label><input id="af-pre" type="number" placeholder="0"/></div>
+        <div class="ff" style="grid-column:1/3"><label>Formato</label><textarea id="af-fmt" placeholder="Bàner robapàgines doble GIF animat..."></textarea></div>
+        <div class="ff"><label>Medidas</label><input id="af-med" placeholder="300 x 600 píxels"/></div>
+        <div class="ff" style="grid-column:1/3"><label>Impresiones / Peces</label><input id="af-imp" placeholder="100.000 impressions, ROS"/></div>
+      </div>
+      <div class="factions">
+        <button class="bcancel" onclick="toggleAdd()">Cancelar</button>
+        <button class="bsave" onclick="addRec()">Guardar</button>
+      </div>
     </div>
-  </header>
-
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('search',this)">🔍 Buscador</div>
-    <div class="tab" onclick="switchTab('db',this)">📋 Base de datos</div>
+    <div class="tw"><table>
+      <thead><tr><th>Soporte</th><th>Cliente</th><th>Formato</th><th>Medidas</th><th>Precio NET</th><th></th></tr></thead>
+      <tbody id="dbtbody"></tbody>
+    </table></div>
   </div>
+</div>
 
-  <!-- SEARCH PANEL -->
-  <div class="panel active" id="panel-search">
-    <div class="search-hero">
-      <h1>Busca tarifas <span>con IA</span></h1>
-      <p>Pregunta en lenguaje natural o usa los filtros del panel lateral.</p>
-      <div class="search-row">
-        <div class="search-wrap">
-          <input type="text" id="search-input" placeholder="¿Cuánto cuesta elnacional.cat? ¿Qué formatos hay de 300x600?"/>
+<!-- ═══ OC PANEL ═══ -->
+<div class="panel" id="panel-oc">
+  <div class="ocwrap">
+    <div class="ocform-side">
+      <h2>Crear Orden de Compra</h2>
+      <p>Rellena los datos y genera el PDF listo para firmar.</p>
+
+      <div class="fsec">
+        <div class="fsec-title">Identificación</div>
+        <div class="frow col2">
+          <div><label class="fl2">Nº OC *</label><input class="fi" id="oc-num" placeholder="DIARIDIBA_06"/></div>
+          <div><label class="fl2">Anunciante *</label><input class="fi" id="oc-anun" placeholder="Diputació de Barcelona"/></div>
         </div>
-        <button class="btn-search" id="search-btn" onclick="doSearch()">Buscar</button>
+        <div class="frow col1">
+          <div><label class="fl2">Exclusivista / Medio *</label><input class="fi" id="oc-excl" placeholder="Lavanguardia"/></div>
+        </div>
       </div>
-      <div class="chips">
-        <div class="chip" onclick="qsearch('elnacional.cat')">elnacional.cat</div>
-        <div class="chip" onclick="qsearch('lavanguardia.com')">lavanguardia.com</div>
-        <div class="chip" onclick="qsearch('banner 300x600')">Banner 300x600</div>
-        <div class="chip" onclick="qsearch('branded content')">Branded Content</div>
-        <div class="chip" onclick="qsearch('video inbaner')">Vídeo inbaner</div>
-        <div class="chip" onclick="qsearch('reels instagram')">Reels Instagram</div>
-        <div class="chip" onclick="qsearch('precio mayor 5000 euros')">Precio &gt; 5.000€</div>
+
+      <div class="fsec">
+        <div class="fsec-title">Cabecera UTE</div>
+        <div class="frow col1">
+          <div><label class="fl2">Nombre UTE</label><input class="fi" id="oc-ute" value="DIPUTACIO - INFINITY MEDIA COMMUNICATIONS SLU - ADSPLANNING SL"/></div>
+        </div>
+        <div class="frow col2">
+          <div><label class="fl2">Dirección</label><input class="fi" id="oc-dir" value="Pº del Til.lers, 3 · 08034-Barcelona"/></div>
+          <div><label class="fl2">CIF</label><input class="fi" id="oc-cif" value="U75999763"/></div>
+        </div>
+        <div class="frow col2">
+          <div><label class="fl2">Condiciones de pago</label><input class="fi" id="oc-cond" value="Transferencia bancaria a 60 días"/></div>
+          <div><label class="fl2">Email facturas</label><input class="fi" id="oc-email" value="facturas.ute@andbeyond.es"/></div>
+        </div>
       </div>
+
+      <div class="fsec">
+        <div class="fsec-title">Líneas de inserción</div>
+        <div class="lines-box">
+          <div class="line-hdr"><span>Soporte</span><span>Formato</span><span>F. Inicio</span><span>F. Fin</span><span>Neto €</span><span></span></div>
+          <div id="lines-cont"></div>
+        </div>
+        <button class="badd-line" onclick="addLine()">+ Añadir línea</button>
+      </div>
+
+      <button class="bgen" onclick="generateOC()">Generar OC y descargar PDF</button>
     </div>
-    <div class="content-layout">
-      <div class="sidebar">
-        <div class="s-section">
-          <div class="s-title">Resumen</div>
-          <div class="stat-item"><span>Total</span><span class="stat-val" id="stat-total">—</span></div>
-          <div class="stat-item"><span>Precio medio</span><span class="stat-val" id="stat-avg">—</span></div>
-          <div class="stat-item"><span>Máximo</span><span class="stat-val" id="stat-max">—</span></div>
-          <div class="stat-item"><span>Mínimo</span><span class="stat-val" id="stat-min">—</span></div>
-        </div>
-        <div class="s-section">
-          <div class="s-title">Filtros</div>
-          <div class="f-group">
-            <div class="f-label">Tipo de formato</div>
-            <select id="f-formato" onchange="applyFilters()">
-              <option value="">Todos</option>
-              <option value="banner">Banner display</option>
-              <option value="video">Vídeo / inbaner</option>
-              <option value="redaccional">Redaccional</option>
-              <option value="reels">Reels / RRSS</option>
-              <option value="newsletter">Newsletter</option>
-              <option value="branded">Branded Content</option>
-            </select>
-          </div>
-          <div class="f-group">
-            <div class="f-label">Precio neto</div>
-            <select id="f-precio" onchange="applyFilters()">
-              <option value="">Todos</option>
-              <option value="0-500">Hasta 500€</option>
-              <option value="500-2000">500€ – 2.000€</option>
-              <option value="2000-10000">2.000€ – 10.000€</option>
-              <option value="10000+">Más de 10.000€</option>
-            </select>
-          </div>
-          <div class="f-group">
-            <div class="f-label">Medidas</div>
-            <select id="f-medidas" onchange="applyFilters()">
-              <option value="">Todas</option>
-              <option value="300x600">300x600</option>
-              <option value="300x250">300x250</option>
-              <option value="1920x1080">1920x1080 (vídeo)</option>
-              <option value="728x90">728x90</option>
-            </select>
-          </div>
-        </div>
-        <div class="s-section">
-          <button class="btn-ghost" onclick="resetAll()">↺ Resetear todo</button>
-          <button class="btn-ghost" onclick="changeKey()">🔑 Cambiar API key</button>
-        </div>
-      </div>
-      <div class="results-area">
-        <div id="loading"><div class="spinner"></div><span>El asistente está analizando tu consulta…</span></div>
-        <div id="ai-answer"><div class="ai-hdr"><div class="ai-dot"></div><div class="ai-lbl">Análisis IA</div></div><div id="ai-text"></div></div>
-        <div id="empty-state"><div class="ico">🔍</div><h3>Empieza a buscar</h3><p>Escribe una pregunta o selecciona un filtro para explorar las tarifas.</p></div>
-        <div id="results-container" style="display:none">
-          <div class="r-meta"><div class="r-count">Mostrando <strong id="r-shown">0</strong> de <strong id="r-total">0</strong> resultados</div></div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr>
-                <th onclick="sortT('soporte')">Soporte ↕</th>
-                <th onclick="sortT('impresiones')">Impresiones ↕</th>
-                <th onclick="sortT('formato')">Formato ↕</th>
-                <th onclick="sortT('medidas')">Medidas ↕</th>
-                <th onclick="sortT('precio')">Precio NET ↕</th>
-              </tr></thead>
-              <tbody id="tbody"></tbody>
-            </table>
+
+    <div class="oc-preview-side">
+      <h3>Vista previa</h3>
+      <div id="oc-printable">
+        <div class="oc-doc" id="oc-doc">
+          <div style="text-align:center;padding:60px 0;color:var(--g400)">
+            <div style="font-size:36px;margin-bottom:12px">📄</div>
+            <div style="font-size:14px">Rellena el formulario para ver la vista previa</div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- DB PANEL -->
-  <div class="panel" id="panel-db">
-    <div class="db-panel">
-      <div class="db-top">
-        <h2>Base de datos de tarifas</h2>
-        <button class="btn-add" onclick="toggleForm()">+ Añadir registro</button>
+<!-- ═══ MOCKUP PANELS ═══ -->
+<div class="panel" id="panel-dash">
+  <div class="mock-panel">
+    <div class="mock-card">
+      <div class="mock-ico">📊</div>
+      <h2>Dashboard de campañas</h2>
+      <p>Vista centralizada de todas las campañas activas, presupuestos ejecutados, KPIs por cliente y estado de cada inserción.</p>
+      <div class="mock-tag">En desarrollo · Próximamente</div>
+      <div class="mock-features">
+        <div class="mock-feat">Resumen de inversión por cliente</div>
+        <div class="mock-feat">Estado de campañas activas / pausadas</div>
+        <div class="mock-feat">OCs generadas vs. pendientes</div>
+        <div class="mock-feat">Alertas de vencimiento</div>
       </div>
-      <div class="db-info">Mostrando <strong id="db-count">0</strong> registros · Cliente: <strong>Diputació de Barcelona</strong></div>
+    </div>
+  </div>
+</div>
 
-      <!-- ADD FORM -->
-      <div class="add-form" id="add-form">
-        <div class="form-grid">
-          <div class="form-field"><label>Soporte *</label><input id="f-soporte" placeholder="elnacional.cat"/></div>
-          <div class="form-field"><label>Cliente *</label><input id="f-cliente" value="Diputació de Barcelona"/></div>
-          <div class="form-field"><label>Precio Neto (€) *</label><input id="f-preu" type="number" placeholder="0"/></div>
-          <div class="form-field" style="grid-column:1/3"><label>Formato</label><textarea id="f-format" placeholder="Bàner robapàgines doble GIF animat..."></textarea></div>
-          <div class="form-field"><label>Medidas</label><input id="f-mides" placeholder="300 x 600 píxels"/></div>
-          <div class="form-field" style="grid-column:1/3"><label>Núm. Impresiones / Peces</label><input id="f-imps" placeholder="100.000 impressions, ROS"/></div>
-        </div>
-        <div class="form-actions">
-          <button class="btn-cancel" onclick="toggleForm()">Cancelar</button>
-          <button class="btn-save" onclick="addRecord()">Guardar registro</button>
-        </div>
+<div class="panel" id="panel-cal">
+  <div class="mock-panel">
+    <div class="mock-card">
+      <div class="mock-ico">📅</div>
+      <h2>Calendario interactivo</h2>
+      <p>Visualiza todas las inserciones calendarizadas por cliente, con fechas de inicio y fin, y alertas automáticas.</p>
+      <div class="mock-tag">En desarrollo · Próximamente</div>
+      <div class="mock-features">
+        <div class="mock-feat">Vista mensual y semanal de campañas</div>
+        <div class="mock-feat">Filtro por cliente y soporte</div>
+        <div class="mock-feat">Alertas de inicio y fin de campaña</div>
+        <div class="mock-feat">Exportar a Google Calendar</div>
       </div>
+    </div>
+  </div>
+</div>
 
-      <div class="db-table-wrap">
-        <table>
-          <thead><tr>
-            <th>Soporte</th><th>Cliente</th><th>Impresiones</th><th>Formato</th><th>Medidas</th><th>Precio NET</th><th>—</th>
-          </tr></thead>
-          <tbody id="db-tbody"></tbody>
-        </table>
+<div class="panel" id="panel-seg">
+  <div class="mock-panel">
+    <div class="mock-card">
+      <div class="mock-ico">📈</div>
+      <h2>Seguimientos</h2>
+      <p>Registro de seguimiento por campaña y cliente. Control de entregables, notas internas y estado de cada acción.</p>
+      <div class="mock-tag">En desarrollo · Próximamente</div>
+      <div class="mock-features">
+        <div class="mock-feat">Historial de comunicaciones por cliente</div>
+        <div class="mock-feat">Estado de entregables</div>
+        <div class="mock-feat">Notas internas por campaña</div>
+        <div class="mock-feat">Exportar informe de seguimiento</div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// ─── DATA ───────────────────────────────────────────────────────────────────
-const INITIAL = [
+// ═══ DATA ═══════════════════════════════════════════════════════════════════
+const INIT=[
   {soporte:"20minutos.es (IP Barcelona província)",cliente:"Diputació de Barcelona",impresiones:"275.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:412.5},
   {soporte:"Ara.cat",cliente:"Diputació de Barcelona",impresiones:"125.000 impressions, ROS",formato:"Bàner robapàgines GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:603.75},
   {soporte:"Catalunyaplural.cat",cliente:"Diputació de Barcelona",impresiones:"100.000 impressions, ROS",formato:"Bàner robapàgines doble GIF animat (fins a 300 k)",medidas:"300 x 600 píxels o similar",precio:1100},
@@ -426,7 +518,7 @@ const INITIAL = [
   {soporte:"Timeout.cat",cliente:"Diputació de Barcelona",impresiones:"3 enviaments",formato:"Baner newsletter setmanal",medidas:"750 x 400 píxels",precio:1920},
   {soporte:"Timeout.cat (Difusió a xarxes socials)",cliente:"Diputació de Barcelona",impresiones:"4 vídeos, 800.000 visualitzacions",formato:"Reels Instagram (inclou producció)",medidas:"",precio:12800},
   {soporte:"Escapadarural.com",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Landing page (continguts + allotjaments)",medidas:"",precio:2055},
-  {soporte:"Komoot.com",cliente:"Diputació de Barcelona",impresiones:"4 col·leccions (fins a 12 rutes)",formato:"Contingut editorial en 5 idiomes (segmentació activitat i geogràfica)",medidas:"",precio:14900},
+  {soporte:"Komoot.com",cliente:"Diputació de Barcelona",impresiones:"4 col·leccions (fins a 12 rutes)",formato:"Contingut editorial en 5 idiomes",medidas:"",precio:14900},
   {soporte:"Femturisme.cat",cliente:"Diputació de Barcelona",impresiones:"6 enviaments",formato:"Newsletter",medidas:"",precio:840},
   {soporte:"Femturisme.cat",cliente:"Diputació de Barcelona",impresiones:"6 baners, cost fix",formato:"Megabaner GIF animat",medidas:"1.200 x 600 píxels",precio:990},
   {soporte:"Social.cat",cliente:"Diputació de Barcelona",impresiones:"1",formato:"Redaccional digital",medidas:"",precio:900},
@@ -436,230 +528,274 @@ const INITIAL = [
   {soporte:"Viajar.elperiodico.com (22 diaris Premsa Ibérica)",cliente:"Diputació de Barcelona",impresiones:"250.000 impressions",formato:"Carrusel Instagram, Facebook i Tik Tok",medidas:"",precio:3000}
 ];
 
-// ─── STATE ──────────────────────────────────────────────────────────────────
-let API_KEY = '';
-let DB = [];
-let currentData = [];
-let sortCol = '';
-let sortDir = 1;
+// ═══ STATE ═══════════════════════════════════════════════════════════════════
+let DB=[];let curData=[];let sortCol='';let sortDir=1;
+let ocLines=[];let ocCounter=1;
 
-function loadDB(){
-  try{const s=localStorage.getItem('ap_db');if(s)DB=JSON.parse(s);}catch(e){}
-  if(!DB.length)DB=[...INITIAL];
-}
-function saveDB(){localStorage.setItem('ap_db',JSON.stringify(DB));}
+function loadDB(){try{const s=localStorage.getItem('ap_db2');if(s)DB=JSON.parse(s);}catch(e){}if(!DB.length)DB=[...INIT];saveDB();}
+function saveDB(){localStorage.setItem('ap_db2',JSON.stringify(DB));}
+function fmt(n){return n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'€';}
+function fmtn(n){return n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-// ─── SETUP ──────────────────────────────────────────────────────────────────
-function activateApp(){
-  const key=document.getElementById('api-key-input').value.trim();
-  if(!key.startsWith('sk-ant-')){alert('La clave debe empezar por sk-ant-');return;}
-  API_KEY=key;
-  localStorage.setItem('ap_key',key);
-  document.getElementById('setup-screen').style.display='none';
-  document.getElementById('app-screen').style.display='flex';
-  loadDB();
-  updateRecCount();
-  renderTable(DB);
-  computeStats(DB);
-  renderDBTable();
-}
-function changeKey(){localStorage.removeItem('ap_key');location.reload();}
-
+// ═══ INIT ════════════════════════════════════════════════════════════════════
 window.addEventListener('load',()=>{
-  const k=localStorage.getItem('ap_key');
-  if(k&&k.startsWith('sk-ant-')){document.getElementById('api-key-input').value=k;activateApp();}
+  loadDB();
+  document.getElementById('hclient').textContent='Diputació de Barcelona';
+  document.getElementById('hrecs').textContent=DB.length;
+  curData=[...DB];
+  renderDB();
+  addLine();addLine(); // start with 2 lines
+  autoOCNum();
 });
 
-// ─── TABS ────────────────────────────────────────────────────────────────────
-function switchTab(name,el){
+// ═══ TABS ═════════════════════════════════════════════════════════════════════
+function sw(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
 }
 
-// ─── STATS ───────────────────────────────────────────────────────────────────
-function fmt(n){return n.toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0})+'€';}
-function computeStats(data){
-  const pp=data.filter(r=>r.precio>0).map(r=>r.precio);
-  document.getElementById('stat-total').textContent=data.length;
-  if(!pp.length){['avg','max','min'].forEach(k=>document.getElementById('stat-'+k).textContent='—');return;}
-  document.getElementById('stat-avg').textContent=fmt(pp.reduce((a,b)=>a+b,0)/pp.length);
-  document.getElementById('stat-max').textContent=fmt(Math.max(...pp));
-  document.getElementById('stat-min').textContent=fmt(Math.min(...pp));
-}
-function updateRecCount(){
-  document.getElementById('rec-count').innerHTML='<strong>'+DB.length+'</strong> registros';
-  document.getElementById('db-count').textContent=DB.length;
-}
+// ═══ SEARCH ══════════════════════════════════════════════════════════════════
+function qs(q){document.getElementById('sinput').value=q;liveSearch();}
 
-// ─── SEARCH ──────────────────────────────────────────────────────────────────
-function qsearch(q){document.getElementById('search-input').value=q;doSearch();}
+function liveSearch(){
+  const q=document.getElementById('sinput').value.toLowerCase().trim();
+  const ff=document.getElementById('ff').value;
+  const fp=document.getElementById('fp').value;
+  const fm=document.getElementById('fm').value;
 
-async function doSearch(){
-  const query=document.getElementById('search-input').value.trim();
-  if(!query){renderTable(DB);computeStats(DB);return;}
-  const btn=document.getElementById('search-btn');
-  const loading=document.getElementById('loading');
-  const aiEl=document.getElementById('ai-answer');
-  btn.disabled=true;btn.textContent='Buscando…';
-  loading.classList.add('visible');aiEl.classList.remove('visible');
+  let data=[...DB];
 
-  // Build compact data for AI
-  const compact=DB.map((r,i)=>i+'|'+r.soporte+'|'+r.formato+'|'+r.medidas+'|'+r.impresiones+'|'+r.precio).join('\n');
-
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},
-      body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:600,
-        system:`Eres un asistente de la agencia ADSPLANNING. Tienes una base de datos de tarifas publicitarias digitales de la Diputació de Barcelona. Formato de cada fila: índice|soporte|formato|medidas|impresiones|precio_euros
-
-DATOS:
-${compact}
-
-Cuando el usuario haga una pregunta:
-1. Responde con 1-2 frases útiles de análisis.
-2. Lista los índices relevantes en este formato exacto al final: INDICES:[0,1,2]
-Si no hay resultados escribe INDICES:[]`,
-        messages:[{role:'user',content:query}]
-      })
-    });
-    const data=await resp.json();
-    if(data.error){throw new Error(data.error.message);}
-    const text=data.content?.[0]?.text||'';
-    const commentary=text.replace(/INDICES:\[[\d,\s]*\]/,'').trim();
-    const match=text.match(/INDICES:\[([\d,\s]*)\]/);
-    let indices=[];
-    if(match&&match[1].trim())indices=match[1].split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)&&n<DB.length);
-    document.getElementById('ai-text').textContent=commentary||'Resultados encontrados:';
-    aiEl.classList.add('visible');
-    const filtered=indices.length>0?indices.map(i=>DB[i]).filter(Boolean):[];
-    currentData=filtered;
-    renderTable(filtered);
-    computeStats(filtered);
-  }catch(e){
-    // fallback text search
-    const q=query.toLowerCase();
-    const filtered=DB.filter(r=>
+  if(q){
+    data=data.filter(r=>
       r.soporte.toLowerCase().includes(q)||
       r.formato.toLowerCase().includes(q)||
       r.medidas.toLowerCase().includes(q)||
-      r.impresiones.toLowerCase().includes(q)
+      r.impresiones.toLowerCase().includes(q)||
+      r.cliente.toLowerCase().includes(q)
     );
-    document.getElementById('ai-text').textContent='Búsqueda de texto: '+filtered.length+' resultados para "'+query+'"';
-    aiEl.classList.add('visible');
-    currentData=filtered;
-    renderTable(filtered);
-    computeStats(filtered);
-  }finally{
-    loading.classList.remove('visible');
-    btn.disabled=false;btn.textContent='Buscar';
   }
-}
 
-// ─── FILTERS ─────────────────────────────────────────────────────────────────
-function applyFilters(){
-  const fmt=document.getElementById('f-formato').value;
-  const prc=document.getElementById('f-precio').value;
-  const med=document.getElementById('f-medidas').value;
-  let data=[...DB];
-  if(fmt){
-    const map={banner:['bàner','banner','gif'],video:['video','vídeo','inbaner','preroll'],redaccional:['redaccional'],reels:['reels','reel','instagram','tik tok'],newsletter:['newsletter'],branded:['branded content']};
-    const terms=map[fmt]||[fmt];
+  if(ff){
+    const terms=ff.split('|');
     data=data.filter(r=>terms.some(t=>r.formato.toLowerCase().includes(t)));
   }
-  if(prc){
-    const [mn,mx]=prc==='10000+'?[10000,Infinity]:prc.split('-').map(Number);
+  if(fp){
+    const[mn,mx]=fp==='10000+'?[10000,Infinity]:fp.split('-').map(Number);
     data=data.filter(r=>r.precio>=mn&&r.precio<=(mx||Infinity));
   }
-  if(med)data=data.filter(r=>r.medidas.toLowerCase().includes(med.toLowerCase()));
-  currentData=data;renderTable(data);computeStats(data);
+  if(fm) data=data.filter(r=>r.medidas.toLowerCase().includes(fm.toLowerCase()));
+
+  curData=data;
+  renderTable(data, q||ff||fp||fm);
+  computeStats(data);
 }
 
-function resetAll(){
-  ['f-formato','f-precio','f-medidas'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('search-input').value='';
-  document.getElementById('ai-answer').classList.remove('visible');
-  currentData=[...DB];renderTable(DB);computeStats(DB);
+function computeStats(data){
+  const pp=data.filter(r=>r.precio>0).map(r=>r.precio);
+  document.getElementById('st-tot').textContent=data.length;
+  if(!pp.length){['avg','max','min'].forEach(k=>document.getElementById('st-'+k).textContent='—');return;}
+  document.getElementById('st-avg').textContent=fmt(pp.reduce((a,b)=>a+b,0)/pp.length);
+  document.getElementById('st-max').textContent=fmt(Math.max(...pp));
+  document.getElementById('st-min').textContent=fmt(Math.min(...pp));
 }
 
-// ─── SORT ────────────────────────────────────────────────────────────────────
-function sortT(col){
+function resetS(){
+  document.getElementById('sinput').value='';
+  ['ff','fp','fm'].forEach(id=>document.getElementById(id).value='');
+  curData=[...DB];renderTable(DB,false);computeStats(DB);
+}
+
+function srt(col){
   if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=1;}
-  const sorted=[...currentData].sort((a,b)=>{
+  const s=[...curData].sort((a,b)=>{
     const av=a[col]??'';const bv=b[col]??'';
     return(typeof av==='number'?(av-bv):av.toString().localeCompare(bv.toString()))*sortDir;
   });
-  currentData=sorted;renderTable(sorted);
+  curData=s;renderTable(s,!!document.getElementById('sinput').value);
 }
 
-// ─── RENDER TABLE ─────────────────────────────────────────────────────────────
-function renderTable(data){
-  const empty=document.getElementById('empty-state');
-  const cont=document.getElementById('results-container');
-  if(!data||!data.length){empty.style.display='block';cont.style.display='none';return;}
+function renderTable(data, hasQuery){
+  const empty=document.getElementById('empty');
+  const cont=document.getElementById('rcont');
+  if(!hasQuery&&!document.getElementById('ff').value&&!document.getElementById('fp').value&&!document.getElementById('fm').value){
+    empty.style.display='block';cont.style.display='none';return;
+  }
+  if(!data.length){
+    empty.innerHTML='<div class="ico">😕</div><h3>Sin resultados</h3><p>Prueba con otro término o ajusta los filtros.</p>';
+    empty.style.display='block';cont.style.display='none';return;
+  }
   empty.style.display='none';cont.style.display='block';
-  document.getElementById('r-shown').textContent=data.length;
-  document.getElementById('r-total').textContent=DB.length;
+  document.getElementById('rshown').textContent=data.length;
+  document.getElementById('rtot').textContent=DB.length;
   document.getElementById('tbody').innerHTML=data.map(r=>`
     <tr>
-      <td class="td-soporte">${r.soporte}</td>
-      <td class="td-imps">${r.impresiones||'—'}</td>
-      <td class="td-formato">${r.formato||'—'}</td>
-      <td class="td-medidas">${r.medidas||'—'}</td>
-      <td class="td-precio ${r.precio===0?'zero':''}">${r.precio>0?r.precio.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €':'—'}</td>
+      <td class="tds">${r.soporte}</td>
+      <td class="tdi">${r.impresiones||'—'}</td>
+      <td class="tdf">${r.formato||'—'}</td>
+      <td class="tdm">${r.medidas||'—'}</td>
+      <td class="tdp ${r.precio===0?'tdpz':''}">${r.precio>0?fmtn(r.precio)+' €':'—'}</td>
     </tr>`).join('');
 }
 
-// ─── DB PANEL ────────────────────────────────────────────────────────────────
-function renderDBTable(){
-  document.getElementById('db-count').textContent=DB.length;
-  document.getElementById('db-tbody').innerHTML=DB.map((r,i)=>`
-    <tr>
-      <td style="font-weight:600">${r.soporte}</td>
-      <td style="font-size:12px;color:var(--gray-500)">${r.cliente}</td>
-      <td style="font-size:12px;color:var(--gray-500)">${r.impresiones||'—'}</td>
-      <td style="font-size:12px;color:var(--gray-500);max-width:200px">${r.formato||'—'}</td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red)">${r.medidas||'—'}</td>
-      <td style="font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right">${r.precio>0?r.precio.toLocaleString('es-ES',{minimumFractionDigits:2})+' €':'—'}</td>
-      <td><button class="btn-del" onclick="deleteRecord(${i})" title="Eliminar">✕</button></td>
-    </tr>`).join('');
-}
-
-function toggleForm(){
-  const f=document.getElementById('add-form');
+// ═══ DB PANEL ═════════════════════════════════════════════════════════════════
+function toggleAdd(){
+  const f=document.getElementById('addform');
   f.classList.toggle('open');
-  if(f.classList.contains('open')){['f-soporte','f-format','f-mides','f-imps','f-preu'].forEach(id=>{const el=document.getElementById(id);if(id!=='f-cliente')el.value='';});}
-}
-
-function addRecord(){
-  const soporte=document.getElementById('f-soporte').value.trim();
-  const cliente=document.getElementById('f-cliente').value.trim();
-  const formato=document.getElementById('f-format').value.trim();
-  const medidas=document.getElementById('f-mides').value.trim();
-  const impresiones=document.getElementById('f-imps').value.trim();
-  const precio=parseFloat(document.getElementById('f-preu').value)||0;
-  if(!soporte){alert('El soporte es obligatorio');return;}
-  DB.push({soporte,cliente,impresiones,formato,medidas,precio});
-  saveDB();updateRecCount();renderDBTable();renderTable(DB);computeStats(DB);
-  toggleForm();
-}
-
-function deleteRecord(i){
-  if(!confirm('¿Eliminar este registro?'))return;
-  DB.splice(i,1);
-  saveDB();updateRecCount();renderDBTable();renderTable(DB);computeStats(DB);
-}
-
-// Enter key
-document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    if(document.activeElement.id==='search-input')doSearch();
-    if(document.activeElement.id==='api-key-input')activateApp();
+  if(f.classList.contains('open')){
+    document.getElementById('af-sop').value='';
+    document.getElementById('af-fmt').value='';
+    document.getElementById('af-med').value='';
+    document.getElementById('af-imp').value='';
+    document.getElementById('af-pre').value='';
   }
+}
+function addRec(){
+  const sop=document.getElementById('af-sop').value.trim();
+  if(!sop){alert('El soporte es obligatorio');return;}
+  DB.push({
+    soporte:sop,
+    cliente:document.getElementById('af-cli').value.trim(),
+    impresiones:document.getElementById('af-imp').value.trim(),
+    formato:document.getElementById('af-fmt').value.trim(),
+    medidas:document.getElementById('af-med').value.trim(),
+    precio:parseFloat(document.getElementById('af-pre').value)||0
+  });
+  saveDB();renderDB();document.getElementById('hrecs').textContent=DB.length;toggleAdd();
+}
+function delRec(i){if(!confirm('¿Eliminar este registro?'))return;DB.splice(i,1);saveDB();renderDB();document.getElementById('hrecs').textContent=DB.length;}
+function renderDB(){
+  document.getElementById('dbtot').textContent=DB.length;
+  document.getElementById('dbtbody').innerHTML=DB.map((r,i)=>`
+    <tr>
+      <td style="font-weight:600;font-size:13px">${r.soporte}</td>
+      <td style="font-size:12px;color:var(--g500)">${r.cliente}</td>
+      <td style="font-size:12px;color:var(--g500);max-width:200px">${r.formato||'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red)">${r.medidas||'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right;font-size:13px">${r.precio>0?fmtn(r.precio)+' €':'—'}</td>
+      <td><button class="bdel" onclick="delRec(${i})">✕</button></td>
+    </tr>`).join('');
+}
+
+// ═══ OC PANEL ════════════════════════════════════════════════════════════════
+function autoOCNum(){
+  const saved=localStorage.getItem('ap_oc_counter');
+  ocCounter=saved?parseInt(saved)+1:6;
+  // Don't auto-fill, let user write it
+}
+
+function addLine(){
+  const id=Date.now();
+  ocLines.push({id});
+  renderLines();
+}
+function removeLine(id){
+  ocLines=ocLines.filter(l=>l.id!==id);
+  renderLines();
+}
+function renderLines(){
+  document.getElementById('lines-cont').innerHTML=ocLines.map(l=>`
+    <div class="line-row" id="line-${l.id}">
+      <input placeholder="Soporte / web" id="ls-${l.id}"/>
+      <input placeholder="Formato" id="lf-${l.id}"/>
+      <input placeholder="dd/mm/aa" id="li-${l.id}"/>
+      <input placeholder="dd/mm/aa" id="le-${l.id}"/>
+      <input type="number" placeholder="0.00" id="lp-${l.id}" oninput="calcOCTotals()"/>
+      <button class="bdel" onclick="removeLine(${l.id})">✕</button>
+    </div>`).join('');
+}
+
+function getLines(){
+  return ocLines.map(l=>({
+    soporte:document.getElementById('ls-'+l.id)?.value||'',
+    formato:document.getElementById('lf-'+l.id)?.value||'',
+    inicio:document.getElementById('li-'+l.id)?.value||'',
+    fin:document.getElementById('le-'+l.id)?.value||'',
+    neto:parseFloat(document.getElementById('lp-'+l.id)?.value)||0
+  })).filter(l=>l.soporte||l.neto);
+}
+
+function calcOCTotals(){
+  const lines=getLines();
+  const neto=lines.reduce((a,b)=>a+b.neto,0);
+  const iva=neto*0.21;
+  return{neto,iva,total:neto+iva};
+}
+
+function generateOC(){
+  const num=document.getElementById('oc-num').value.trim();
+  const anun=document.getElementById('oc-anun').value.trim();
+  const excl=document.getElementById('oc-excl').value.trim();
+  const ute=document.getElementById('oc-ute').value.trim();
+  const dir=document.getElementById('oc-dir').value.trim();
+  const cif=document.getElementById('oc-cif').value.trim();
+  const cond=document.getElementById('oc-cond').value.trim();
+  const email=document.getElementById('oc-email').value.trim();
+  if(!num||!anun||!excl){alert('Rellena Nº OC, Anunciante y Exclusivista');return;}
+
+  const lines=getLines();
+  const{neto,iva,total}=calcOCTotals();
+  const today=new Date().toLocaleDateString('es-ES');
+
+  const rowsHTML=lines.length?lines.map(l=>`
+    <tr>
+      <td>${l.soporte}</td>
+      <td>${l.formato}</td>
+      <td>${l.inicio}</td>
+      <td>${l.fin}</td>
+      <td style="text-align:right">${fmtn(l.neto)} €</td>
+      <td style="text-align:right">${fmtn(l.neto*0.21)} €</td>
+      <td style="text-align:right">${fmtn(l.neto*1.21)} €</td>
+    </tr>`).join(''):`<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:20px">Sin líneas añadidas</td></tr>`;
+
+  document.getElementById('oc-doc').innerHTML=`
+    <div class="oc-hdr-block">
+      <div class="oc-company">
+        <strong>${ute}</strong>
+        ${dir}<br>
+        Condiciones de pago: ${cond}.<br>
+        CIF: ${cif} &nbsp;·&nbsp; Enviar a: ${email}
+      </div>
+      <div class="oc-meta-right">
+        <div style="font-size:9px;color:var(--g500);margin-bottom:2px">Fecha: ${today}</div>
+        <div class="oc-num">Nº ORDEN DE COMPRA: ${num}</div>
+      </div>
+    </div>
+    <div class="oc-mid">
+      <div class="oc-mid-item"><label>Anunciante</label><span>${anun}</span></div>
+      <div class="oc-mid-item"><label>Exclusivista</label><span>${excl}</span></div>
+      <div class="oc-mid-item"><label>Nº OC</label><span>${num}</span></div>
+    </div>
+    <table class="oc-table">
+      <thead><tr>
+        <th>Soporte</th><th>Formato</th><th>Fecha inicio</th><th>Fecha fin</th>
+        <th style="text-align:right">Neto</th><th style="text-align:right">IVA</th><th style="text-align:right">Total</th>
+      </tr></thead>
+      <tbody>${rowsHTML}</tbody>
+    </table>
+    <div class="oc-totals">
+      <div class="oc-totals-box">
+        <div class="oc-tot-row"><span>Neto</span><span>${fmtn(neto)} €</span></div>
+        <div class="oc-tot-row"><span>IVA (21%)</span><span>${fmtn(iva)} €</span></div>
+        <div class="oc-tot-row"><span>TOTAL</span><span>${fmtn(total)} €</span></div>
+      </div>
+    </div>
+    <div class="oc-foot">
+      <div class="oc-cond">Condiciones de pago: ${cond}<br>Email facturas: ${email}</div>
+      <div class="oc-sign"><div class="oc-sign-line"></div>FDO. ${excl}</div>
+    </div>`;
+
+  // Save counter
+  localStorage.setItem('ap_oc_counter', parseInt(num.replace(/\D/g,''))||ocCounter);
+
+  // Print to PDF
+  setTimeout(()=>window.print(), 300);
+}
+
+// Enter search
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.activeElement.id==='sinput')liveSearch();
 });
 </script>
 </body>
